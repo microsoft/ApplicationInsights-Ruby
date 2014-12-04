@@ -1,0 +1,2 @@
+require_relative 'application_insights/telemetry_client'
+require_relative 'application_insights/version'
