@@ -28,9 +28,12 @@ module ApplicationInsights
         request = Net::HTTP::Post.new(uri.path, { 'Accept' => 'application/json', 'Content-Type' => 'application/json; charset=utf-8' })
         request.body = data_to_send.to_json
 
-        response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-          http.request(request)
+        http = Net::HTTP.new uri.hostname, uri.port
+        if uri.scheme.downcase == 'https'
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
+        response = http.request(request)
 
         case response
           when Net::HTTPSuccess, Net::HTTPRedirection, Net::HTTPBadRequest
