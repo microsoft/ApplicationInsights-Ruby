@@ -27,7 +27,7 @@ module ApplicationInsights
 
         @queue.push(item)
         if @queue.length >= @max_queue_length
-          flush()
+          flush
         end
       end
 
