@@ -25,13 +25,14 @@ module ApplicationInsights
       # by calling {AsynchronousSender#start}.
       # @param [Contracts::Envelope] item the telemetry envelope object to send to the service.
       def push(item)
-        super.push item
+        super item
         @sender.start
       end
 
       # Flushes the current queue by notifying the {#sender} via the {#flush_notification} event.
       def flush
         @flush_notification.set
+        @sender.start
       end
     end
   end

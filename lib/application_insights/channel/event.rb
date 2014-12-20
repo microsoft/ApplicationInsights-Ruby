@@ -15,6 +15,11 @@ module ApplicationInsights
         @signal = false
       end
 
+      # The signal value for this object. Note that the value of this property is not synchronized
+      # with respect to {#set} and {#clear} meaning that it could return false positives or negatives.
+      # @return [Boolean] the signal value.
+      attr_reader :signal
+
       # Sets the internal flag to true. Calling this method will also cause all waiting threads to awaken.
       def set
         @mutex.synchronize do
@@ -32,13 +37,13 @@ module ApplicationInsights
 
       # Calling this method will block until the internal flag is set to true. If the flag is set to true before calling
       # this method, we will return immediately. If the timeout parameter is specified, the method will unblock after the
-      # specified number of milliseconds.
-      # @param [Fixnum] timeout the timeout for the operation in milliseconds.
+      # specified number of seconds.
+      # @param [Fixnum] timeout the timeout for the operation in seconds.
       # @return [Boolean] the value of the internal flag on exit.
       def wait(timeout=nil)
         @mutex.synchronize do
           if @signal == false
-            @condition_variable.wait @mutex, (timeout == nil) ? nil : timeout / 1000.0
+            @condition_variable.wait @mutex, (timeout == nil) ? nil : timeout
           end
           @signal
         end
