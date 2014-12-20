@@ -1,3 +1,5 @@
+require_relative 'asynchronous_queue'
+require_relative 'asynchronous_sender'
 require_relative 'telemetry_context'
 require_relative 'synchronous_queue'
 require_relative 'synchronous_sender'

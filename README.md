@@ -94,7 +94,7 @@ tc.track_trace 'My trace with context'
 tc.flush
 ```  
 
-**Configuring channel related properties**
+**Configuring synchronous (default) channel properties**
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new
@@ -104,5 +104,32 @@ tc.channel.queue.max_queue_length = 10
 tc.channel.sender.send_buffer_size = 5
 ```
 
+**Configuring an asynchronous channel instead of the synchronous default**
+```ruby
+require 'application_insights'
+sender = ApplicationInsights::Channel::AsynchronousSender.new
+queue = ApplicationInsights::Channel::AsynchronousQueue.new sender
+channel = ApplicationInsights::Channel::TelemetryChannel nil, queue
+tc = ApplicationInsights::TelemetryClient.new channel
+# Note: the event will be sent on a separate thread; if the app finishes before
+#       the thread finishes, the data is lost
+tc.track_event 'My event'
+```
 
-
+**Configuring asynchronous channel properties**
+```ruby
+require 'application_insights'
+sender = ApplicationInsights::Channel::AsynchronousSender.new
+queue = ApplicationInsights::Channel::AsynchronousQueue.new sender
+channel = ApplicationInsights::Channel::TelemetryChannel nil, queue
+tc = ApplicationInsights::TelemetryClient.new channel
+# flush telemetry if we have 10 or more telemetry items in our queue
+tc.channel.queue.max_queue_length = 10
+# send telemetry to the service in batches of 5
+tc.channel.sender.send_buffer_size = 5
+# the background worker thread will be active for 5 seconds before it shuts down. if
+# during this time items are picked up from the queue, the timer is reset.
+tc.channel.sender.send_time = 5
+# the background worker thread will poll the queue every 0.5 seconds for new items
+tc.channel.sender.send_interval = 0.5
+```
