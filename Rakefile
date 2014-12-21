@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require 'rake/testtask'
+require 'yard'
 
 Rake::TestTask.new do |test|
   test.libs << 'test'
@@ -7,4 +8,8 @@ Rake::TestTask.new do |test|
   test.verbose = true
 end
 
-task :default => [ :test, :build ]
+YARD::Rake::YardocTask.new do |task|
+  task.files   = ['lib/**/*.rb', '-', 'LICENSE.txt', 'README.md']
+end
+
+task :default => [ :test, :build, :yard ]

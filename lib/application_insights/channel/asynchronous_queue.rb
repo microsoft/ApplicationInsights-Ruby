@@ -6,6 +6,18 @@ module ApplicationInsights
     # An asynchronous queue for use in conjunction with the {AsynchronousSender}. The queue
     # will notify the sender that it needs to pick up items when it reaches {#max_queue_length}, or when the consumer
     # calls {#flush} via the {#flush_notification} event.
+    # @example
+    #   require 'application_insights'
+    #   require 'thread'
+    #   queue = ApplicationInsights::Channel::AsynchronousQueue.new nil
+    #   Thread.new do
+    #     sleep 1
+    #     queue.push 1
+    #     queue.flush
+    #   end
+    #   queue.flush_notification.wait
+    #   queue.flush_notification.clear
+    #   result = queue.pop
     class AsynchronousQueue < QueueBase
       # Initializes a new instance of the class.
       # @param [SenderBase] sender the sender object that will be used in conjunction with this queue. In addition to
@@ -26,13 +38,13 @@ module ApplicationInsights
       # @param [Contracts::Envelope] item the telemetry envelope object to send to the service.
       def push(item)
         super item
-        @sender.start
+        @sender.start if @sender
       end
 
       # Flushes the current queue by notifying the {#sender} via the {#flush_notification} event.
       def flush
         @flush_notification.set
-        @sender.start
+        @sender.start if @sender
       end
     end
   end
