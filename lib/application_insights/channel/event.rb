@@ -7,6 +7,17 @@ module ApplicationInsights
     #
     # An object of this type managers an internal flag that can be set to true via the {#set} method and reset via the
     # {#clear} method. Calling the {#wait} method will block until the flag is set to true.
+    # @example
+    #   require 'application_insights'
+    #   require 'thread'
+    #   event = ApplicationInsights::Channel::Event.new
+    #   Thread.new do
+    #     sleep 1
+    #     event.set
+    #   end
+    #   puts 'Main screen turn on.'
+    #   result = event.wait
+    #   puts 'All your base are belong to us.'
     class Event
       # Initializes a new instance of the class.
       def initialize

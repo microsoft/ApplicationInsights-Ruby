@@ -5,15 +5,6 @@ require 'test/unit'
 include ApplicationInsights::Channel
 
 class TestQueueBase < Test::Unit::TestCase
-  def test_initialize_raises_exception_when_sender_is_nil
-    begin
-      QueueBase.new nil
-      assert false
-    rescue ArgumentError => e
-      assert_equal 'Sender was required but not provided', e.message
-    end
-  end
-
   def test_initialize
     sender = SenderBase.new 'http://tempuri.org'
     item = QueueBase.new sender

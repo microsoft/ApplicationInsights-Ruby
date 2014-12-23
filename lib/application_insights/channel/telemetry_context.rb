@@ -7,9 +7,20 @@ require_relative 'contracts/location'
 
 module ApplicationInsights
   module Channel
-    # Represents a context for sending telemetry to the Application Insights service.
+    # Represents the context for sending telemetry to the Application Insights service.
+    # @example
+    #   require 'application_insights'
+    #   context = ApplicationInsights::Channel::TelemetryContext.new
+    #   context.instrumentation_key = '<YOUR INSTRUMENTATION KEY GOES HERE>'
+    #   context.application.id = 'My application'
+    #   context.application.ver = '1.2.3'
+    #   context.device.id = 'My current device'
+    #   context.device.oem_name = 'Asus'
+    #   context.device.model = 'X31A'
+    #   context.device.type = "Other"
+    #   context.user.id = 'santa@northpole.net'
     class TelemetryContext
-      # Initializes a new instance of the TelemetryContext class.
+      # Initializes a new instance of the class.
       def initialize
         @instrumentation_key = nil
         @application = Contracts::Application.new
@@ -21,28 +32,36 @@ module ApplicationInsights
         @properties = {}
       end
 
-      # Gets or sets the instrumentation key.
+      # The instrumentation key that is used to identify which Application Insights application this data is for.
+      # @return [String] the instrumentation key.
       attr_accessor :instrumentation_key
 
-      # Gets or sets the application context.
+      # The application context. This contains properties of the application you are running.
+      # @return [Contracts::Application] the context object.
       attr_accessor :application
 
-      # Gets or sets the device context.
+      # The device context. This contains properties of the device you are running on.
+      # @return [Contracts::Device] the context object.
       attr_accessor :device
 
-      # Gets or sets the user context.
+      # The user context. This contains properties of the user you are generating telemetry for.
+      # @return [Contracts::User] the context object.
       attr_accessor :user
 
-      # Gets or sets the session context.
+      # The session context. This contains properties of the session you are generating telemetry for.
+      # @return [Contracts::Session] the context object.
       attr_accessor :session
 
-      # Gets or sets the operation context.
+      # The operation context. This contains properties of the operation you are generating telemetry for.
+      # @return [Contracts::Operation] the context object.
       attr_accessor :operation
 
-      # Gets or sets the location context.
+      # The location context. This contains properties of the location you are generating telemetry from.
+      # @return [Contracts::Location] the context object.
       attr_accessor :location
 
-      # Gets a dictionary of application-defined property values.
+      # The property context. This contains free-form properties that you can add to your telemetry.
+      # @return [Hash<String, String>] the context object.
       attr_reader :properties
     end
   end
