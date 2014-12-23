@@ -7,15 +7,6 @@ require 'thread'
 include ApplicationInsights::Channel
 
 class TestSenderBase < Test::Unit::TestCase
-  def test_initialize_raises_exception_when_service_endpoint_uri_is_nil
-    begin
-      SenderBase.new nil
-      assert false
-    rescue ArgumentError => e
-      assert_equal 'Service endpoint URI was required but not provided', e.message
-    end
-  end
-
   def test_initialize
     sender = SenderBase.new 'http://tempuri.org'
     assert_equal 'http://tempuri.org', sender.service_endpoint_uri

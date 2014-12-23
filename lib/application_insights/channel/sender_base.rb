@@ -6,12 +6,11 @@ module ApplicationInsights
     # The base class for all types of senders for use in conjunction with an implementation of {QueueBase}. The queue
     # will notify the sender that it needs to pick up items. The concrete sender implementation will listen to these
     # notifications and will pull items from the queue using {QueueBase#pop} getting at most {#send_buffer_size} items.
-    # it will then call {#send} using the list of items pulled from the queue.
+    # It will then call {#send} using the list of items pulled from the queue.
     class SenderBase
       # Initializes a new instance of the class.
       # @param [String] service_endpoint_uri the address of the service to send telemetry data to.
       def initialize(service_endpoint_uri)
-        raise ArgumentError, 'Service endpoint URI was required but not provided' unless service_endpoint_uri
         @service_endpoint_uri = service_endpoint_uri
         @queue = nil
         @send_buffer_size = 100
