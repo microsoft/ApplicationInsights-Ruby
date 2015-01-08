@@ -34,8 +34,9 @@ module ApplicationInsights
         
         # Gets the url property.
         def url
-          return @values['url'] if @values.key?('url')
-          @defaults['url']
+          @values.fetch('url') { 
+            @values['url'] = nil
+          }
         end
         
         # Sets the url property.
@@ -59,8 +60,9 @@ module ApplicationInsights
         
         # Gets the duration property.
         def duration
-          return @values['duration'] if @values.key?('duration')
-          @defaults['duration']
+          @values.fetch('duration') { 
+            @values['duration'] = nil
+          }
         end
         
         # Sets the duration property.
@@ -74,9 +76,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.
@@ -90,9 +92,9 @@ module ApplicationInsights
         
         # Gets the measurements property.
         def measurements
-          return @values['measurements'] if @values.key?('measurements')
-          @values['measurements'] = {}
-          @values['measurements']
+          @values.fetch('measurements') { 
+            @values['measurements'] = {}
+          }
         end
         
         # Sets the measurements property.

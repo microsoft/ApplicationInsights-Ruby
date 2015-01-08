@@ -20,8 +20,9 @@ module ApplicationInsights
         
         # Gets the id property.
         def id
-          return @values['ai.operation.id'] if @values.key?('ai.operation.id')
-          @defaults['ai.operation.id']
+          @values.fetch('ai.operation.id') { 
+            @values['ai.operation.id'] = nil
+          }
         end
         
         # Sets the id property.
@@ -35,8 +36,9 @@ module ApplicationInsights
         
         # Gets the name property.
         def name
-          return @values['ai.operation.name'] if @values.key?('ai.operation.name')
-          @defaults['ai.operation.name']
+          @values.fetch('ai.operation.name') { 
+            @values['ai.operation.name'] = nil
+          }
         end
         
         # Sets the name property.
@@ -50,8 +52,9 @@ module ApplicationInsights
         
         # Gets the parent_id property.
         def parent_id
-          return @values['ai.operation.parentId'] if @values.key?('ai.operation.parentId')
-          @defaults['ai.operation.parentId']
+          @values.fetch('ai.operation.parentId') { 
+            @values['ai.operation.parentId'] = nil
+          }
         end
         
         # Sets the parent_id property.
@@ -65,8 +68,9 @@ module ApplicationInsights
         
         # Gets the root_id property.
         def root_id
-          return @values['ai.operation.rootId'] if @values.key?('ai.operation.rootId')
-          @defaults['ai.operation.rootId']
+          @values.fetch('ai.operation.rootId') { 
+            @values['ai.operation.rootId'] = nil
+          }
         end
         
         # Sets the root_id property.

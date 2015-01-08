@@ -30,8 +30,9 @@ module ApplicationInsights
         
         # Gets the id property.
         def id
-          return @values['ai.device.id'] if @values.key?('ai.device.id')
-          @defaults['ai.device.id']
+          @values.fetch('ai.device.id') { 
+            @values['ai.device.id'] = nil
+          }
         end
         
         # Sets the id property.
@@ -45,8 +46,9 @@ module ApplicationInsights
         
         # Gets the ip property.
         def ip
-          return @values['ai.device.ip'] if @values.key?('ai.device.ip')
-          @defaults['ai.device.ip']
+          @values.fetch('ai.device.ip') { 
+            @values['ai.device.ip'] = nil
+          }
         end
         
         # Sets the ip property.
@@ -60,8 +62,9 @@ module ApplicationInsights
         
         # Gets the language property.
         def language
-          return @values['ai.device.language'] if @values.key?('ai.device.language')
-          @defaults['ai.device.language']
+          @values.fetch('ai.device.language') { 
+            @values['ai.device.language'] = nil
+          }
         end
         
         # Sets the language property.
@@ -75,8 +78,9 @@ module ApplicationInsights
         
         # Gets the locale property.
         def locale
-          return @values['ai.device.locale'] if @values.key?('ai.device.locale')
-          @defaults['ai.device.locale']
+          @values.fetch('ai.device.locale') { 
+            @values['ai.device.locale'] = nil
+          }
         end
         
         # Sets the locale property.
@@ -90,8 +94,9 @@ module ApplicationInsights
         
         # Gets the model property.
         def model
-          return @values['ai.device.model'] if @values.key?('ai.device.model')
-          @defaults['ai.device.model']
+          @values.fetch('ai.device.model') { 
+            @values['ai.device.model'] = nil
+          }
         end
         
         # Sets the model property.
@@ -105,8 +110,9 @@ module ApplicationInsights
         
         # Gets the network property.
         def network
-          return @values['ai.device.network'] if @values.key?('ai.device.network')
-          @defaults['ai.device.network']
+          @values.fetch('ai.device.network') { 
+            @values['ai.device.network'] = nil
+          }
         end
         
         # Sets the network property.
@@ -120,8 +126,9 @@ module ApplicationInsights
         
         # Gets the oem_name property.
         def oem_name
-          return @values['ai.device.oemName'] if @values.key?('ai.device.oemName')
-          @defaults['ai.device.oemName']
+          @values.fetch('ai.device.oemName') { 
+            @values['ai.device.oemName'] = nil
+          }
         end
         
         # Sets the oem_name property.
@@ -135,8 +142,9 @@ module ApplicationInsights
         
         # Gets the os property.
         def os
-          return @values['ai.device.os'] if @values.key?('ai.device.os')
-          @defaults['ai.device.os']
+          @values.fetch('ai.device.os') { 
+            @values['ai.device.os'] = nil
+          }
         end
         
         # Sets the os property.
@@ -150,8 +158,9 @@ module ApplicationInsights
         
         # Gets the os_version property.
         def os_version
-          return @values['ai.device.osVersion'] if @values.key?('ai.device.osVersion')
-          @defaults['ai.device.osVersion']
+          @values.fetch('ai.device.osVersion') { 
+            @values['ai.device.osVersion'] = nil
+          }
         end
         
         # Sets the os_version property.
@@ -165,8 +174,9 @@ module ApplicationInsights
         
         # Gets the role_instance property.
         def role_instance
-          return @values['ai.device.roleInstance'] if @values.key?('ai.device.roleInstance')
-          @defaults['ai.device.roleInstance']
+          @values.fetch('ai.device.roleInstance') { 
+            @values['ai.device.roleInstance'] = nil
+          }
         end
         
         # Sets the role_instance property.
@@ -180,8 +190,9 @@ module ApplicationInsights
         
         # Gets the role_name property.
         def role_name
-          return @values['ai.device.roleName'] if @values.key?('ai.device.roleName')
-          @defaults['ai.device.roleName']
+          @values.fetch('ai.device.roleName') { 
+            @values['ai.device.roleName'] = nil
+          }
         end
         
         # Sets the role_name property.
@@ -195,8 +206,9 @@ module ApplicationInsights
         
         # Gets the screen_resolution property.
         def screen_resolution
-          return @values['ai.device.screenResolution'] if @values.key?('ai.device.screenResolution')
-          @defaults['ai.device.screenResolution']
+          @values.fetch('ai.device.screenResolution') { 
+            @values['ai.device.screenResolution'] = nil
+          }
         end
         
         # Sets the screen_resolution property.
@@ -210,8 +222,9 @@ module ApplicationInsights
         
         # Gets the type property.
         def type
-          return @values['ai.device.type'] if @values.key?('ai.device.type')
-          @defaults['ai.device.type']
+          @values.fetch('ai.device.type') { 
+            @values['ai.device.type'] = nil
+          }
         end
         
         # Sets the type property.
@@ -225,8 +238,9 @@ module ApplicationInsights
         
         # Gets the vm_name property.
         def vm_name
-          return @values['ai.device.vmName'] if @values.key?('ai.device.vmName')
-          @defaults['ai.device.vmName']
+          @values.fetch('ai.device.vmName') { 
+            @values['ai.device.vmName'] = nil
+          }
         end
         
         # Sets the vm_name property.

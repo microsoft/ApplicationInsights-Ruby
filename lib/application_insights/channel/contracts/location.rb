@@ -17,8 +17,9 @@ module ApplicationInsights
         
         # Gets the ip property.
         def ip
-          return @values['ai.location.ip'] if @values.key?('ai.location.ip')
-          @defaults['ai.location.ip']
+          @values.fetch('ai.location.ip') { 
+            @values['ai.location.ip'] = nil
+          }
         end
         
         # Sets the ip property.

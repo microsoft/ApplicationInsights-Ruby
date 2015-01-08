@@ -43,8 +43,9 @@ module ApplicationInsights
         
         # Gets the assembly property.
         def assembly
-          return @values['assembly'] if @values.key?('assembly')
-          @defaults['assembly']
+          @values.fetch('assembly') { 
+            @values['assembly'] = nil
+          }
         end
         
         # Sets the assembly property.
@@ -58,8 +59,9 @@ module ApplicationInsights
         
         # Gets the file_name property.
         def file_name
-          return @values['fileName'] if @values.key?('fileName')
-          @defaults['fileName']
+          @values.fetch('fileName') { 
+            @values['fileName'] = nil
+          }
         end
         
         # Sets the file_name property.
@@ -73,8 +75,9 @@ module ApplicationInsights
         
         # Gets the line property.
         def line
-          return @values['line'] if @values.key?('line')
-          @defaults['line']
+          @values.fetch('line') { 
+            @values['line'] = nil
+          }
         end
         
         # Sets the line property.

@@ -26,8 +26,9 @@ module ApplicationInsights
         
         # Gets the id property.
         def id
-          return @values['id'] if @values.key?('id')
-          @defaults['id']
+          @values.fetch('id') { 
+            @values['id'] = nil
+          }
         end
         
         # Sets the id property.
@@ -41,8 +42,9 @@ module ApplicationInsights
         
         # Gets the outer_id property.
         def outer_id
-          return @values['outerId'] if @values.key?('outerId')
-          @defaults['outerId']
+          @values.fetch('outerId') { 
+            @values['outerId'] = nil
+          }
         end
         
         # Sets the outer_id property.
@@ -76,8 +78,9 @@ module ApplicationInsights
         
         # Gets the has_full_stack property.
         def has_full_stack
-          return @values['hasFullStack'] if @values.key?('hasFullStack')
-          @defaults['hasFullStack']
+          @values.fetch('hasFullStack') { 
+            @values['hasFullStack'] = true
+          }
         end
         
         # Sets the has_full_stack property.
@@ -91,8 +94,9 @@ module ApplicationInsights
         
         # Gets the stack property.
         def stack
-          return @values['stack'] if @values.key?('stack')
-          @defaults['stack']
+          @values.fetch('stack') { 
+            @values['stack'] = nil
+          }
         end
         
         # Sets the stack property.
@@ -106,9 +110,9 @@ module ApplicationInsights
         
         # Gets the parsed_stack property.
         def parsed_stack
-          return @values['parsedStack'] if @values.key?('parsedStack')
-          @values['parsedStack'] = []
-          @values['parsedStack']
+          @values.fetch('parsedStack') { 
+            @values['parsedStack'] = []
+          }
         end
         
         # Sets the parsed_stack property.
