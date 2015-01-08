@@ -53,8 +53,9 @@ module ApplicationInsights
         
         # Gets the name property.
         def name
-          return @values['name'] if @values.key?('name')
-          @defaults['name']
+          @values.fetch('name') { 
+            @values['name'] = nil
+          }
         end
         
         # Sets the name property.
@@ -108,8 +109,9 @@ module ApplicationInsights
         
         # Gets the http_method property.
         def http_method
-          return @values['httpMethod'] if @values.key?('httpMethod')
-          @defaults['httpMethod']
+          @values.fetch('httpMethod') { 
+            @values['httpMethod'] = nil
+          }
         end
         
         # Sets the http_method property.
@@ -123,8 +125,9 @@ module ApplicationInsights
         
         # Gets the url property.
         def url
-          return @values['url'] if @values.key?('url')
-          @defaults['url']
+          @values.fetch('url') { 
+            @values['url'] = nil
+          }
         end
         
         # Sets the url property.
@@ -138,9 +141,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.
@@ -154,9 +157,9 @@ module ApplicationInsights
         
         # Gets the measurements property.
         def measurements
-          return @values['measurements'] if @values.key?('measurements')
-          @values['measurements'] = {}
-          @values['measurements']
+          @values.fetch('measurements') { 
+            @values['measurements'] = {}
+          }
         end
         
         # Sets the measurements property.

@@ -59,8 +59,9 @@ module ApplicationInsights
         
         # Gets the kind property.
         def kind
-          return @values['kind'] if @values.key?('kind')
-          @defaults['kind']
+          @values.fetch('kind') { 
+            @values['kind'] = DataPointType::MEASUREMENT
+          }
         end
         
         # Sets the kind property.
@@ -84,8 +85,9 @@ module ApplicationInsights
         
         # Gets the count property.
         def count
-          return @values['count'] if @values.key?('count')
-          @defaults['count']
+          @values.fetch('count') { 
+            @values['count'] = nil
+          }
         end
         
         # Sets the count property.
@@ -99,8 +101,9 @@ module ApplicationInsights
         
         # Gets the min property.
         def min
-          return @values['min'] if @values.key?('min')
-          @defaults['min']
+          @values.fetch('min') { 
+            @values['min'] = nil
+          }
         end
         
         # Sets the min property.
@@ -114,8 +117,9 @@ module ApplicationInsights
         
         # Gets the max property.
         def max
-          return @values['max'] if @values.key?('max')
-          @defaults['max']
+          @values.fetch('max') { 
+            @values['max'] = nil
+          }
         end
         
         # Sets the max property.
@@ -129,8 +133,9 @@ module ApplicationInsights
         
         # Gets the std_dev property.
         def std_dev
-          return @values['stdDev'] if @values.key?('stdDev')
-          @defaults['stdDev']
+          @values.fetch('stdDev') { 
+            @values['stdDev'] = nil
+          }
         end
         
         # Sets the std_dev property.
@@ -154,8 +159,9 @@ module ApplicationInsights
         
         # Gets the success property.
         def success
-          return @values['success'] if @values.key?('success')
-          @defaults['success']
+          @values.fetch('success') { 
+            @values['success'] = true
+          }
         end
         
         # Sets the success property.
@@ -169,8 +175,9 @@ module ApplicationInsights
         
         # Gets the async property.
         def async
-          return @values['async'] if @values.key?('async')
-          @defaults['async']
+          @values.fetch('async') { 
+            @values['async'] = nil
+          }
         end
         
         # Sets the async property.
@@ -184,8 +191,9 @@ module ApplicationInsights
         
         # Gets the dependency_source property.
         def dependency_source
-          return @values['dependencySource'] if @values.key?('dependencySource')
-          @defaults['dependencySource']
+          @values.fetch('dependencySource') { 
+            @values['dependencySource'] = DependencySourceType::UNDEFINED
+          }
         end
         
         # Sets the dependency_source property.
@@ -199,9 +207,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.

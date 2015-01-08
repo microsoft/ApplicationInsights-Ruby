@@ -19,8 +19,9 @@ module ApplicationInsights
         
         # Gets the id property.
         def id
-          return @values['ai.session.id'] if @values.key?('ai.session.id')
-          @defaults['ai.session.id']
+          @values.fetch('ai.session.id') { 
+            @values['ai.session.id'] = nil
+          }
         end
         
         # Sets the id property.
@@ -34,8 +35,9 @@ module ApplicationInsights
         
         # Gets the is_first property.
         def is_first
-          return @values['ai.session.isFirst'] if @values.key?('ai.session.isFirst')
-          @defaults['ai.session.isFirst']
+          @values.fetch('ai.session.isFirst') { 
+            @values['ai.session.isFirst'] = nil
+          }
         end
         
         # Sets the is_first property.
@@ -49,8 +51,9 @@ module ApplicationInsights
         
         # Gets the is_new property.
         def is_new
-          return @values['ai.session.isNew'] if @values.key?('ai.session.isNew')
-          @defaults['ai.session.isNew']
+          @values.fetch('ai.session.isNew') { 
+            @values['ai.session.isNew'] = nil
+          }
         end
         
         # Sets the is_new property.

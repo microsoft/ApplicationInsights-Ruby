@@ -41,9 +41,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.

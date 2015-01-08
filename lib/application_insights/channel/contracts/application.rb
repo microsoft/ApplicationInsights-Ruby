@@ -17,8 +17,9 @@ module ApplicationInsights
         
         # Gets the ver property.
         def ver
-          return @values['ai.application.ver'] if @values.key?('ai.application.ver')
-          @defaults['ai.application.ver']
+          @values.fetch('ai.application.ver') { 
+            @values['ai.application.ver'] = nil
+          }
         end
         
         # Sets the ver property.

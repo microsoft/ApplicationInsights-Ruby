@@ -42,8 +42,9 @@ module ApplicationInsights
         
         # Gets the severity_level property.
         def severity_level
-          return @values['severityLevel'] if @values.key?('severityLevel')
-          @defaults['severityLevel']
+          @values.fetch('severityLevel') { 
+            @values['severityLevel'] = nil
+          }
         end
         
         # Sets the severity_level property.
@@ -57,9 +58,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.

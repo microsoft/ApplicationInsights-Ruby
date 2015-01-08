@@ -37,8 +37,9 @@ module ApplicationInsights
         
         # Gets the kind property.
         def kind
-          return @values['kind'] if @values.key?('kind')
-          @defaults['kind']
+          @values.fetch('kind') { 
+            @values['kind'] = DataPointType::MEASUREMENT
+          }
         end
         
         # Sets the kind property.
@@ -62,8 +63,9 @@ module ApplicationInsights
         
         # Gets the count property.
         def count
-          return @values['count'] if @values.key?('count')
-          @defaults['count']
+          @values.fetch('count') { 
+            @values['count'] = nil
+          }
         end
         
         # Sets the count property.
@@ -77,8 +79,9 @@ module ApplicationInsights
         
         # Gets the min property.
         def min
-          return @values['min'] if @values.key?('min')
-          @defaults['min']
+          @values.fetch('min') { 
+            @values['min'] = nil
+          }
         end
         
         # Sets the min property.
@@ -92,8 +95,9 @@ module ApplicationInsights
         
         # Gets the max property.
         def max
-          return @values['max'] if @values.key?('max')
-          @defaults['max']
+          @values.fetch('max') { 
+            @values['max'] = nil
+          }
         end
         
         # Sets the max property.
@@ -107,8 +111,9 @@ module ApplicationInsights
         
         # Gets the std_dev property.
         def std_dev
-          return @values['stdDev'] if @values.key?('stdDev')
-          @defaults['stdDev']
+          @values.fetch('stdDev') { 
+            @values['stdDev'] = nil
+          }
         end
         
         # Sets the std_dev property.

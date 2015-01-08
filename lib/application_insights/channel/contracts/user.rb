@@ -20,8 +20,9 @@ module ApplicationInsights
         
         # Gets the account_acquisition_date property.
         def account_acquisition_date
-          return @values['ai.user.accountAcquisitionDate'] if @values.key?('ai.user.accountAcquisitionDate')
-          @defaults['ai.user.accountAcquisitionDate']
+          @values.fetch('ai.user.accountAcquisitionDate') { 
+            @values['ai.user.accountAcquisitionDate'] = nil
+          }
         end
         
         # Sets the account_acquisition_date property.
@@ -35,8 +36,9 @@ module ApplicationInsights
         
         # Gets the account_id property.
         def account_id
-          return @values['ai.user.accountId'] if @values.key?('ai.user.accountId')
-          @defaults['ai.user.accountId']
+          @values.fetch('ai.user.accountId') { 
+            @values['ai.user.accountId'] = nil
+          }
         end
         
         # Sets the account_id property.
@@ -50,8 +52,9 @@ module ApplicationInsights
         
         # Gets the user_agent property.
         def user_agent
-          return @values['ai.user.userAgent'] if @values.key?('ai.user.userAgent')
-          @defaults['ai.user.userAgent']
+          @values.fetch('ai.user.userAgent') { 
+            @values['ai.user.userAgent'] = nil
+          }
         end
         
         # Sets the user_agent property.
@@ -65,8 +68,9 @@ module ApplicationInsights
         
         # Gets the id property.
         def id
-          return @values['ai.user.id'] if @values.key?('ai.user.id')
-          @defaults['ai.user.id']
+          @values.fetch('ai.user.id') { 
+            @values['ai.user.id'] = nil
+          }
         end
         
         # Sets the id property.

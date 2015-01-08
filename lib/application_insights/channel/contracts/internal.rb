@@ -18,8 +18,9 @@ module ApplicationInsights
         
         # Gets the sdk_version property.
         def sdk_version
-          return @values['ai.internal.sdkVersion'] if @values.key?('ai.internal.sdkVersion')
-          @defaults['ai.internal.sdkVersion']
+          @values.fetch('ai.internal.sdkVersion') { 
+            @values['ai.internal.sdkVersion'] = nil
+          }
         end
         
         # Sets the sdk_version property.
@@ -33,8 +34,9 @@ module ApplicationInsights
         
         # Gets the agent_version property.
         def agent_version
-          return @values['ai.internal.agentVersion'] if @values.key?('ai.internal.agentVersion')
-          @defaults['ai.internal.agentVersion']
+          @values.fetch('ai.internal.agentVersion') { 
+            @values['ai.internal.agentVersion'] = nil
+          }
         end
         
         # Sets the agent_version property.

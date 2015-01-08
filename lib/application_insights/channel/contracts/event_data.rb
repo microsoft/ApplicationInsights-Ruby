@@ -42,9 +42,9 @@ module ApplicationInsights
         
         # Gets the properties property.
         def properties
-          return @values['properties'] if @values.key?('properties')
-          @values['properties'] = {}
-          @values['properties']
+          @values.fetch('properties') { 
+            @values['properties'] = {}
+          }
         end
         
         # Sets the properties property.
@@ -58,9 +58,9 @@ module ApplicationInsights
         
         # Gets the measurements property.
         def measurements
-          return @values['measurements'] if @values.key?('measurements')
-          @values['measurements'] = {}
-          @values['measurements']
+          @values.fetch('measurements') { 
+            @values['measurements'] = {}
+          }
         end
         
         # Sets the measurements property.

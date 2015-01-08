@@ -35,8 +35,9 @@ module ApplicationInsights
         
         # Gets the ver property.
         def ver
-          return @values['ver'] if @values.key?('ver')
-          @defaults['ver']
+          @values.fetch('ver') { 
+            @values['ver'] = 1
+          }
         end
         
         # Sets the ver property.
@@ -70,8 +71,9 @@ module ApplicationInsights
         
         # Gets the sample_rate property.
         def sample_rate
-          return @values['sampleRate'] if @values.key?('sampleRate')
-          @defaults['sampleRate']
+          @values.fetch('sampleRate') { 
+            @values['sampleRate'] = 100.0
+          }
         end
         
         # Sets the sample_rate property.
@@ -85,8 +87,9 @@ module ApplicationInsights
         
         # Gets the seq property.
         def seq
-          return @values['seq'] if @values.key?('seq')
-          @defaults['seq']
+          @values.fetch('seq') { 
+            @values['seq'] = nil
+          }
         end
         
         # Sets the seq property.
@@ -100,8 +103,9 @@ module ApplicationInsights
         
         # Gets the i_key property.
         def i_key
-          return @values['iKey'] if @values.key?('iKey')
-          @defaults['iKey']
+          @values.fetch('iKey') { 
+            @values['iKey'] = nil
+          }
         end
         
         # Sets the i_key property.
@@ -115,8 +119,9 @@ module ApplicationInsights
         
         # Gets the flags property.
         def flags
-          return @values['flags'] if @values.key?('flags')
-          @defaults['flags']
+          @values.fetch('flags') { 
+            @values['flags'] = nil
+          }
         end
         
         # Sets the flags property.
@@ -130,8 +135,9 @@ module ApplicationInsights
         
         # Gets the device_id property.
         def device_id
-          return @values['deviceId'] if @values.key?('deviceId')
-          @defaults['deviceId']
+          @values.fetch('deviceId') { 
+            @values['deviceId'] = nil
+          }
         end
         
         # Sets the device_id property.
@@ -145,8 +151,9 @@ module ApplicationInsights
         
         # Gets the os property.
         def os
-          return @values['os'] if @values.key?('os')
-          @defaults['os']
+          @values.fetch('os') { 
+            @values['os'] = nil
+          }
         end
         
         # Sets the os property.
@@ -160,8 +167,9 @@ module ApplicationInsights
         
         # Gets the os_ver property.
         def os_ver
-          return @values['osVer'] if @values.key?('osVer')
-          @defaults['osVer']
+          @values.fetch('osVer') { 
+            @values['osVer'] = nil
+          }
         end
         
         # Sets the os_ver property.
@@ -175,8 +183,9 @@ module ApplicationInsights
         
         # Gets the app_id property.
         def app_id
-          return @values['appId'] if @values.key?('appId')
-          @defaults['appId']
+          @values.fetch('appId') { 
+            @values['appId'] = nil
+          }
         end
         
         # Sets the app_id property.
@@ -190,8 +199,9 @@ module ApplicationInsights
         
         # Gets the app_ver property.
         def app_ver
-          return @values['appVer'] if @values.key?('appVer')
-          @defaults['appVer']
+          @values.fetch('appVer') { 
+            @values['appVer'] = nil
+          }
         end
         
         # Sets the app_ver property.
@@ -205,8 +215,9 @@ module ApplicationInsights
         
         # Gets the user_id property.
         def user_id
-          return @values['userId'] if @values.key?('userId')
-          @defaults['userId']
+          @values.fetch('userId') { 
+            @values['userId'] = nil
+          }
         end
         
         # Sets the user_id property.
@@ -220,9 +231,9 @@ module ApplicationInsights
         
         # Gets the tags property.
         def tags
-          return @values['tags'] if @values.key?('tags')
-          @values['tags'] = {}
-          @values['tags']
+          @values.fetch('tags') { 
+            @values['tags'] = {}
+          }
         end
         
         # Sets the tags property.
@@ -236,8 +247,9 @@ module ApplicationInsights
         
         # Gets the data property.
         def data
-          return @values['data'] if @values.key?('data')
-          @defaults['data']
+          @values.fetch('data') { 
+            @values['data'] = nil
+          }
         end
         
         # Sets the data property.

@@ -19,8 +19,9 @@ module ApplicationInsights
         
         # Gets the base_type property.
         def base_type
-          return @values['baseType'] if @values.key?('baseType')
-          @defaults['baseType']
+          @values.fetch('baseType') { 
+            @values['baseType'] = nil
+          }
         end
         
         # Sets the base_type property.
