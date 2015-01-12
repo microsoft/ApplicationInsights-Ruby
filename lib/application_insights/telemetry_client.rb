@@ -68,7 +68,7 @@ module ApplicationInsights
           :type_name => exception.class,
           :message => exception.message,
           :has_full_stack => true,
-          :stack => exception.backtrace.join("\n")
+          :stack => (exception.backtrace.join("\n") if exception.backtrace)
         }
         details = Channel::Contracts::ExceptionDetails.new details_attributes
 
