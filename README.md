@@ -133,3 +133,11 @@ tc.channel.sender.send_time = 5
 # the background worker thread will poll the queue every 0.5 seconds for new items
 tc.channel.sender.send_interval = 0.5
 ```
+
+###Collecting unhandled exceptions###
+```ruby
+require 'application_insights'
+# setup unhandled exception handler
+ApplicationInsights::UnhandledException.collect('<YOUR INSTRUMENTATION KEY GOES HERE>')
+# raise an exception and this would be send to Application Insights Service
+raise Exception, 'Boom!'

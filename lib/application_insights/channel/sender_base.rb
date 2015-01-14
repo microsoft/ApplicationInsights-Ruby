@@ -1,5 +1,7 @@
 require 'json'
 require 'net/http'
+require 'stringio'
+require 'zlib'
 
 module ApplicationInsights
   module Channel
@@ -35,8 +37,14 @@ module ApplicationInsights
       # @param [Array<Contracts::Envelope>] data_to_send an array of {Contracts::Envelope} objects to send to the service.
       def send(data_to_send)
         uri = URI(@service_endpoint_uri)
-        request = Net::HTTP::Post.new(uri.path, { 'Accept' => 'application/json', 'Content-Type' => 'application/json; charset=utf-8' })
-        request.body = data_to_send.to_json
+        headers = {
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Content-Encoding' => 'gzip'
+        }
+        request = Net::HTTP::Post.new(uri.path, headers)
+        compressed_data = compress(data_to_send.to_json)
+        request.body = compressed_data
 
         http = Net::HTTP.new uri.hostname, uri.port
         if uri.scheme.downcase == 'https'
@@ -54,6 +62,17 @@ module ApplicationInsights
             end
         end
       end
+
+      private
+
+      def compress(string)
+        wio = StringIO.new("w")
+        w_gz = Zlib::GzipWriter.new wio, nil, nil
+        w_gz.write(string)
+        w_gz.close
+        wio.string
+      end
+
     end
   end
 end
