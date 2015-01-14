@@ -17,7 +17,8 @@ module ApplicationInsights
     #   raise Exception, 'Boom!'
     def self.collect(instrumentation_key)
       at_exit do
-        send(instrumentation_key)
+        # Avoid sending exception more than once if this method got invoked multiple times
+        send(instrumentation_key) if !@sender
       end
     end
 
