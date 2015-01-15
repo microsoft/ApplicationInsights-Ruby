@@ -63,6 +63,16 @@ class TestQueueBase < Test::Unit::TestCase
       assert_equal i, item.pop
     end
   end
+
+  def test_empty_works_as_expected
+    sender = SenderBase.new 'http://tempuri.org'
+    queue = QueueBase.new sender
+    assert_equal true, queue.empty?
+    queue.push 1
+    assert_equal false, queue.empty?
+    queue.pop
+    assert_equal true, queue.empty?
+  end
 end
 
 class MockQueueBase < QueueBase

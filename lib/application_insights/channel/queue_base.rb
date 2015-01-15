@@ -51,6 +51,12 @@ module ApplicationInsights
       # implementations of the queue class.
       def flush
       end
+
+      # Indicates whether the queue is empty.
+      # @return [true, false] true if the queue is empty
+      def empty?
+        @queue.empty?
+      end
     end
   end
 end

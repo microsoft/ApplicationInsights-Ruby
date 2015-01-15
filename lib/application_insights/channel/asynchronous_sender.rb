@@ -21,6 +21,7 @@ module ApplicationInsights
         @send_remaining_time = 0
         @send_time = 3.0
         @lock_send_remaining_time = Mutex.new
+        @work_thread = nil
         super service_endpoint_uri
       end
 
@@ -32,18 +33,23 @@ module ApplicationInsights
       # @return [Fixnum] the interval in seconds.
       attr_accessor :send_time
 
+      # The worker thread which checks queue items and send data every (#send_interval) seconds or upon flush.
+      # @return [Thread] the work thread
+      attr_reader :work_thread
+
       # Calling this method will create a worker thread that checks the {#queue} every {#send_interval} seconds for
       # a total duration of {#send_time} seconds for new items. If a worker thread has already been created, calling
       # this method does nothing.
       def start
         @lock_send_remaining_time.synchronize do
-          if @send_remaining_time <= 0
+          # only maintain one working thread at one time
+          if !@work_thread
             local_send_interval = (@send_interval < 0.1) ? 0.1 : @send_interval
             @send_remaining_time = (@send_time < local_send_interval) ? local_send_interval : @send_time
-            thread = Thread.new do
+            @work_thread = Thread.new do
               run
             end
-            thread.abort_on_exception = false
+            @work_thread.abort_on_exception = false
           end
         end
       end
@@ -99,15 +105,14 @@ module ApplicationInsights
             next
           end
 
-          local_remaining_time = 0
           # decrement the remaining time
           @lock_send_remaining_time.synchronize do
             @send_remaining_time -= local_send_interval
-            local_remaining_time = @send_remaining_time
-          end
-
-          if local_remaining_time <= 0
-            break
+            # Check queue as well to avoid missing any 'start' notification occurred during waiting
+            if @send_remaining_time <= 0 && local_queue.empty?
+              @work_thread = nil
+              break
+            end
           end
         end
       end

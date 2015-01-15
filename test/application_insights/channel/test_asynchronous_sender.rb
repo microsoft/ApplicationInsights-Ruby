@@ -27,6 +27,19 @@ class TestAsynchronousSender < Test::Unit::TestCase
     assert_equal 10.0, sender.send_time
   end
 
+  def test_work_thread_works_as_expected
+    sender = InterceptableAsynchronousSender.new
+    assert_nil sender.work_thread
+    sender.send_interval = 1.0
+    sender.send_time = 3.0
+    queue = AsynchronousQueue.new sender
+    sender.invoke_base_start = true
+    queue.push 1
+    assert_not_nil sender.work_thread
+    sleep 3.0
+    assert_nil sender.work_thread
+  end
+
   def test_start
     sender = InterceptableAsynchronousSender.new
     sender.send_interval = 1.0
