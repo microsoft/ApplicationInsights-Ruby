@@ -8,6 +8,7 @@ require_relative 'channel/contracts/data_point'
 require_relative 'channel/contracts/data_point_type'
 require_relative 'channel/contracts/metric_data'
 require_relative 'channel/contracts/message_data'
+require_relative 'channel/contracts/stack_frame'
 
 module ApplicationInsights
   # The telemetry client used for sending all types of telemetry. It serves as the main entry point for
@@ -62,13 +63,31 @@ module ApplicationInsights
     #   this data item (defaults to: {})
     def track_exception(exception, options={})
       if exception.is_a? Exception
+        parsed_stack = []
+        if exception.backtrace
+          frame_pattern = /^(?<file>.*):(?<line>\d+)(\.|:in `((?<method>.*)'$))/
+          counter = 0;
+          exception.backtrace.each do |frame|
+            match = frame_pattern.match frame
+            stack_frame = Channel::Contracts::StackFrame.new
+            stack_frame.assembly = 'Unknown'
+            stack_frame.file_name = match['file']
+            stack_frame.level = counter
+            stack_frame.line = match['line']
+            stack_frame.method = match['method']
+            parsed_stack << stack_frame
+            counter += 1
+          end
+        end
+
         details_attributes = {
           :id => 1,
           :outer_id => 0,
           :type_name => exception.class,
           :message => exception.message,
-          :has_full_stack => true,
-          :stack => (exception.backtrace.join("\n") if exception.backtrace)
+          :has_full_stack => exception.backtrace != nil,
+          :stack => (exception.backtrace.join("\n") if exception.backtrace),
+          :parsed_stack => parsed_stack
         }
         details = Channel::Contracts::ExceptionDetails.new details_attributes
 
