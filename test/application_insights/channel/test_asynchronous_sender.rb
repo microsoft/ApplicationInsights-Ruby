@@ -31,36 +31,19 @@ class TestAsynchronousSender < Test::Unit::TestCase
     sender = InterceptableAsynchronousSender.new
     sender.send_interval = 1.0
     sender.send_time = 3.0
-    queue = InterceptableAsynchronousQueue.new sender
+    queue = AsynchronousQueue.new sender
     sender.invoke_base_start = false
     queue.push 1
     queue.push 2
     sender.invoke_base_start = true
     sender.start
-    sleep (2.0 * sender.send_time / 3.0)
+    sleep 2.0
     queue.push 3
-    sleep (1.0 * sender.send_time / 3.0) + 2.0
+    sleep 5.0
     data = sender.data_to_send
     assert_equal [[1, 2], [3]], data
-    pop_calls = queue.pop_calls
-    assert_equal 10, pop_calls.length
   end
 
-end
-
-class InterceptableAsynchronousQueue < AsynchronousQueue
-  def initialize(sender)
-    @pop_calls = []
-    super sender
-  end
-
-  attr_accessor :pop_calls
-
-  def pop
-    output = super
-    @pop_calls.push [ Time.new, output ]
-    return output
-  end
 end
 
 class InterceptableAsynchronousSender < AsynchronousSender
