@@ -39,7 +39,7 @@ module ApplicationInsights
         channel = Channel::TelemetryChannel.new nil, queue
         client = TelemetryClient.new channel
         client.context.instrumentation_key = instrumentation_key
-        client.track_exception($!)
+        client.track_exception($!, {:handled_at => 'Unhandled'})
         client.flush
       end
     end

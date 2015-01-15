@@ -18,6 +18,7 @@ class TestUnhandledException < Test::Unit::TestCase
     assert_equal 1, sender.buffer.count
     payload = sender.buffer[0]
     assert_equal instrumentation_key, payload[0].i_key
+    assert_equal 'Unhandled', payload[0].data.base_data.handled_at
   end
 end
 

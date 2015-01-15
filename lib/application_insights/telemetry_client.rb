@@ -73,7 +73,7 @@ module ApplicationInsights
         details = Channel::Contracts::ExceptionDetails.new details_attributes
 
         data_attributes = {
-          :handled_at => 'UserCode',
+          :handled_at => options.fetch(:handled_at,'UserCode'),
           :exceptions => [ details ],
           :properties => options.fetch(:properties) { {} },
           :measurements => options.fetch(:measurements) { {} }
