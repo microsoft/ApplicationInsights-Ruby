@@ -48,8 +48,13 @@ class TestTelemetryClient < Test::Unit::TestCase
     end
     client.flush
     expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Exception","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"ExceptionData","baseData":{"ver":2,"handledAt":"UserCode","exceptions":[{"id":1,"outerId":0,"typeName":"ArgumentError","message":"Some error","hasFullStack":true,"stack":"STACK_PLACEHOLDER"}]}}}]'
+    assert_equal 'UserCode', sender.data_to_send[0].data.base_data.handled_at
+    assert_operator sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack.count, :>, 0
+    assert_equal 'test_track_exception_works_as_expected', sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack[0].method
+    assert_equal __FILE__, sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack[0].file_name
     sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
     sender.data_to_send[0].data.base_data.exceptions[0].stack = 'STACK_PLACEHOLDER'
+    sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack = []
     actual = sender.data_to_send.to_json
     assert_equal expected, actual
   end
