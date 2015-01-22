@@ -9,6 +9,7 @@ require_relative 'channel/contracts/data_point_type'
 require_relative 'channel/contracts/metric_data'
 require_relative 'channel/contracts/message_data'
 require_relative 'channel/contracts/stack_frame'
+require_relative 'channel/contracts/request_data'
 
 module ApplicationInsights
   # The telemetry client used for sending all types of telemetry. It serves as the main entry point for
@@ -164,10 +165,41 @@ module ApplicationInsights
     #   data item. (defaults to: {})
     def track_trace(name, options={})
       data_attributes = {
-        :message => name || 'Null',
-        :properties => options.fetch(:properties) { {} }
+          :message => name || 'Null',
+          :properties => options.fetch(:properties) { {} }
       }
       data = Channel::Contracts::MessageData.new data_attributes
+      self.channel.write(data, self.context)
+    end
+
+    # Sends a single request.
+    # @param [String] id the unique identifier of the request.
+    # @param (String) start_time the start time of the request.
+    # @param [String] duration the duration to process the request.
+    # @param [String] response_code the response code of the request.
+    # @param [Boolean] success indicates whether the request succeeds or not.
+    # @param [Hash] options the options to create the {Channel::Contracts::RequestData} object.
+    # @option options [String] :name the name of the request.
+    # @option options [String] :http_method the http method used for the request.
+    # @option options [String] :url the url of the request.
+    # @option options [Hash] :properties the set of custom properties the client wants attached to this
+    #   data item. (defaults to: {})
+    # @option options [Hash] :measurements the set of custom measurements the client wants to attach to
+    #   this data item (defaults to: {})
+    def track_request(id, start_time, duration, response_code, success, options={})
+      data_attributes = {
+          :id => id || 'Null',
+          :start_time => start_time || Time.now.iso8601(7),
+          :duration => duration || '0:00:00:00.0000000',
+          :response_code => response_code || 200,
+          :success => success = nil ? true : success,
+          :name => options[:name],
+          :http_method => options[:http_method],
+          :url => options[:url],
+          :properties => options.fetch(:properties) { {} },
+          :measurements => options.fetch(:measurements) { {} }
+      }
+      data = Channel::Contracts::RequestData.new data_attributes
       self.channel.write(data, self.context)
     end
 

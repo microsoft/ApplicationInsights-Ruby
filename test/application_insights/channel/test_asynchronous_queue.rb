@@ -1,5 +1,6 @@
 require_relative '../../../lib/application_insights/channel/sender_base'
 require_relative '../../../lib/application_insights/channel/asynchronous_queue'
+require_relative '../mock_sender'
 require 'test/unit'
 
 include ApplicationInsights::Channel
@@ -42,27 +43,5 @@ class TestAsynchronousQueue < Test::Unit::TestCase
     assert_equal 1, sender.start_call_count
     result = queue.flush_notification.wait
     assert_equal true, result
-  end
-end
-
-class MockAsynchronousSender
-  def initialize
-    @send_buffer_size = 2
-    @data = []
-    @queue = nil
-    @start_call_count = 0
-  end
-
-  attr_accessor :start_call_count
-  attr_accessor :send_buffer_size
-  attr_accessor :data
-  attr_accessor :queue
-
-  def start
-    @start_call_count += 1
-  end
-
-  def send(data_to_send)
-    @data.push data_to_send
   end
 end

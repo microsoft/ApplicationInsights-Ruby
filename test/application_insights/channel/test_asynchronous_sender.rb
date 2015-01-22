@@ -36,7 +36,7 @@ class TestAsynchronousSender < Test::Unit::TestCase
     sender.invoke_base_start = true
     queue.push 1
     assert_not_nil sender.work_thread
-    sleep 3.0
+    sleep 5.0
     assert_nil sender.work_thread
   end
 
