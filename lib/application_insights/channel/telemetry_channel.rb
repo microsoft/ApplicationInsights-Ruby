@@ -1,3 +1,4 @@
+require 'time'
 require_relative 'asynchronous_queue'
 require_relative 'asynchronous_sender'
 require_relative 'telemetry_context'
@@ -62,7 +63,7 @@ module ApplicationInsights
         }
         envelope_attributes = {
           :name => 'Microsoft.ApplicationInsights.' + data_type[0..-5],
-          :time => Time.now.getutc.strftime('%FT%T.%6NZ'),
+          :time => Time.now.iso8601(7),
           :i_key => local_context.instrumentation_key,
           :tags => get_tags(local_context),
           :data => Contracts::Data.new(data_attributes)

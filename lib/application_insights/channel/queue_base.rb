@@ -53,7 +53,7 @@ module ApplicationInsights
       end
 
       # Indicates whether the queue is empty.
-      # @return [true, false] true if the queue is empty
+      # @return [Boolean] true if the queue is empty
       def empty?
         @queue.empty?
       end

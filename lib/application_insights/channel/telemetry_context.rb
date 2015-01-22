@@ -62,7 +62,7 @@ module ApplicationInsights
 
       # The property context. This contains free-form properties that you can add to your telemetry.
       # @return [Hash<String, String>] the context object.
-      attr_reader :properties
+      attr_accessor :properties
     end
   end
 end

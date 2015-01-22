@@ -9,16 +9,20 @@ require_relative 'channel/contracts/data_point_type'
 require_relative 'channel/contracts/metric_data'
 require_relative 'channel/contracts/message_data'
 require_relative 'channel/contracts/stack_frame'
+require_relative 'channel/contracts/request_data'
+require_relative 'channel/contracts/severity_level'
 
 module ApplicationInsights
   # The telemetry client used for sending all types of telemetry. It serves as the main entry point for
   # interacting with the Application Insights service.
   class TelemetryClient
     # Initializes a new instance of the class.
+    # @param [String] instrumentation_key to identify which Application Insights application this data is for.
     # @param [Channel::TelemetryChannel] telemetry_channel the optional telemetry channel to be used instead of
     #   constructing a default one.
-    def initialize(telemetry_channel = nil)
+    def initialize(instrumentation_key = nil, telemetry_channel = nil)
       @context = Channel::TelemetryContext.new
+      @context.instrumentation_key = instrumentation_key
       @channel = telemetry_channel || Channel::TelemetryChannel.new
     end
 
@@ -83,7 +87,7 @@ module ApplicationInsights
         details_attributes = {
           :id => 1,
           :outer_id => 0,
-          :type_name => exception.class,
+          :type_name => exception.class.name,
           :message => exception.message,
           :has_full_stack => exception.backtrace != nil,
           :stack => (exception.backtrace.join("\n") if exception.backtrace),
@@ -159,15 +163,48 @@ module ApplicationInsights
 
     # Sends a single trace statement.
     # @param [String] name the trace statement.
+    # @param [Channel::Contracts::SeverityLevel] severity_level the severity level.
     # @param [Hash] options the options to create the {Channel::Contracts::EventData} object.
     # @option options [Hash] :properties the set of custom properties the client wants attached to this
     #   data item. (defaults to: {})
-    def track_trace(name, options={})
+    def track_trace(name, severity_level = Channel::Contracts::SeverityLevel::INFORMATION, options={})
       data_attributes = {
-        :message => name || 'Null',
-        :properties => options.fetch(:properties) { {} }
+          :message => name || 'Null',
+          :severity_level => severity_level || Channel::Contracts::SeverityLevel::INFORMATION,
+          :properties => options.fetch(:properties) { {} }
       }
       data = Channel::Contracts::MessageData.new data_attributes
+      self.channel.write(data, self.context)
+    end
+
+    # Sends a single request.
+    # @param [String] id the unique identifier of the request.
+    # @param (String) start_time the start time of the request.
+    # @param [String] duration the duration to process the request.
+    # @param [String] response_code the response code of the request.
+    # @param [Boolean] success indicates whether the request succeeds or not.
+    # @param [Hash] options the options to create the {Channel::Contracts::RequestData} object.
+    # @option options [String] :name the name of the request.
+    # @option options [String] :http_method the http method used for the request.
+    # @option options [String] :url the url of the request.
+    # @option options [Hash] :properties the set of custom properties the client wants attached to this
+    #   data item. (defaults to: {})
+    # @option options [Hash] :measurements the set of custom measurements the client wants to attach to
+    #   this data item (defaults to: {})
+    def track_request(id, start_time, duration, response_code, success, options={})
+      data_attributes = {
+          :id => id || 'Null',
+          :start_time => start_time || Time.now.iso8601(7),
+          :duration => duration || '0:00:00:00.0000000',
+          :response_code => response_code || 200,
+          :success => success = nil ? true : success,
+          :name => options[:name],
+          :http_method => options[:http_method],
+          :url => options[:url],
+          :properties => options.fetch(:properties) { {} },
+          :measurements => options.fetch(:measurements) { {} }
+      }
+      data = Channel::Contracts::RequestData.new data_attributes
       self.channel.write(data, self.context)
     end
 

@@ -43,7 +43,9 @@ module ApplicationInsights
             'Content-Encoding' => 'gzip'
         }
         request = Net::HTTP::Post.new(uri.path, headers)
-        compressed_data = compress(data_to_send.to_json)
+        # Use JSON.generate instead of to_json, otherwise it will default to ActiveSupport::JSON.encode for Rails app
+        json = JSON.generate(data_to_send)
+        compressed_data = compress(json)
         request.body = compressed_data
 
         http = Net::HTTP.new uri.hostname, uri.port

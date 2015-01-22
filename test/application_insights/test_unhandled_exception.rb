@@ -1,4 +1,5 @@
 require 'test/unit'
+require_relative 'mock_sender'
 require_relative '../../lib/application_insights/unhandled_exception'
 
 include ApplicationInsights
@@ -6,7 +7,7 @@ include ApplicationInsights
 class TestUnhandledException < Test::Unit::TestCase
 
   def test_send
-    sender = MockSender.new
+    sender = MockSynchronousSender.new
     error = 'Boom!'
     instrumentation_key = 'one'
     begin
@@ -19,24 +20,5 @@ class TestUnhandledException < Test::Unit::TestCase
     payload = sender.buffer[0]
     assert_equal instrumentation_key, payload[0].i_key
     assert_equal 'Unhandled', payload[0].data.base_data.handled_at
-  end
-end
-
-class MockSender
-  def initialize
-    @buffer = []
-    @queue = nil
-    @send_buffer_size = 100
-  end
-
-  attr_accessor :buffer
-  attr_accessor :queue
-  attr_accessor :send_buffer_size
-
-  def send(data)
-    @buffer << data
-  end
-
-  def flush
   end
 end

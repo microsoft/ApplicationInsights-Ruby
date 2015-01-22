@@ -14,9 +14,10 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_not_nil client.channel
 
     channel = Object.new
-    client = TelemetryClient.new channel
+    client = TelemetryClient.new 'a', channel
     assert_not_nil client.context
     assert_same channel, client.channel
+    assert_equal 'a', client.context.instrumentation_key
   end
 
   def test_context_property_works_as_expected
@@ -81,9 +82,19 @@ class TestTelemetryClient < Test::Unit::TestCase
 
   def test_track_trace_view_works_as_expected
     client, sender = self.create_client
-    client.track_trace 'test'
+    client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test"}}}]'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test","severityLevel":2}}}]'
+    sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
+    actual = sender.data_to_send.to_json
+    assert_equal expected, actual
+  end
+
+  def test_track_request_view_works_as_expected
+    client, sender = self.create_client
+    client.track_request 'test', '2015-01-24T23:10:22.7411910-08:00', '0:00:00:02.0000000','200', true
+    client.flush
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"2015-01-24T23:10:22.7411910-08:00","duration":"0:00:00:02.0000000","responseCode":"200","success":true}}}]'
     sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
     actual = sender.data_to_send.to_json
     assert_equal expected, actual
@@ -93,7 +104,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     sender = MockTelemetryClientSender.new
     queue = Channel::SynchronousQueue.new sender
     channel = Channel::TelemetryChannel.new nil, queue
-    client = TelemetryClient.new channel
+    client = TelemetryClient.new nil, channel
     return client, sender
   end
 end
