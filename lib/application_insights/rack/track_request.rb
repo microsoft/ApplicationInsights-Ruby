@@ -20,8 +20,7 @@ module ApplicationInsights
         sender = @sender || ApplicationInsights::Channel::AsynchronousSender.new
         queue = ApplicationInsights::Channel::AsynchronousQueue.new sender
         channel = ApplicationInsights::Channel::TelemetryChannel.new nil, queue
-        @client = TelemetryClient.new channel
-        @client.context.instrumentation_key = @instrumentation_key
+        @client = TelemetryClient.new  @instrumentation_key, channel
       end
 
       request = Rack::Request.new env

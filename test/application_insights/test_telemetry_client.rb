@@ -14,9 +14,10 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_not_nil client.channel
 
     channel = Object.new
-    client = TelemetryClient.new channel
+    client = TelemetryClient.new 'a', channel
     assert_not_nil client.context
     assert_same channel, client.channel
+    assert_equal 'a', client.context.instrumentation_key
   end
 
   def test_context_property_works_as_expected
@@ -103,7 +104,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     sender = MockTelemetryClientSender.new
     queue = Channel::SynchronousQueue.new sender
     channel = Channel::TelemetryChannel.new nil, queue
-    client = TelemetryClient.new channel
+    client = TelemetryClient.new nil, channel
     return client, sender
   end
 end

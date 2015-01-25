@@ -16,10 +16,12 @@ module ApplicationInsights
   # interacting with the Application Insights service.
   class TelemetryClient
     # Initializes a new instance of the class.
+    # @param [String] instrumentation_key to identify which Application Insights application this data is for.
     # @param [Channel::TelemetryChannel] telemetry_channel the optional telemetry channel to be used instead of
     #   constructing a default one.
-    def initialize(telemetry_channel = nil)
+    def initialize(instrumentation_key = nil, telemetry_channel = nil)
       @context = Channel::TelemetryContext.new
+      @context.instrumentation_key = instrumentation_key
       @channel = telemetry_channel || Channel::TelemetryChannel.new
     end
 
