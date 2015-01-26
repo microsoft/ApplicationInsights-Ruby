@@ -9,8 +9,8 @@ module ApplicationInsights
     # Initializes a new instance of the class.
     # @param [Object] app the inner rack application.
     # @param [String] instrumentation_key to identify which Application Insights application this data is for.
-    # @param [Fixnum] buffer_size the buffer size (defaults to 500), the buffered requests would send to Application
-    #   Insights when buffer is full.
+    # @param [Fixnum] buffer_size the buffer size and the buffered requests would send to Application Insights
+    #   when buffer is full.
     # @param [Fixnum] send_interval the frequency (in seconds) to check buffer and send buffered requests to Application
     #   Insights if any.
     def initialize(app, instrumentation_key, buffer_size=500, send_interval=60)
@@ -21,7 +21,7 @@ module ApplicationInsights
     end
 
     # Track requests and send data to Application Insights asynchronously.
-    # @param [Hash] the rack environment.
+    # @param [Hash] env the rack environment.
     def call(env)
       start = Time.now
       @status, @headers, @response = @app.call(env)
