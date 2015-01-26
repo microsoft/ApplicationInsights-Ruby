@@ -4,22 +4,35 @@ require_relative '../channel/contracts/request_data'
 require_relative '../telemetry_client'
 
 module ApplicationInsights
+  # Track every request and sends the request data to Application Insights.
   class TrackRequest
-    def initialize(app, instrumentation_key, sender = nil)
+    # Initializes a new instance of the class.
+    # @param [Object] app the inner rack application.
+    # @param [String] instrumentation_key to identify which Application Insights application this data is for.
+    # @param [Fixnum] buffer_size the buffer size (defaults to 500), the buffered requests would send to Application
+    #   Insights when buffer is full.
+    # @param [Fixnum] send_interval the frequency (in seconds) to check buffer and send buffered requests to Application
+    #   Insights if any.
+    def initialize(app, instrumentation_key, buffer_size=500, send_interval=60)
       @app = app
       @instrumentation_key = instrumentation_key
-      @sender = sender
+      @buffer_size = buffer_size
+      @send_interval = send_interval
     end
 
+    # Track requests and send data to Application Insights asynchronously.
+    # @param [Hash] the rack environment.
     def call(env)
       start = Time.now
       @status, @headers, @response = @app.call(env)
       stop = Time.now
 
       if !@client
-        sender = @sender || ApplicationInsights::Channel::AsynchronousSender.new
-        queue = ApplicationInsights::Channel::AsynchronousQueue.new sender
-        channel = ApplicationInsights::Channel::TelemetryChannel.new nil, queue
+        sender = @sender || Channel::AsynchronousSender.new
+        sender.send_interval = @send_interval
+        queue = Channel::AsynchronousQueue.new sender
+        queue.max_queue_length = @buffer_size
+        channel = Channel::TelemetryChannel.new nil, queue
         @client = TelemetryClient.new  @instrumentation_key, channel
       end
 
@@ -39,6 +52,10 @@ module ApplicationInsights
     end
 
     private
+
+    def sender=(sender)
+      @sender = sender if sender.is_a? Channel::AsynchronousSender
+    end
 
     def seconds_to_time_span(duration_seconds)
       total_seconds = duration_seconds.to_i

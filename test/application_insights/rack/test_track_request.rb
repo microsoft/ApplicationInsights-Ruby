@@ -28,9 +28,11 @@ class TestTrackRequest < Test::Unit::TestCase
     env = Rack::MockRequest.env_for(url, :method => http_method)
     instrumentation_key = 'key'
     sender = MockAsynchronousSender.new
-    track_request = TrackRequest.new app, instrumentation_key, sender
+    track_request = TrackRequest.new app, instrumentation_key, 500, 1
+    track_request.send(:sender=, sender)
     start_time = Time.now
-    track_request.call(env)
+    result = track_request.call(env)
+    assert_equal app.call(env), result
     sleep(sender.send_interval)
 
     assert_equal 1, sender.buffer.count
@@ -55,7 +57,8 @@ class TestTrackRequest < Test::Unit::TestCase
     env = Rack::MockRequest.env_for(url, :method => http_method)
     instrumentation_key = 'key'
     sender = MockAsynchronousSender.new
-    track_request = TrackRequest.new app, instrumentation_key, sender
+    track_request = TrackRequest.new app, instrumentation_key, 500, 1
+    track_request.send(:sender=, sender)
     track_request.call(env)
     sleep(sender.send_interval)
 
