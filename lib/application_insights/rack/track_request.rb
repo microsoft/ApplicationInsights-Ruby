@@ -56,6 +56,7 @@ module ApplicationInsights
       if exception == nil
         [status, headers, response]
       elsif
+        @client.track_exception exception, handled_at: 'Unhandled'
         raise exception
       end
     end

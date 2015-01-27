@@ -38,7 +38,7 @@ module ApplicationInsights
         queue = Channel::SynchronousQueue.new @sender
         channel = Channel::TelemetryChannel.new nil, queue
         client = TelemetryClient.new instrumentation_key, channel
-        client.track_exception($!, {:handled_at => 'Unhandled'})
+        client.track_exception($!, handled_at: 'Unhandled')
         client.flush
       end
     end

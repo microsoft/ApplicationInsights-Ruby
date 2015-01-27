@@ -69,9 +69,14 @@ class TestTrackRequest < Test::Unit::TestCase
     
     sleep(sender.send_interval)
     payload = sender.buffer[0]
+    assert_equal 2, payload.count
     request_data = payload[0].data.base_data
     assert_equal false, request_data.success
     assert_equal 500, request_data.response_code
+
+    exception_data = payload[1].data.base_data
+    assert_equal instrumentation_key, payload[1].i_key
+    assert_equal 'Unhandled', exception_data.handled_at
   end
 
   def test_internal_client
