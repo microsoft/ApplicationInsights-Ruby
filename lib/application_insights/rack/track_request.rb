@@ -24,7 +24,12 @@ module ApplicationInsights
     # @param [Hash] env the rack environment.
     def call(env)
       start = Time.now
-      @status, @headers, @response = @app.call(env)
+      begin
+        status, headers, response = @app.call(env)
+      rescue Exception => ex
+        status = 500
+        exception = ex
+      end
       stop = Time.now
 
       if !@client
@@ -39,16 +44,20 @@ module ApplicationInsights
       request = Rack::Request.new env
       id = rand(16**32).to_s(16)
       start_time = start.iso8601(7)
-      duration = seconds_to_time_span(stop - start)
-      success = @status.to_i < 400
+      duration = format_request_duration(stop - start)
+      success = status.to_i < 400
       options = {
           :name => "#{request.request_method} #{request.path}",
           :http_method => request.request_method,
           :url => request.url
       }
-      @client.track_request id, start_time, duration, @status, success, options
+      @client.track_request id, start_time, duration, status, success, options
 
-      [@status, @headers, @response]
+      if exception == nil
+        [status, headers, response]
+      elsif
+        raise exception
+      end
     end
 
     private
@@ -57,14 +66,17 @@ module ApplicationInsights
       @sender = sender if sender.is_a? Channel::AsynchronousSender
     end
 
-    def seconds_to_time_span(duration_seconds)
-      total_seconds = duration_seconds.to_i
-      seconds = total_seconds % 60
-      minutes = (total_seconds / 60) % 60
-      hours = (total_seconds / 3600) % 24
-      days = total_seconds / (3600 * 24)
-      ten_millionths_of_second = ((duration_seconds - duration_seconds.to_i) * 10 ** 7).to_i
-      "%d:%02d:%02d:%02d.%07d" % [days, hours, minutes, seconds, ten_millionths_of_second]
+    def client
+      @client
+    end
+
+    def format_request_duration(duration_seconds)
+      if duration_seconds >= 86400
+        # just return 1 day when it takes more than 1 day which should not happen for requests.
+        return "%d:%02d:%02d:%02d.%07d" % [1, 0, 0, 0, 0]
+      end
+
+      Time.at(duration_seconds).gmtime.strftime("0:%H:%M:%S.%7N")
     end
   end
 end

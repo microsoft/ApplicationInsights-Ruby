@@ -6,24 +6,10 @@ require_relative '../../../lib/application_insights/rack/track_request'
 include ApplicationInsights
 
 class TestTrackRequest < Test::Unit::TestCase
-
-  # Called before every test method runs. Can be used
-  # to set up fixture information.
-  def setup
-    # Do nothing
-  end
-
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
-
-  def teardown
-    # Do nothing
-  end
-
   def test_call_works_as_expected
     response_code = rand(200..204)
     app = Proc.new {|env| sleep(2); [response_code, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
-    url = "http://localhost:8080/foo"
+    url = "http://localhost:8080/foo?a=b"
     http_method = 'PUT'
     env = Rack::MockRequest.env_for(url, :method => http_method)
     instrumentation_key = 'key'
@@ -67,11 +53,55 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal false, request_data.success
   end
 
-  def test_seconds_to_time_span
+  def test_call_with_unhandled_exception
+    app = Proc.new {|env| raise StandardError, 'Boom!'}
+    env = Rack::MockRequest.env_for( "http://localhost:8080/foo", :method => "GET")
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 1
+    track_request.send(:sender=, sender)
+    
+    begin
+      track_request.call(env)
+    rescue => ex
+      assert_equal 'Boom!', ex.message
+    end
+    
+    sleep(sender.send_interval)
+    payload = sender.buffer[0]
+    request_data = payload[0].data.base_data
+    assert_equal false, request_data.success
+    assert_equal 500, request_data.response_code
+  end
+
+  def test_internal_client
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    env = Rack::MockRequest.env_for('http://localhost:8080/foo', :method => "GET")
+    buffer_size = 30
+    send_interval = 5
+    track_request = TrackRequest.new app, 'key', buffer_size, send_interval
+    client = track_request.send(:client)
+    # test lazy initialization
+    assert_nil client
+
+    track_request.call(env)
+    client = track_request.send(:client)
+    channel = client.channel
+    assert_equal buffer_size, channel.queue.max_queue_length
+    assert_equal send_interval, channel.sender.send_interval
+
+    track_request.call(env)
+    client2 = track_request.send(:client)
+    channel2 = client2.channel
+    assert_same client, client2
+    assert_same channel, channel2
+  end
+
+  def test_format_request_duration_less_than_a_day
     app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
     track_request = TrackRequest.new app, 'one'
-    duration_seconds = rand(91000) + rand
-    time_span = track_request.send(:seconds_to_time_span, duration_seconds)
+    duration_seconds = rand(86400) + rand
+    time_span = track_request.send(:format_request_duration, duration_seconds)
     time_span_format = /^(?<day>\d{1}):(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
     match = time_span_format.match time_span
     assert_not_nil match
@@ -85,5 +115,20 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal seconds, match['second'].to_i
     fraction = ((duration_seconds - duration_seconds.to_i) * 10 ** 7).to_i
     assert_equal fraction, match['fraction'].to_i
+  end
+
+  def test_format_request_duration_more_than_a_day
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    track_request = TrackRequest.new app, 'one'
+    duration_seconds = rand(86400..240000) + rand
+    time_span = track_request.send(:format_request_duration, duration_seconds)
+    time_span_format = /^(?<day>\d{1}):(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
+    match = time_span_format.match time_span
+    assert_not_nil match
+    assert_equal 1, match['day'].to_i
+    assert_equal 0, match['hour'].to_i
+    assert_equal 0, match['minute'].to_i
+    assert_equal 0, match['second'].to_i
+    assert_equal 0, match['fraction'].to_i
   end
 end
