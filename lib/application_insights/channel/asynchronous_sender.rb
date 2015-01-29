@@ -20,8 +20,9 @@ module ApplicationInsights
         @send_interval = 1.0
         @send_remaining_time = 0
         @send_time = 3.0
-        @lock_send_remaining_time = Mutex.new
+        @lock_work_thread = Mutex.new
         @work_thread = nil
+        @start_notification_processed = true
         super service_endpoint_uri
       end
 
@@ -41,24 +42,19 @@ module ApplicationInsights
       # a total duration of {#send_time} seconds for new items. If a worker thread has already been created, calling
       # this method does nothing.
       def start
-        @lock_send_remaining_time.synchronize do
-          # only maintain one working thread at one time
-          if !@work_thread
-            local_send_interval = (@send_interval < 0.1) ? 0.1 : @send_interval
-            @send_remaining_time = (@send_time < local_send_interval) ? local_send_interval : @send_time
-            @work_thread = Thread.new do
-              run
+        @start_notification_processed = false
+        # Maintain one working thread at one time
+        if !@work_thread
+          @lock_work_thread.synchronize do
+            if !@work_thread
+              local_send_interval = (@send_interval < 0.1) ? 0.1 : @send_interval
+              @send_remaining_time = (@send_time < local_send_interval) ? local_send_interval : @send_time
+              @work_thread = Thread.new do
+                run
+              end
+              @work_thread.abort_on_exception = false
             end
-            @work_thread.abort_on_exception = false
           end
-        end
-      end
-
-      # Calling this method will shut down the worker thread that checks the {#queue} for new items. The thread will be
-      # allowed to shut down gracefully.
-      def stop
-        @lock_send_remaining_time.synchronize do
-          @send_remaining_time = 0
         end
       end
 
@@ -68,13 +64,15 @@ module ApplicationInsights
         # save the queue locally
         local_queue = @queue
         if local_queue == nil
-          stop
+          @work_thread = nil
           return
         end
 
+        begin
         # fix up the send interval (can't be lower than 100ms)
         local_send_interval = (@send_interval < 0.1) ? 0.1 : @send_interval
         while TRUE
+          @start_notification_processed = true
           while TRUE
             # get at most @send_buffer_size items from the queue
             counter = @send_buffer_size
@@ -90,9 +88,7 @@ module ApplicationInsights
             break if data.length == 0
 
             # reset the send time
-            @lock_send_remaining_time.synchronize do
-              @send_remaining_time = @send_time
-            end
+            @send_remaining_time = @send_time
 
             # finally send the data
             send data
@@ -106,14 +102,20 @@ module ApplicationInsights
           end
 
           # decrement the remaining time
-          @lock_send_remaining_time.synchronize do
-            @send_remaining_time -= local_send_interval
-            # Check queue as well to avoid missing any 'start' notification occurred during waiting
-            if @send_remaining_time <= 0 && local_queue.empty?
-              @work_thread = nil
-              break
-            end
+          @send_remaining_time -= local_send_interval
+          # If remaining time <=0 and there is no start notification unprocessed, then stop the working thread
+          if @send_remaining_time <= 0 && @start_notification_processed
+            # Note: there is still a chance some start notification could be missed, e.g., the start method
+            # got triggered between the above and following line. However the data is not lost as it would be processed
+            # later when next start notification comes after the worker thread stops.  The cost to ensure no
+            # notification miss is high where a lock is required each time the start method calls.
+            @work_thread = nil
+            break
           end
+        end
+        rescue
+          # Make sure work_thread sets to nil when it terminates abnormally
+          @work_thread = nil
         end
       end
     end
