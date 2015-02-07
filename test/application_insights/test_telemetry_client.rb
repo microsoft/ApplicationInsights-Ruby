@@ -82,9 +82,9 @@ class TestTelemetryClient < Test::Unit::TestCase
 
   def test_track_trace_view_works_as_expected
     client, sender = self.create_client
-    client.track_trace 'test'
+    client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test"}}}]'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:0.1.0"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test","severityLevel":2}}}]'
     sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
     actual = sender.data_to_send.to_json
     assert_equal expected, actual

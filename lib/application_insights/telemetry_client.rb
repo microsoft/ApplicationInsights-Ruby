@@ -10,6 +10,7 @@ require_relative 'channel/contracts/metric_data'
 require_relative 'channel/contracts/message_data'
 require_relative 'channel/contracts/stack_frame'
 require_relative 'channel/contracts/request_data'
+require_relative 'channel/contracts/severity_level'
 
 module ApplicationInsights
   # The telemetry client used for sending all types of telemetry. It serves as the main entry point for
@@ -162,12 +163,14 @@ module ApplicationInsights
 
     # Sends a single trace statement.
     # @param [String] name the trace statement.
+    # @param [Channel::Contracts::SeverityLevel] severity_level the severity level.
     # @param [Hash] options the options to create the {Channel::Contracts::EventData} object.
     # @option options [Hash] :properties the set of custom properties the client wants attached to this
     #   data item. (defaults to: {})
-    def track_trace(name, options={})
+    def track_trace(name, severity_level = nil, options={})
       data_attributes = {
           :message => name || 'Null',
+          :severity_level => severity_level || Channel::Contracts::SeverityLevel::INFORMATION,
           :properties => options.fetch(:properties) { {} }
       }
       data = Channel::Contracts::MessageData.new data_attributes
