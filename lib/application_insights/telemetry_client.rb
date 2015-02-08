@@ -87,7 +87,7 @@ module ApplicationInsights
         details_attributes = {
           :id => 1,
           :outer_id => 0,
-          :type_name => exception.class,
+          :type_name => exception.class.name,
           :message => exception.message,
           :has_full_stack => exception.backtrace != nil,
           :stack => (exception.backtrace.join("\n") if exception.backtrace),
