@@ -52,10 +52,9 @@ module ApplicationInsights
             :url => request.url
         }
         @client.track_request id, start_time, duration, status, success, options
+        [status, headers, response]
 
-        if exception == nil
-          [status, headers, response]
-        elsif
+        if exception != nil
           @client.track_exception exception, handled_at: 'Unhandled'
           raise exception
         end
