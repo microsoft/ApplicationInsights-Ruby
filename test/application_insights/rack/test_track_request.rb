@@ -3,7 +3,7 @@ require 'rack/mock'
 require_relative '../mock_sender'
 require_relative '../../../lib/application_insights/rack/track_request'
 
-include ApplicationInsights
+include ApplicationInsights::Rack
 
 class TestTrackRequest < Test::Unit::TestCase
   def test_call_works_as_expected

@@ -167,7 +167,7 @@ module ApplicationInsights
     # @param [Hash] options the options to create the {Channel::Contracts::EventData} object.
     # @option options [Hash] :properties the set of custom properties the client wants attached to this
     #   data item. (defaults to: {})
-    def track_trace(name, severity_level = nil, options={})
+    def track_trace(name, severity_level = Channel::Contracts::SeverityLevel::INFORMATION, options={})
       data_attributes = {
           :message => name || 'Null',
           :severity_level => severity_level || Channel::Contracts::SeverityLevel::INFORMATION,
