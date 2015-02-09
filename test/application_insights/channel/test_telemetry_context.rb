@@ -68,5 +68,8 @@ class TestTelemetryContext < Test::Unit::TestCase
     context = TelemetryContext.new
     assert_not_nil context.properties
     assert_equal 0, context.properties.count
+    expected = {:a => 'a', :b => 'b'}
+    context.properties = expected
+    assert_same expected, context.properties
   end
 end
