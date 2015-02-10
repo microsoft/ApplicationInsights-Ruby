@@ -135,3 +135,13 @@ require 'application_insights'
 ApplicationInsights::UnhandledException.collect('<YOUR INSTRUMENTATION KEY GOES HERE>')
 # raise an exception and this would be send to Application Insights Service
 raise Exception, 'Boom!'
+```
+
+###Collecting requests for rack applications###
+```ruby
+# set up the TrackRequest middleware in the rackup (config.ru) file
+require 'application_insights'
+use ApplicationInsights::Rack::TrackRequest, '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
+# For rails, suggest to set up this middleware in application.rb so that unhandled exceptions from controllers are also collected
+config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
+```
