@@ -1,5 +1,6 @@
 require 'json'
 require 'net/http'
+require 'openssl'
 require 'stringio'
 require 'zlib'
 
