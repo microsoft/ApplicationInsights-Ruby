@@ -51,7 +51,7 @@ class TestSenderBase < Test::Unit::TestCase
     sender.queue = []
     sender.send([1, 2])
     thread.join
-    assert_equal [1, 2], sender.queue
+    assert_equal [], sender.queue
   end
 
   def execute_server(code)

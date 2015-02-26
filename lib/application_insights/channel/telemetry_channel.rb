@@ -7,6 +7,7 @@ require_relative 'synchronous_sender'
 require_relative 'contracts/envelope'
 require_relative 'contracts/data'
 require_relative 'contracts/internal'
+require_relative '../../application_insights/version'
 
 module ApplicationInsights
   module Channel
@@ -77,7 +78,7 @@ module ApplicationInsights
       def get_tags(context)
         hash = {}
         internal_context_attributes = {
-          :sdk_version => 'rb:0.1.0'
+          :sdk_version => 'rb:' + ApplicationInsights::VERSION
         }
         internal_context = Contracts::Internal.new internal_context_attributes
         contexts = [ internal_context, context.application, context.device, context.user, context.session, context.location, context.operation ]

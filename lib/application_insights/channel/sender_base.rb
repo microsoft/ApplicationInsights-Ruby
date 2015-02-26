@@ -55,15 +55,6 @@ module ApplicationInsights
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
         response = http.request(request)
-
-        case response
-          when Net::HTTPSuccess, Net::HTTPRedirection, Net::HTTPBadRequest
-            return
-          else
-            data_to_send.each do |item|
-              @queue.push item
-            end
-        end
       end
 
       private
