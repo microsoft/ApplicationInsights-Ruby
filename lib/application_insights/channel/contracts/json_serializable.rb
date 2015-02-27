@@ -2,58 +2,80 @@
 
 module ApplicationInsights
   module Channel
-    module Contracts     
-      class JsonSerializable
-        def initialize(defaults, values, options)
-          @defaults = defaults
-          @values = values
-          if options != nil
-            options.each do |key, value|
-              self.send key.to_s + '=', value
+    module Contracts
+      module JsonSerializable
+        module ClassMethods
+          attr_reader :key_prefix, :contract_attributes
+
+          def prefix(prefix)
+            @key_prefix = prefix
+          end
+
+          def attributes(*attributes)
+            @contract_attributes = attributes
+
+            # Define camelCase accessors and snake_case aliases for some attributes
+            attr_accessor *attributes
+            attributes.each do |attr|
+              snake_attr = snake_case attr
+
+              unless snake_attr == attr.to_s
+                alias_method :"#{snake_attr}", attr
+                alias_method :"#{snake_attr}=", :"#{attr}="
+              end
             end
           end
+
+          def snake_case(str)
+            str.to_s.gsub(/([^A-Z])([A-Z]+)/,'\1_\2').downcase
+          end
+        end
+
+        def self.included(klass)
+          klass.extend JsonSerializable::ClassMethods
+        end
+
+        def initialize(attributes = {})
+          attributes.each { |k, v| send(:"#{k}=", v) }
         end
 
         def to_h
           output = {}
-          @defaults.each do |key, default|
-            if @values.key? key
-              value = @values[key]
-              value = default if value == nil
-            elsif default
-              value = default
-            else
-              next
-            end
+          klass = self.class
+          prefix = klass.key_prefix
 
-            if value.class == Array
-              value_copy = []
-              value.each do |item|
-                item.respond_to?(:to_h) ? value_copy.push(item.to_h) : value_copy.push(item)
-              end
-              output[key] = value_copy if value_copy.length > 0
-            elsif value.class == Hash
-              value_copy = {}
-              value.each do |item_key, item_value|
-                (item_value.respond_to? :to_h) ? value_copy[item_key] = item_value.to_h : value_copy[item_key] = item_value
-              end
-              output[key] = value_copy if value_copy.length > 0
-            elsif value.respond_to? :to_h
-              value_copy = value.to_h
-              output[key] = value_copy if value_copy.length > 0
-            else
-              output[key] = value
+          klass.contract_attributes.each do |attr|
+            value = visit self.send(klass.snake_case(attr))
+            is_empty = value.respond_to?(:empty?) && value.empty?
+
+            unless value.nil? || is_empty
+              output["#{prefix}#{attr}"] = value
             end
           end
+
           output
         end
 
-        def to_json(*)
-          hash = self.to_h
-          hash.to_json
+        def to_json(args = {})
+          JSON.generate self.to_h, args
+        end
+
+        private
+
+        def visit(object)
+          return unless object
+
+          if object.is_a? Array
+            object.map { |e| visit e }
+          elsif object.is_a? Hash
+            Hash[object.map { |k, v| [k, visit(v)] }]
+          elsif object.respond_to? :to_h
+            object.to_h
+          else
+            object
+          end
         end
       end
     end
   end
 end
-
