@@ -7,16 +7,16 @@ module ApplicationInsights
       class SeverityLevel
         # Enumeration value VERBOSE.
         VERBOSE = 0
-        
+
         # Enumeration value INFORMATION.
         INFORMATION = 1
-        
+
         # Enumeration value WARNING.
         WARNING = 2
-        
+
         # Enumeration value ERROR.
         ERROR = 3
-        
+
         # Enumeration value CRITICAL.
         CRITICAL = 4
       end

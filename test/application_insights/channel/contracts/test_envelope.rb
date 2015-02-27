@@ -8,7 +8,7 @@ class TestEnvelope < Test::Unit::TestCase
     item = Contracts::Envelope.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::Envelope.new
@@ -20,7 +20,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -32,7 +32,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_time_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -44,7 +44,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.time
     assert_equal expected, actual
   end
-  
+
   def test_sample_rate_works_as_expected
     expected = 1.5
     item = Contracts::Envelope.new
@@ -56,7 +56,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.sample_rate
     assert_equal expected, actual
   end
-  
+
   def test_seq_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -68,7 +68,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.seq
     assert_equal expected, actual
   end
-  
+
   def test_i_key_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -80,7 +80,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.i_key
     assert_equal expected, actual
   end
-  
+
   def test_flags_works_as_expected
     expected = 42
     item = Contracts::Envelope.new
@@ -92,7 +92,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.flags
     assert_equal expected, actual
   end
-  
+
   def test_device_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -104,7 +104,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.device_id
     assert_equal expected, actual
   end
-  
+
   def test_os_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -116,7 +116,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.os
     assert_equal expected, actual
   end
-  
+
   def test_os_ver_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -128,7 +128,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.os_ver
     assert_equal expected, actual
   end
-  
+
   def test_app_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -140,7 +140,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.app_id
     assert_equal expected, actual
   end
-  
+
   def test_app_ver_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -152,7 +152,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.app_ver
     assert_equal expected, actual
   end
-  
+
   def test_user_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Envelope.new
@@ -164,13 +164,13 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.user_id
     assert_equal expected, actual
   end
-  
+
   def test_tags_works_as_expected
     item = Contracts::Envelope.new
     actual = item.tags
     assert_not_nil actual
   end
-  
+
   def test_data_works_as_expected
     expected = { 'key' => 'value' }
     item = Contracts::Envelope.new
@@ -182,7 +182,7 @@ class TestEnvelope < Test::Unit::TestCase
     actual = item.data
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Envelope.new
     item.ver = 42

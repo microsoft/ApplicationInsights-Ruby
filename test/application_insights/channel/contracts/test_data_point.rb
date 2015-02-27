@@ -8,7 +8,7 @@ class TestDataPoint < Test::Unit::TestCase
     item = Contracts::DataPoint.new
     assert_not_nil item
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::DataPoint.new
@@ -20,7 +20,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_kind_works_as_expected
     expected = 5
     item = Contracts::DataPoint.new
@@ -32,7 +32,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.kind
     assert_equal expected, actual
   end
-  
+
   def test_value_works_as_expected
     expected = 1.5
     item = Contracts::DataPoint.new
@@ -44,7 +44,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.value
     assert_equal expected, actual
   end
-  
+
   def test_count_works_as_expected
     expected = 42
     item = Contracts::DataPoint.new
@@ -56,7 +56,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.count
     assert_equal expected, actual
   end
-  
+
   def test_min_works_as_expected
     expected = 1.5
     item = Contracts::DataPoint.new
@@ -68,7 +68,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.min
     assert_equal expected, actual
   end
-  
+
   def test_max_works_as_expected
     expected = 1.5
     item = Contracts::DataPoint.new
@@ -80,7 +80,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.max
     assert_equal expected, actual
   end
-  
+
   def test_std_dev_works_as_expected
     expected = 1.5
     item = Contracts::DataPoint.new
@@ -92,7 +92,7 @@ class TestDataPoint < Test::Unit::TestCase
     actual = item.std_dev
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::DataPoint.new
     item.name = 'Test string'
