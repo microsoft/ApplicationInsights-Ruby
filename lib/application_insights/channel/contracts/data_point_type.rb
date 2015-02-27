@@ -1,5 +1,3 @@
-require_relative 'json_serializable'
-
 module ApplicationInsights
   module Channel
     module Contracts
@@ -7,7 +5,7 @@ module ApplicationInsights
       class DataPointType
         # Enumeration value MEASUREMENT.
         MEASUREMENT = 0
-        
+
         # Enumeration value AGGREGATION.
         AGGREGATION = 1
       end

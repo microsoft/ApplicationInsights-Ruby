@@ -8,7 +8,7 @@ class TestData < Test::Unit::TestCase
     item = Contracts::Data.new
     assert_not_nil item
   end
-  
+
   def test_base_type_works_as_expected
     expected = 'Test string'
     item = Contracts::Data.new
@@ -20,7 +20,7 @@ class TestData < Test::Unit::TestCase
     actual = item.base_type
     assert_equal expected, actual
   end
-  
+
   def test_base_data_works_as_expected
     expected = { 'key' => 'value' }
     item = Contracts::Data.new
@@ -32,7 +32,7 @@ class TestData < Test::Unit::TestCase
     actual = item.base_data
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Data.new
     item.base_type = 'Test string'

@@ -8,7 +8,7 @@ class TestExceptionData < Test::Unit::TestCase
     item = Contracts::ExceptionData.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::ExceptionData.new
@@ -20,7 +20,7 @@ class TestExceptionData < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_handled_at_works_as_expected
     expected = 'Test string'
     item = Contracts::ExceptionData.new
@@ -32,13 +32,13 @@ class TestExceptionData < Test::Unit::TestCase
     actual = item.handled_at
     assert_equal expected, actual
   end
-  
+
   def test_exceptions_works_as_expected
     item = Contracts::ExceptionData.new
     actual = item.exceptions
     assert_not_nil actual
   end
-  
+
   def test_severity_level_works_as_expected
     expected = 5
     item = Contracts::ExceptionData.new
@@ -50,7 +50,7 @@ class TestExceptionData < Test::Unit::TestCase
     actual = item.severity_level
     assert_equal expected, actual
   end
-  
+
   def test_problem_id_works_as_expected
     expected = 'Test string'
     item = Contracts::ExceptionData.new
@@ -74,19 +74,19 @@ class TestExceptionData < Test::Unit::TestCase
     actual = item.crash_thread_id
     assert_equal expected, actual
   end
-  
+
   def test_properties_works_as_expected
     item = Contracts::ExceptionData.new
     actual = item.properties
     assert_not_nil actual
   end
-  
+
   def test_measurements_works_as_expected
     item = Contracts::ExceptionData.new
     actual = item.measurements
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::ExceptionData.new
     item.ver = 42
@@ -94,7 +94,6 @@ class TestExceptionData < Test::Unit::TestCase
     [ { 'key' => 'value' } ].each do |value|
       item.exceptions.push value
     end
-    
     item.severity_level = 5
     item.problem_id = 'Test string'
     item.crash_thread_id = 42

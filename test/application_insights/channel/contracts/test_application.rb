@@ -8,7 +8,7 @@ class TestApplication < Test::Unit::TestCase
     item = Contracts::Application.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 'Test string'
     item = Contracts::Application.new
@@ -20,7 +20,7 @@ class TestApplication < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_build_works_as_expected
     expected = 'Test string'
     item = Contracts::Application.new
@@ -32,7 +32,7 @@ class TestApplication < Test::Unit::TestCase
     actual = item.build
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Application.new
     item.ver = 'Test string'

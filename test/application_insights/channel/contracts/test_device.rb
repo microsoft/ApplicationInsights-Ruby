@@ -8,7 +8,7 @@ class TestDevice < Test::Unit::TestCase
     item = Contracts::Device.new
     assert_not_nil item
   end
-  
+
   def test_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -20,7 +20,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
   def test_ip_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -32,7 +32,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.ip
     assert_equal expected, actual
   end
-  
+
   def test_language_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -44,7 +44,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.language
     assert_equal expected, actual
   end
-  
+
   def test_locale_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -56,7 +56,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.locale
     assert_equal expected, actual
   end
-  
+
   def test_model_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -68,7 +68,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.model
     assert_equal expected, actual
   end
-  
+
   def test_network_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -80,7 +80,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.network
     assert_equal expected, actual
   end
-  
+
   def test_oem_name_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -92,7 +92,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.oem_name
     assert_equal expected, actual
   end
-  
+
   def test_os_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -104,7 +104,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.os
     assert_equal expected, actual
   end
-  
+
   def test_os_version_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -116,7 +116,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.os_version
     assert_equal expected, actual
   end
-  
+
   def test_role_instance_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -128,7 +128,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.role_instance
     assert_equal expected, actual
   end
-  
+
   def test_role_name_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -140,7 +140,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.role_name
     assert_equal expected, actual
   end
-  
+
   def test_screen_resolution_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -152,7 +152,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.screen_resolution
     assert_equal expected, actual
   end
-  
+
   def test_type_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -164,7 +164,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.type
     assert_equal expected, actual
   end
-  
+
   def test_machine_name_works_as_expected
     expected = 'Test string'
     item = Contracts::Device.new
@@ -176,7 +176,7 @@ class TestDevice < Test::Unit::TestCase
     actual = item.machine_name
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Device.new
     item.id = 'Test string'

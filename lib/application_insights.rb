@@ -4,6 +4,6 @@ require_relative 'application_insights/version'
 
 module ApplicationInsights
   module Rack
-    autoload :TrackRequest,               "application_insights/rack/track_request"
+    autoload :TrackRequest, "application_insights/rack/track_request"
   end
 end
