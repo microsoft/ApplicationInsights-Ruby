@@ -1,16 +1,17 @@
 # Application Insights SDK for Ruby #
 
 [![Gem Version](https://badge.fury.io/rb/application_insights.svg)](http://badge.fury.io/rb/application_insights)
+[![Build Status](https://travis-ci.org/Microsoft/AppInsights-Ruby.svg)](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby)
 
->Ruby is a dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write. 
+>Ruby is a dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.
 > -- <cite>[Ruby - Official Site](https://www.ruby-lang.org/en/)</cite>
 
-This project extends the Application Insights API surface to support Ruby. [Application Insights](http://azure.microsoft.com/en-us/services/application-insights/) is a service that allows developers to keep their application available, performing and succeeding. This Ruby gem will allow you to send telemetry of various kinds (event, trace, exception, etc.) to the Application Insights service where they can be visualized in the Azure Portal. 
+This project extends the Application Insights API surface to support Ruby. [Application Insights](http://azure.microsoft.com/en-us/services/application-insights/) is a service that allows developers to keep their application available, performing and succeeding. This Ruby gem will allow you to send telemetry of various kinds (event, trace, exception, etc.) to the Application Insights service where they can be visualized in the Azure Portal.
 
 
 ## Requirements ##
 
-Ruby 1.9.3 is currently supported by this gem. 
+Ruby 1.9.3 is currently supported by this gem.
 
 ## Installation ##
 
@@ -49,7 +50,7 @@ require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
 tc.track_trace 'My trace statement', :properties => { 'custom property' => 'some value' }
 tc.flush
-```  
+```
 
 ###Sending a metric telemetry item (without and with optional values)###
 ```ruby
@@ -59,7 +60,7 @@ tc.track_metric 'My metric', 42
 # with all optional values set
 tc.track_metric 'My metric', 42, :kind => ApplicationInsights::Channel::Contracts::DataPointType::AGGREGATION, :count => 3, :min => 1, :max => 100, :std_dev => 10, :properties => { 'custom property' => 'some value' }
 tc.flush
-``` 
+```
 
 ###Sending an exception telemetry item with custom properties and measurements###
 ```ruby
@@ -71,7 +72,7 @@ rescue => e
   tc.track_exception e
 end
 tc.flush
-```  
+```
 
 ###Configuring context for a telemetry client instance###
 ```ruby
@@ -86,7 +87,7 @@ tc.context.device.type = "Other"
 tc.context.user.id = 'santa@northpole.net'
 tc.track_trace 'My trace with context'
 tc.flush
-```  
+```
 
 ###Configuring synchronous (default) channel properties###
 ```ruby
