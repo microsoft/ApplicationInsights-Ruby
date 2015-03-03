@@ -14,20 +14,27 @@ module ApplicationInsights
           def attributes(*attributes)
             @contract_attributes = attributes
 
-            # Define camelCase accessors and snake_case aliases for some attributes
-            attr_accessor *attributes
-            attributes.each do |attr|
-              snake_attr = snake_case attr
-
-              unless snake_attr == attr.to_s
-                alias_method :"#{snake_attr}", attr
-                alias_method :"#{snake_attr}=", :"#{attr}="
-              end
-            end
+            attributes.each { |attr| accessors attr }
           end
 
           def snake_case(str)
             str.to_s.gsub(/([^A-Z])([A-Z]+)/,'\1_\2').downcase
+          end
+
+          private
+
+          def accessors(attr)
+            instance_var = :"@#{attr}"
+            read_accessor = snake_case(attr).to_sym
+            write_accessor = :"#{read_accessor}="
+
+            define_method read_accessor do
+              instance_variable_get instance_var
+            end
+
+            define_method write_accessor do |value|
+              instance_variable_set instance_var, value
+            end
           end
         end
 
