@@ -4,6 +4,8 @@ module ApplicationInsights::Channel::Contracts
   class Data
     include JsonSerializable
 
-    attributes :baseType, :baseData
+    attr_accessor :base_type, :base_data
+
+    attribute_mapping base_type: 'baseType', base_data: 'baseData'
   end
 end

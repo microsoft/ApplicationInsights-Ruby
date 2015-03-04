@@ -4,7 +4,8 @@ module ApplicationInsights::Channel::Contracts
   class Application
     include JsonSerializable
 
-    prefix 'ai.application.'
-    attributes :ver
+    attr_accessor :ver
+
+    attribute_mapping ver: 'ai.application.ver'
   end
 end

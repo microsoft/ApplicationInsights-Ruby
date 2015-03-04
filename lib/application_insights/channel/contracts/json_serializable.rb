@@ -5,36 +5,10 @@ module ApplicationInsights
     module Contracts
       module JsonSerializable
         module ClassMethods
-          attr_reader :key_prefix, :contract_attributes
+          attr_reader :json_mappings, :contract_attributes
 
-          def prefix(prefix)
-            @key_prefix = prefix
-          end
-
-          def attributes(*attributes)
-            @contract_attributes = attributes
-
-            attributes.each { |attr| accessors attr }
-          end
-
-          def snake_case(str)
-            str.to_s.gsub(/([^A-Z])([A-Z]+)/,'\1_\2').downcase
-          end
-
-          private
-
-          def accessors(attr)
-            instance_var = :"@#{attr}"
-            read_accessor = snake_case(attr).to_sym
-            write_accessor = :"#{read_accessor}="
-
-            define_method read_accessor do
-              instance_variable_get instance_var
-            end
-
-            define_method write_accessor do |value|
-              instance_variable_set instance_var, value
-            end
+          def attribute_mapping(mappings)
+            @json_mappings = mappings
           end
         end
 
@@ -49,15 +23,12 @@ module ApplicationInsights
         def to_h
           output = {}
           klass = self.class
-          prefix = klass.key_prefix
 
-          klass.contract_attributes.each do |attr|
-            value = visit self.send(klass.snake_case(attr))
+          klass.json_mappings.each do |attr, name|
+            value = visit self.send(attr)
             is_empty = value.respond_to?(:empty?) && value.empty?
 
-            unless value.nil? || is_empty
-              output["#{prefix}#{attr}"] = value
-            end
+            output[name] = value unless value.nil? || is_empty
           end
 
           output

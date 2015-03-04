@@ -4,14 +4,25 @@ module ApplicationInsights::Channel::Contracts
   class ExceptionDetails
     include JsonSerializable
 
-    attributes :id, :outerId, :typeName, :message, :hasFullStack, :stack, :parsedStack
+    attr_accessor :id, :outer_id, :type_name, :message,
+      :has_full_stack, :stack, :parsed_stack
+
+    attribute_mapping(
+      id: 'id',
+      stack: 'stack',
+      message: 'message',
+      outer_id: 'outerId',
+      type_name: 'typeName',
+      parsed_stack: 'parsedStack',
+      has_full_stack: 'hasFullStack'
+    )
 
     def has_full_stack
-      @hasFullStack.nil? ? true : @hasFullStack
+      @has_full_stack.nil? ? true : @has_full_stack
     end
 
     def parsed_stack
-      @parsedStack ||= []
+      @parsed_stack ||= []
     end
   end
 end

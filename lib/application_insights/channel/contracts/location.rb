@@ -4,7 +4,8 @@ module ApplicationInsights::Channel::Contracts
   class Location
     include JsonSerializable
 
-    prefix 'ai.location.'
-    attributes :ip
+    attr_accessor :ip
+
+    attribute_mapping ip: 'ai.location.ip'
   end
 end

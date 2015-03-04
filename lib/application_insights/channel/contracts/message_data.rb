@@ -4,7 +4,14 @@ module ApplicationInsights::Channel::Contracts
   class MessageData
     include JsonSerializable
 
-    attributes :ver, :message, :severityLevel, :properties
+    attr_accessor :ver, :message, :severity_level, :properties
+
+    attribute_mapping(
+      ver: 'ver',
+      message: 'message',
+      properties: 'properties',
+      severity_level: 'severityLevel'
+    )
 
     def ver
       @ver ||= 2

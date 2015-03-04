@@ -4,7 +4,14 @@ module ApplicationInsights::Channel::Contracts
   class EventData
     include JsonSerializable
 
-    attributes :ver, :name, :properties, :measurements
+    attr_accessor :ver, :name, :properties, :measurements
+
+    attribute_mapping(
+      ver: 'ver',
+      name: 'name',
+      properties: 'properties',
+      measurements: 'measurements'
+    )
 
     def ver
       @ver ||= 2

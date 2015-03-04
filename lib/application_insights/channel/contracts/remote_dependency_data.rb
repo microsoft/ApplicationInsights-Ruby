@@ -7,8 +7,24 @@ module ApplicationInsights::Channel::Contracts
   class RemoteDependencyData
     include JsonSerializable
 
-    attributes :ver, :name, :kind, :value, :count, :min, :max, :stdDev, :dependencyKind,
-               :success, :async, :dependencySource, :properties
+    attr_accessor :ver, :name, :kind, :value, :count, :min, :max, :std_dev,
+      :dependency_kind, :success, :async, :dependency_source, :properties
+
+    attribute_mapping(
+      ver: 'ver',
+      min: 'min',
+      max: 'max',
+      name: 'name',
+      kind: 'kind',
+      value: 'value',
+      count: 'count',
+      async: 'async',
+      std_dev: 'stdDev',
+      success: 'success',
+      properties: 'properties',
+      dependency_kind: 'dependencyKind',
+      dependency_source: 'dependencySource'
+    )
 
     def ver
       @ver ||= 2
@@ -19,11 +35,11 @@ module ApplicationInsights::Channel::Contracts
     end
 
     def dependency_kind
-      @dependencyKind ||= DependencyKind::UNDEFINED
+      @dependency_kind ||= DependencyKind::UNDEFINED
     end
 
     def dependency_source
-      @dependencySource ||= DependencySourceType::UNDEFINED
+      @dependency_source ||= DependencySourceType::UNDEFINED
     end
 
     def properties

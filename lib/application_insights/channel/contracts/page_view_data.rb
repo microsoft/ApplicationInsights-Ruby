@@ -4,7 +4,16 @@ module ApplicationInsights::Channel::Contracts
   class PageViewData
     include JsonSerializable
 
-    attributes :ver, :url, :name, :duration, :properties, :measurements
+    attr_accessor :ver, :url, :name, :duration, :properties, :measurements
+
+    attribute_mapping(
+      ver: 'ver',
+      url: 'url',
+      name: 'name',
+      duration: 'duration',
+      properties: 'properties',
+      measurements: 'measurements'
+    )
 
     def ver
       @ver ||= 2

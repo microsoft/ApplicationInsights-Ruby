@@ -7,7 +7,7 @@ module ApplicationInsights
       class DataPointType
         # Enumeration value MEASUREMENT.
         MEASUREMENT = 0
-        
+
         # Enumeration value AGGREGATION.
         AGGREGATION = 1
       end

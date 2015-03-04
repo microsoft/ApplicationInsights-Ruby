@@ -4,7 +4,13 @@ module ApplicationInsights::Channel::Contracts
   class MetricData
     include JsonSerializable
 
-    attributes :ver, :metrics, :properties
+    attr_accessor :ver, :metrics, :properties
+
+    attribute_mapping(
+      ver: 'ver',
+      metrics: 'metrics',
+      properties: 'properties'
+    )
 
     def ver
       @ver ||= 2
