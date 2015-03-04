@@ -64,7 +64,7 @@ class TestOperation < Test::Unit::TestCase
     item.parent_id = 'Test string'
     item.root_id = 'Test string'
     actual = item.to_json
-    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string"}'
+    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.rootId":"Test string","ai.operation.parentId":"Test string"}'
     assert_equal expected, actual
   end
 end

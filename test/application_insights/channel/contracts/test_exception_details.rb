@@ -100,7 +100,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     end
     
     actual = item.to_json
-    expected = '{"id":42,"outerId":42,"typeName":"Test string","message":"Test string","hasFullStack":true,"stack":"Test string","parsedStack":[{"key":"value"}]}'
+    expected = '{"id":42,"stack":"Test string","message":"Test string","outerId":42,"typeName":"Test string","parsedStack":[{"key":"value"}],"hasFullStack":true}'
     assert_equal expected, actual
   end
 end

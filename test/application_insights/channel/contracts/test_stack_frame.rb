@@ -77,7 +77,7 @@ class TestStackFrame < Test::Unit::TestCase
     item.file_name = 'Test string'
     item.line = 42
     actual = item.to_json
-    expected = '{"level":42,"method":"Test string","assembly":"Test string","fileName":"Test string","line":42}'
+    expected = '{"line":42,"level":42,"method":"Test string","assembly":"Test string","fileName":"Test string"}'
     assert_equal expected, actual
   end
 end

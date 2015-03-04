@@ -51,7 +51,7 @@ class TestSession < Test::Unit::TestCase
     item.is_first = 'Test string'
     item.is_new = 'Test string'
     actual = item.to_json
-    expected = '{"ai.session.id":"Test string","ai.session.isFirst":"Test string","ai.session.isNew":"Test string"}'
+    expected = '{"ai.session.id":"Test string","ai.session.isNew":"Test string","ai.session.isFirst":"Test string"}'
     assert_equal expected, actual
   end
 end

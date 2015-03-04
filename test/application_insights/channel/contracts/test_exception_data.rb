@@ -79,7 +79,7 @@ class TestExceptionData < Test::Unit::TestCase
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"handledAt":"Test string","exceptions":[{"key":"value"}],"severityLevel":{"key":"value"},"properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
+    expected = '{"ver":42,"handledAt":"Test string","exceptions":[{"key":"value"}],"properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2},"severityLevel":{"key":"value"}}'
     assert_equal expected, actual
   end
 end

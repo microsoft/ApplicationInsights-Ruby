@@ -177,7 +177,7 @@ class TestRemoteDependencyData < Test::Unit::TestCase
       item.properties[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"name":"Test string","kind":{"key":"value"},"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5,"dependencyKind":{"key":"value"},"success":true,"async":true,"dependencySource":{"key":"value"},"properties":{"key1":"test value 1","key2":"test value 2"}}'
+    expected = '{"ver":42,"min":1.5,"max":1.5,"name":"Test string","kind":{"key":"value"},"value":1.5,"count":42,"async":true,"stdDev":1.5,"success":true,"properties":{"key1":"test value 1","key2":"test value 2"},"dependencyKind":{"key":"value"},"dependencySource":{"key":"value"}}'
     assert_equal expected, actual
   end
 end

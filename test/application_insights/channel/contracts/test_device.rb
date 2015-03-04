@@ -194,7 +194,7 @@ class TestDevice < Test::Unit::TestCase
     item.type = 'Test string'
     item.vm_name = 'Test string'
     actual = item.to_json
-    expected = '{"ai.device.id":"Test string","ai.device.ip":"Test string","ai.device.language":"Test string","ai.device.locale":"Test string","ai.device.model":"Test string","ai.device.network":"Test string","ai.device.oemName":"Test string","ai.device.os":"Test string","ai.device.osVersion":"Test string","ai.device.roleInstance":"Test string","ai.device.roleName":"Test string","ai.device.screenResolution":"Test string","ai.device.type":"Test string","ai.device.vmName":"Test string"}'
+    expected = "{\"ai.device.id\":\"Test string\",\"ai.device.ip\":\"Test string\",\"ai.device.os\":\"Test string\",\"ai.device.type\":\"Test string\",\"ai.device.model\":\"Test string\",\"ai.device.locale\":\"Test string\",\"ai.device.vmName\":\"Test string\",\"ai.device.network\":\"Test string\",\"ai.device.oemName\":\"Test string\",\"ai.device.language\":\"Test string\",\"ai.device.roleName\":\"Test string\",\"ai.device.osVersion\":\"Test string\",\"ai.device.roleInstance\":\"Test string\",\"ai.device.screenResolution\":\"Test string\"}"
     assert_equal expected, actual
   end
 end
