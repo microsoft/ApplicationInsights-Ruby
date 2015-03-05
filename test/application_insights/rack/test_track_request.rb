@@ -32,7 +32,7 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal http_method, request_data.http_method
     assert_equal url, request_data.url
     assert_equal true, request_data.duration.start_with?("0:00:00:02")
-    assert_in_epsilon Time.parse(request_data.start_time) - start_time, 0, 0.01
+    assert Time.parse(request_data.start_time) - start_time < 0.01
   end
 
   def test_call_with_failed_request
