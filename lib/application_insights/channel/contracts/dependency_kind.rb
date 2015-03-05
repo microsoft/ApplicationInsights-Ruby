@@ -5,17 +5,14 @@ module ApplicationInsights
     module Contracts
       # Data contract class for type DependencyKind.
       class DependencyKind
-        # Enumeration value UNDEFINED.
-        UNDEFINED = 0
-        
-        # Enumeration value HTTP_ONLY.
-        HTTP_ONLY = 1
-        
-        # Enumeration value HTTP_ANY.
-        HTTP_ANY = 2
-        
         # Enumeration value SQL.
-        SQL = 3
+        SQL = 0
+        
+        # Enumeration value HTTP.
+        HTTP = 1
+        
+        # Enumeration value OTHER.
+        OTHER = 2
       end
     end
   end

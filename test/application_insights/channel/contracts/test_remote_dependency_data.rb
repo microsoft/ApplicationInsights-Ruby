@@ -34,12 +34,12 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
   
   def test_kind_works_as_expected
-    expected = { 'key' => 'value' }
+    expected = 5
     item = Contracts::RemoteDependencyData.new
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
-    expected = { 'key' => 'value' }
+    expected = 3
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
@@ -106,12 +106,12 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
   
   def test_dependency_kind_works_as_expected
-    expected = { 'key' => 'value' }
+    expected = 5
     item = Contracts::RemoteDependencyData.new
     item.dependency_kind = expected
     actual = item.dependency_kind
     assert_equal expected, actual
-    expected = { 'key' => 'value' }
+    expected = 3
     item.dependency_kind = expected
     actual = item.dependency_kind
     assert_equal expected, actual
@@ -142,14 +142,38 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
   
   def test_dependency_source_works_as_expected
-    expected = { 'key' => 'value' }
+    expected = 5
     item = Contracts::RemoteDependencyData.new
     item.dependency_source = expected
     actual = item.dependency_source
     assert_equal expected, actual
-    expected = { 'key' => 'value' }
+    expected = 3
     item.dependency_source = expected
     actual = item.dependency_source
+    assert_equal expected, actual
+  end
+  
+  def test_command_name_works_as_expected
+    expected = 'Test string'
+    item = Contracts::RemoteDependencyData.new
+    item.command_name = expected
+    actual = item.command_name
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.command_name = expected
+    actual = item.command_name
+    assert_equal expected, actual
+  end
+  
+  def test_dependency_type_name_works_as_expected
+    expected = 'Test string'
+    item = Contracts::RemoteDependencyData.new
+    item.dependency_type_name = expected
+    actual = item.dependency_type_name
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.dependency_type_name = expected
+    actual = item.dependency_type_name
     assert_equal expected, actual
   end
   
@@ -163,21 +187,23 @@ class TestRemoteDependencyData < Test::Unit::TestCase
     item = Contracts::RemoteDependencyData.new
     item.ver = 42
     item.name = 'Test string'
-    item.kind = { 'key' => 'value' }
+    item.kind = 5
     item.value = 1.5
     item.count = 42
     item.min = 1.5
     item.max = 1.5
     item.std_dev = 1.5
-    item.dependency_kind = { 'key' => 'value' }
+    item.dependency_kind = 5
     item.success = TRUE
     item.async = TRUE
-    item.dependency_source = { 'key' => 'value' }
+    item.dependency_source = 5
+    item.command_name = 'Test string'
+    item.dependency_type_name = 'Test string'
     { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
       item.properties[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"name":"Test string","kind":{"key":"value"},"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5,"dependencyKind":{"key":"value"},"success":true,"async":true,"dependencySource":{"key":"value"},"properties":{"key1":"test value 1","key2":"test value 2"}}'
+    expected = '{"ver":42,"name":"Test string","kind":5,"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5,"dependencyKind":5,"success":true,"async":true,"dependencySource":5,"commandName":"Test string","dependencyTypeName":"Test string","properties":{"key1":"test value 1","key2":"test value 2"}}'
     assert_equal expected, actual
   end
 end

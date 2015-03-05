@@ -34,12 +34,12 @@ class TestMessageData < Test::Unit::TestCase
   end
   
   def test_severity_level_works_as_expected
-    expected = { 'key' => 'value' }
+    expected = 5
     item = Contracts::MessageData.new
     item.severity_level = expected
     actual = item.severity_level
     assert_equal expected, actual
-    expected = { 'key' => 'value' }
+    expected = 3
     item.severity_level = expected
     actual = item.severity_level
     assert_equal expected, actual
@@ -55,12 +55,12 @@ class TestMessageData < Test::Unit::TestCase
     item = Contracts::MessageData.new
     item.ver = 42
     item.message = 'Test string'
-    item.severity_level = { 'key' => 'value' }
+    item.severity_level = 5
     { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
       item.properties[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"message":"Test string","severityLevel":{"key":"value"},"properties":{"key1":"test value 1","key2":"test value 2"}}'
+    expected = '{"ver":42,"message":"Test string","severityLevel":5,"properties":{"key1":"test value 1","key2":"test value 2"}}'
     assert_equal expected, actual
   end
 end

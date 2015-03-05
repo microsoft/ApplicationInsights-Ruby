@@ -11,7 +11,9 @@ module ApplicationInsights
             'ai.operation.id' => nil,
             'ai.operation.name' => nil,
             'ai.operation.parentId' => nil,
-            'ai.operation.rootId' => nil
+            'ai.operation.rootId' => nil,
+            'ai.operation.syntheticSource' => nil,
+            'ai.operation.isSynthetic' => nil
           }
           values = {
           }
@@ -79,6 +81,38 @@ module ApplicationInsights
             @values.delete 'ai.operation.rootId' if @values.key? 'ai.operation.rootId'
           else
             @values['ai.operation.rootId'] = value
+          end
+        end
+        
+        # Gets the synthetic_source property.
+        def synthetic_source
+          @values.fetch('ai.operation.syntheticSource') { 
+            @values['ai.operation.syntheticSource'] = nil
+          }
+        end
+        
+        # Sets the synthetic_source property.
+        def synthetic_source=(value)
+          if value == @defaults['ai.operation.syntheticSource']
+            @values.delete 'ai.operation.syntheticSource' if @values.key? 'ai.operation.syntheticSource'
+          else
+            @values['ai.operation.syntheticSource'] = value
+          end
+        end
+        
+        # Gets the is_synthetic property.
+        def is_synthetic
+          @values.fetch('ai.operation.isSynthetic') { 
+            @values['ai.operation.isSynthetic'] = nil
+          }
+        end
+        
+        # Sets the is_synthetic property.
+        def is_synthetic=(value)
+          if value == @defaults['ai.operation.isSynthetic']
+            @values.delete 'ai.operation.isSynthetic' if @values.key? 'ai.operation.isSynthetic'
+          else
+            @values['ai.operation.isSynthetic'] = value
           end
         end
       end

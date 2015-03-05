@@ -11,7 +11,8 @@ module ApplicationInsights
             'ai.user.accountAcquisitionDate' => nil,
             'ai.user.accountId' => nil,
             'ai.user.userAgent' => nil,
-            'ai.user.id' => nil
+            'ai.user.id' => nil,
+            'ai.user.storeRegion' => nil
           }
           values = {
           }
@@ -79,6 +80,22 @@ module ApplicationInsights
             @values.delete 'ai.user.id' if @values.key? 'ai.user.id'
           else
             @values['ai.user.id'] = value
+          end
+        end
+        
+        # Gets the store_region property.
+        def store_region
+          @values.fetch('ai.user.storeRegion') { 
+            @values['ai.user.storeRegion'] = nil
+          }
+        end
+        
+        # Sets the store_region property.
+        def store_region=(value)
+          if value == @defaults['ai.user.storeRegion']
+            @values.delete 'ai.user.storeRegion' if @values.key? 'ai.user.storeRegion'
+          else
+            @values['ai.user.storeRegion'] = value
           end
         end
       end

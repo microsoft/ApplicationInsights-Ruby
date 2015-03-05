@@ -12,6 +12,8 @@ module ApplicationInsights
             'handledAt' => nil,
             'exceptions' => [],
             'severityLevel' => nil,
+            'problemId' => nil,
+            'crashThreadId' => nil,
             'properties' => {},
             'measurements' => {}
           }
@@ -66,6 +68,38 @@ module ApplicationInsights
             @values.delete 'severityLevel' if @values.key? 'severityLevel'
           else
             @values['severityLevel'] = value
+          end
+        end
+        
+        # Gets the problem_id property.
+        def problem_id
+          @values.fetch('problemId') { 
+            @values['problemId'] = nil
+          }
+        end
+        
+        # Sets the problem_id property.
+        def problem_id=(value)
+          if value == @defaults['problemId']
+            @values.delete 'problemId' if @values.key? 'problemId'
+          else
+            @values['problemId'] = value
+          end
+        end
+        
+        # Gets the crash_thread_id property.
+        def crash_thread_id
+          @values.fetch('crashThreadId') { 
+            @values['crashThreadId'] = nil
+          }
+        end
+        
+        # Sets the crash_thread_id property.
+        def crash_thread_id=(value)
+          if value == @defaults['crashThreadId']
+            @values.delete 'crashThreadId' if @values.key? 'crashThreadId'
+          else
+            @values['crashThreadId'] = value
           end
         end
         

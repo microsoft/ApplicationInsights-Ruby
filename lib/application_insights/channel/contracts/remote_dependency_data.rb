@@ -19,10 +19,12 @@ module ApplicationInsights
             'min' => nil,
             'max' => nil,
             'stdDev' => nil,
-            'dependencyKind' => DependencyKind::UNDEFINED,
+            'dependencyKind' => DependencyKind::OTHER,
             'success' => true,
             'async' => nil,
             'dependencySource' => DependencySourceType::UNDEFINED,
+            'commandName' => nil,
+            'dependencyTypeName' => nil,
             'properties' => {}
           }
           values = {
@@ -30,7 +32,7 @@ module ApplicationInsights
             'name' => nil,
             'kind' => DataPointType::MEASUREMENT,
             'value' => nil,
-            'dependencyKind' => DependencyKind::UNDEFINED,
+            'dependencyKind' => DependencyKind::OTHER,
             'success' => true,
             'dependencySource' => DependencySourceType::UNDEFINED
           }
@@ -202,6 +204,38 @@ module ApplicationInsights
             @values.delete 'dependencySource' if @values.key? 'dependencySource'
           else
             @values['dependencySource'] = value
+          end
+        end
+        
+        # Gets the command_name property.
+        def command_name
+          @values.fetch('commandName') { 
+            @values['commandName'] = nil
+          }
+        end
+        
+        # Sets the command_name property.
+        def command_name=(value)
+          if value == @defaults['commandName']
+            @values.delete 'commandName' if @values.key? 'commandName'
+          else
+            @values['commandName'] = value
+          end
+        end
+        
+        # Gets the dependency_type_name property.
+        def dependency_type_name
+          @values.fetch('dependencyTypeName') { 
+            @values['dependencyTypeName'] = nil
+          }
+        end
+        
+        # Sets the dependency_type_name property.
+        def dependency_type_name=(value)
+          if value == @defaults['dependencyTypeName']
+            @values.delete 'dependencyTypeName' if @values.key? 'dependencyTypeName'
+          else
+            @values['dependencyTypeName'] = value
           end
         end
         

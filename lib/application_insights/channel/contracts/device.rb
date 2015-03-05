@@ -21,7 +21,7 @@ module ApplicationInsights
             'ai.device.roleName' => nil,
             'ai.device.screenResolution' => nil,
             'ai.device.type' => nil,
-            'ai.device.vmName' => nil
+            'ai.device.machineName' => nil
           }
           values = {
           }
@@ -236,19 +236,19 @@ module ApplicationInsights
           end
         end
         
-        # Gets the vm_name property.
-        def vm_name
-          @values.fetch('ai.device.vmName') { 
-            @values['ai.device.vmName'] = nil
+        # Gets the machine_name property.
+        def machine_name
+          @values.fetch('ai.device.machineName') { 
+            @values['ai.device.machineName'] = nil
           }
         end
         
-        # Sets the vm_name property.
-        def vm_name=(value)
-          if value == @defaults['ai.device.vmName']
-            @values.delete 'ai.device.vmName' if @values.key? 'ai.device.vmName'
+        # Sets the machine_name property.
+        def machine_name=(value)
+          if value == @defaults['ai.device.machineName']
+            @values.delete 'ai.device.machineName' if @values.key? 'ai.device.machineName'
           else
-            @values['ai.device.vmName'] = value
+            @values['ai.device.machineName'] = value
           end
         end
       end

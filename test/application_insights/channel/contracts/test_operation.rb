@@ -57,14 +57,40 @@ class TestOperation < Test::Unit::TestCase
     assert_equal expected, actual
   end
   
+  def test_synthetic_source_works_as_expected
+    expected = 'Test string'
+    item = Contracts::Operation.new
+    item.synthetic_source = expected
+    actual = item.synthetic_source
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.synthetic_source = expected
+    actual = item.synthetic_source
+    assert_equal expected, actual
+  end
+  
+  def test_is_synthetic_works_as_expected
+    expected = 'Test string'
+    item = Contracts::Operation.new
+    item.is_synthetic = expected
+    actual = item.is_synthetic
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.is_synthetic = expected
+    actual = item.is_synthetic
+    assert_equal expected, actual
+  end
+  
   def test_to_json_works_as_expected
     item = Contracts::Operation.new
     item.id = 'Test string'
     item.name = 'Test string'
     item.parent_id = 'Test string'
     item.root_id = 'Test string'
+    item.synthetic_source = 'Test string'
+    item.is_synthetic = 'Test string'
     actual = item.to_json
-    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string"}'
+    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string","ai.operation.syntheticSource":"Test string","ai.operation.isSynthetic":"Test string"}'
     assert_equal expected, actual
   end
 end
