@@ -8,7 +8,8 @@ module ApplicationInsights::Channel::Contracts
     include JsonSerializable
 
     attr_accessor :ver, :name, :kind, :value, :count, :min, :max, :std_dev,
-      :dependency_kind, :success, :async, :dependency_source, :properties
+      :dependency_kind, :success, :async, :dependency_source, :properties,
+      :command_name, :dependency_type_name
 
     attribute_mapping(
       ver: 'ver',
@@ -22,8 +23,10 @@ module ApplicationInsights::Channel::Contracts
       std_dev: 'stdDev',
       success: 'success',
       properties: 'properties',
+      command_name: 'commandName',
       dependency_kind: 'dependencyKind',
-      dependency_source: 'dependencySource'
+      dependency_source: 'dependencySource',
+      dependency_type_name: 'dependencyTypeName'
     )
 
     def ver
@@ -35,7 +38,7 @@ module ApplicationInsights::Channel::Contracts
     end
 
     def dependency_kind
-      @dependency_kind ||= DependencyKind::UNDEFINED
+      @dependency_kind ||= DependencyKind::OTHER
     end
 
     def dependency_source

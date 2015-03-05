@@ -5,15 +5,17 @@ module ApplicationInsights::Channel::Contracts
     include JsonSerializable
 
     attr_accessor :ver, :handled_at, :exceptions, :severity_level,
-      :properties, :measurements
+      :properties, :measurements, :problem_id, :crash_thread_id
 
     attribute_mapping(
       ver: 'ver',
+      problem_id: 'problemId',
       handled_at: 'handledAt',
       exceptions: 'exceptions',
       properties: 'properties',
       measurements: 'measurements',
-      severity_level: 'severityLevel'
+      severity_level: 'severityLevel',
+      crash_thread_id: 'crashThreadId'
     )
 
     def ver

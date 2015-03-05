@@ -22,12 +22,12 @@ class TestDataPoint < Test::Unit::TestCase
   end
   
   def test_kind_works_as_expected
-    expected = { 'key' => 'value' }
+    expected = 5
     item = Contracts::DataPoint.new
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
-    expected = { 'key' => 'value' }
+    expected = 3
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
@@ -96,14 +96,14 @@ class TestDataPoint < Test::Unit::TestCase
   def test_to_json_works_as_expected
     item = Contracts::DataPoint.new
     item.name = 'Test string'
-    item.kind = { 'key' => 'value' }
+    item.kind = 5
     item.value = 1.5
     item.count = 42
     item.min = 1.5
     item.max = 1.5
     item.std_dev = 1.5
     actual = item.to_json
-    expected = '{"name":"Test string","kind":{"key":"value"},"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5}'
+    expected = '{"name":"Test string","kind":5,"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5}'
     assert_equal expected, actual
   end
 end
