@@ -1,87 +1,18 @@
 require_relative 'json_serializable'
 
-module ApplicationInsights
-  module Channel
-    module Contracts
-      # Data contract class for type User.
-      class User < JsonSerializable
-        # Initializes a new instance of the User class.
-        def initialize(options={})
-          defaults = {
-            'ai.user.accountAcquisitionDate' => nil,
-            'ai.user.accountId' => nil,
-            'ai.user.userAgent' => nil,
-            'ai.user.id' => nil
-          }
-          values = {
-          }
-          super defaults, values, options
-        end
-        
-        # Gets the account_acquisition_date property.
-        def account_acquisition_date
-          @values.fetch('ai.user.accountAcquisitionDate') { 
-            @values['ai.user.accountAcquisitionDate'] = nil
-          }
-        end
-        
-        # Sets the account_acquisition_date property.
-        def account_acquisition_date=(value)
-          if value == @defaults['ai.user.accountAcquisitionDate']
-            @values.delete 'ai.user.accountAcquisitionDate' if @values.key? 'ai.user.accountAcquisitionDate'
-          else
-            @values['ai.user.accountAcquisitionDate'] = value
-          end
-        end
-        
-        # Gets the account_id property.
-        def account_id
-          @values.fetch('ai.user.accountId') { 
-            @values['ai.user.accountId'] = nil
-          }
-        end
-        
-        # Sets the account_id property.
-        def account_id=(value)
-          if value == @defaults['ai.user.accountId']
-            @values.delete 'ai.user.accountId' if @values.key? 'ai.user.accountId'
-          else
-            @values['ai.user.accountId'] = value
-          end
-        end
-        
-        # Gets the user_agent property.
-        def user_agent
-          @values.fetch('ai.user.userAgent') { 
-            @values['ai.user.userAgent'] = nil
-          }
-        end
-        
-        # Sets the user_agent property.
-        def user_agent=(value)
-          if value == @defaults['ai.user.userAgent']
-            @values.delete 'ai.user.userAgent' if @values.key? 'ai.user.userAgent'
-          else
-            @values['ai.user.userAgent'] = value
-          end
-        end
-        
-        # Gets the id property.
-        def id
-          @values.fetch('ai.user.id') { 
-            @values['ai.user.id'] = nil
-          }
-        end
-        
-        # Sets the id property.
-        def id=(value)
-          if value == @defaults['ai.user.id']
-            @values.delete 'ai.user.id' if @values.key? 'ai.user.id'
-          else
-            @values['ai.user.id'] = value
-          end
-        end
-      end
-    end
+module ApplicationInsights::Channel::Contracts
+  class User
+    include JsonSerializable
+
+    attr_accessor :account_acquisition_date, :account_id, :user_agent,
+      :id, :store_region
+
+    attribute_mapping(
+      account_acquisition_date: 'ai.user.accountAcquisitionDate',
+      account_id: 'ai.user.accountId',
+      user_agent: 'ai.user.userAgent',
+      id: 'ai.user.id',
+      store_region: 'ai.user.storeRegion',
+    )
   end
 end

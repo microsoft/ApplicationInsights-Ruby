@@ -1,106 +1,37 @@
 require_relative 'json_serializable'
 
-module ApplicationInsights
-  module Channel
-    module Contracts
-      # Data contract class for type ExceptionData.
-      class ExceptionData < JsonSerializable
-        # Initializes a new instance of the ExceptionData class.
-        def initialize(options={})
-          defaults = {
-            'ver' => 2,
-            'handledAt' => nil,
-            'exceptions' => [],
-            'severityLevel' => nil,
-            'properties' => {},
-            'measurements' => {}
-          }
-          values = {
-            'ver' => 2,
-            'handledAt' => nil,
-            'exceptions' => []
-          }
-          super defaults, values, options
-        end
-        
-        # Gets the ver property.
-        def ver
-          @values['ver']
-        end
-        
-        # Sets the ver property.
-        def ver=(value)
-          @values['ver'] = value
-        end
-        
-        # Gets the handled_at property.
-        def handled_at
-          @values['handledAt']
-        end
-        
-        # Sets the handled_at property.
-        def handled_at=(value)
-          @values['handledAt'] = value
-        end
-        
-        # Gets the exceptions property.
-        def exceptions
-          @values['exceptions']
-        end
-        
-        # Sets the exceptions property.
-        def exceptions=(value)
-          @values['exceptions'] = value
-        end
-        
-        # Gets the severity_level property.
-        def severity_level
-          @values.fetch('severityLevel') { 
-            @values['severityLevel'] = nil
-          }
-        end
-        
-        # Sets the severity_level property.
-        def severity_level=(value)
-          if value == @defaults['severityLevel']
-            @values.delete 'severityLevel' if @values.key? 'severityLevel'
-          else
-            @values['severityLevel'] = value
-          end
-        end
-        
-        # Gets the properties property.
-        def properties
-          @values.fetch('properties') { 
-            @values['properties'] = {}
-          }
-        end
-        
-        # Sets the properties property.
-        def properties=(value)
-          if value == @defaults['properties']
-            @values.delete 'properties' if @values.key? 'properties'
-          else
-            @values['properties'] = value
-          end
-        end
-        
-        # Gets the measurements property.
-        def measurements
-          @values.fetch('measurements') { 
-            @values['measurements'] = {}
-          }
-        end
-        
-        # Sets the measurements property.
-        def measurements=(value)
-          if value == @defaults['measurements']
-            @values.delete 'measurements' if @values.key? 'measurements'
-          else
-            @values['measurements'] = value
-          end
-        end
-      end
+module ApplicationInsights::Channel::Contracts
+  class ExceptionData
+    include JsonSerializable
+
+    attr_accessor :ver, :handled_at, :exceptions, :severity_level,
+      :problem_id, :crash_thread_id, :properties, :measurements
+
+    attribute_mapping(
+      ver: 'ver',
+      handled_at: 'handledAt',
+      exceptions: 'exceptions',
+      severity_level: 'severityLevel',
+      problem_id: 'problemId',
+      crash_thread_id: 'crashThreadId',
+      properties: 'properties',
+      measurements: 'measurements'
+    )
+
+    def ver
+      @ver ||= 2
+    end
+
+    def exceptions
+      @exceptions ||= []
+    end
+
+    def properties
+      @properties ||= {}
+    end
+
+    def measurements
+      @measurements ||= {}
     end
   end
 end

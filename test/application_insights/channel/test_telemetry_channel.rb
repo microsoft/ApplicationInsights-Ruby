@@ -66,7 +66,7 @@ class TestTelemetryChannel < Test::Unit::TestCase
     assert_equal 'instrumentation key', actual.i_key
     assert_not_nil actual.tags
     assert_equal 1, actual.tags.count
-    assert_equal 'rb:0.1.0', actual.tags['ai.internal.sdkVersion']
+    assert_equal 'rb:'+ ApplicationInsights::VERSION, actual.tags['ai.internal.sdkVersion']
     assert_not_nil actual.data
     assert_equal 'MockTelemetryItemData', actual.data.base_type
     assert_same expected, actual.data.base_data

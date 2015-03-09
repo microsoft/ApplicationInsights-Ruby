@@ -58,12 +58,12 @@ class TestExceptionDetails < Test::Unit::TestCase
   end
   
   def test_has_full_stack_works_as_expected
-    expected = TRUE
+    expected = true
     item = Contracts::ExceptionDetails.new
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
