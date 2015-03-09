@@ -10,10 +10,10 @@ module ApplicationInsights::Channel::Contracts
     attribute_mapping(
       id: 'ai.operation.id',
       name: 'ai.operation.name',
-      root_id: 'ai.operation.rootId',
       parent_id: 'ai.operation.parentId',
-      is_synthetic: 'ai.operation.isSynthetic',
-      synthetic_source: 'ai.operation.syntheticSource'
+      root_id: 'ai.operation.rootId',
+      synthetic_source: 'ai.operation.syntheticSource',
+      is_synthetic: 'ai.operation.isSynthetic'
     )
   end
 end

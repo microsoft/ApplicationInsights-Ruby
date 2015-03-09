@@ -8,17 +8,17 @@ module ApplicationInsights::Channel::Contracts
       :success, :http_method, :url, :properties, :measurements
 
     attribute_mapping(
-      id: 'id',
       ver: 'ver',
-      url: 'url',
+      id: 'id',
       name: 'name',
-      success: 'success',
-      duration: 'duration',
       start_time: 'startTime',
-      properties: 'properties',
+      duration: 'duration',
+      response_code: 'responseCode',
+      success: 'success',
       http_method: 'httpMethod',
-      measurements: 'measurements',
-      response_code: 'responseCode'
+      url: 'url',
+      properties: 'properties',
+      measurements: 'measurements'
     )
 
     def ver

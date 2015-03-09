@@ -8,21 +8,21 @@ module ApplicationInsights::Channel::Contracts
       :device_id, :os, :os_ver, :app_id, :app_ver, :user_id, :tags, :data
 
     attribute_mapping(
-      os: 'os',
       ver: 'ver',
-      seq: 'seq',
       name: 'name',
       time: 'time',
-      tags: 'tags',
-      data: 'data',
+      sample_rate: 'sampleRate',
+      seq: 'seq',
       i_key: 'iKey',
       flags: 'flags',
+      device_id: 'deviceId',
+      os: 'os',
       os_ver: 'osVer',
       app_id: 'appId',
       app_ver: 'appVer',
       user_id: 'userId',
-      device_id: 'deviceId',
-      sample_rate: 'sampleRate'
+      tags: 'tags',
+      data: 'data'
     )
 
     def ver

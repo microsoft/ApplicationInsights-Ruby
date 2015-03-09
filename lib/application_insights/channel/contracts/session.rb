@@ -8,8 +8,8 @@ module ApplicationInsights::Channel::Contracts
 
     attribute_mapping(
       id: 'ai.session.id',
-      is_new: 'ai.session.isNew',
-      is_first: 'ai.session.isFirst'
+      is_first: 'ai.session.isFirst',
+      is_new: 'ai.session.isNew'
     )
   end
 end

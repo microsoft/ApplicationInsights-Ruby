@@ -21,7 +21,7 @@ class TestSenderBase < Test::Unit::TestCase
     assert_equal 'http://live.com', sender.service_endpoint_uri
   end
 
-  def test_service_endpoint_uri_works_as_expected
+  def test_sender_queue_attribute
     sender = SenderBase.new 'http://tempuri.org'
     assert_nil sender.queue
     temp = Object.new

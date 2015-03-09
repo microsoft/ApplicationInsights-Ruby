@@ -8,11 +8,11 @@ module ApplicationInsights::Channel::Contracts
       :id, :store_region
 
     attribute_mapping(
-      id: 'ai.user.id',
+      account_acquisition_date: 'ai.user.accountAcquisitionDate',
       account_id: 'ai.user.accountId',
       user_agent: 'ai.user.userAgent',
+      id: 'ai.user.id',
       store_region: 'ai.user.storeRegion',
-      account_acquisition_date: 'ai.user.accountAcquisitionDate'
     )
   end
 end

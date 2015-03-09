@@ -7,11 +7,11 @@ module ApplicationInsights::Channel::Contracts
     attr_accessor :level, :method, :assembly, :file_name, :line
 
     attribute_mapping(
-      line: 'line',
       level: 'level',
       method: 'method',
       assembly: 'assembly',
-      file_name: 'fileName'
+      file_name: 'fileName',
+      line: 'line',
     )
   end
 end

@@ -8,25 +8,25 @@ module ApplicationInsights::Channel::Contracts
     include JsonSerializable
 
     attr_accessor :ver, :name, :kind, :value, :count, :min, :max, :std_dev,
-      :dependency_kind, :success, :async, :dependency_source, :properties,
-      :command_name, :dependency_type_name
+      :dependency_kind, :success, :async, :dependency_source, :command_name,
+      :dependency_type_name, :properties
 
     attribute_mapping(
       ver: 'ver',
-      min: 'min',
-      max: 'max',
       name: 'name',
       kind: 'kind',
       value: 'value',
       count: 'count',
-      async: 'async',
+      min: 'min',
+      max: 'max',
       std_dev: 'stdDev',
-      success: 'success',
-      properties: 'properties',
-      command_name: 'commandName',
       dependency_kind: 'dependencyKind',
+      success: 'success',
+      async: 'async',
       dependency_source: 'dependencySource',
-      dependency_type_name: 'dependencyTypeName'
+      command_name: 'commandName',
+      dependency_type_name: 'dependencyTypeName',
+      properties: 'properties'
     )
 
     def ver

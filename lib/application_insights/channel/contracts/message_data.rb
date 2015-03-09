@@ -9,8 +9,8 @@ module ApplicationInsights::Channel::Contracts
     attribute_mapping(
       ver: 'ver',
       message: 'message',
-      properties: 'properties',
-      severity_level: 'severityLevel'
+      severity_level: 'severityLevel',
+      properties: 'properties'
     )
 
     def ver

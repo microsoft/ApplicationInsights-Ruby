@@ -9,12 +9,12 @@ module ApplicationInsights::Channel::Contracts
 
     attribute_mapping(
       id: 'id',
-      stack: 'stack',
-      message: 'message',
       outer_id: 'outerId',
       type_name: 'typeName',
-      parsed_stack: 'parsedStack',
-      has_full_stack: 'hasFullStack'
+      message: 'message',
+      has_full_stack: 'hasFullStack',
+      stack: 'stack',
+      parsed_stack: 'parsedStack'
     )
 
     def has_full_stack

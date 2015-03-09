@@ -5,7 +5,7 @@ module ApplicationInsights
     module Contracts
       module JsonSerializable
         module ClassMethods
-          attr_reader :json_mappings, :contract_attributes
+          attr_reader :json_mappings
 
           def attribute_mapping(mappings)
             @json_mappings = mappings
