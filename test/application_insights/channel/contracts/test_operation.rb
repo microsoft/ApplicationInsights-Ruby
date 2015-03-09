@@ -90,7 +90,7 @@ class TestOperation < Test::Unit::TestCase
     item.synthetic_source = 'Test string'
     item.is_synthetic = 'Test string'
     actual = item.to_json
-    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.rootId":"Test string","ai.operation.parentId":"Test string","ai.operation.isSynthetic":"Test string","ai.operation.syntheticSource":"Test string"}'
+    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string","ai.operation.syntheticSource":"Test string","ai.operation.isSynthetic":"Test string"}'
     assert_equal expected, actual
   end
 end

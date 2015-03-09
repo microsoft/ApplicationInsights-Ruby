@@ -147,7 +147,7 @@ class TestRequestData < Test::Unit::TestCase
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"id":"Test string","ver":42,"url":"Test string","name":"Test string","success":true,"duration":"Test string","startTime":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"httpMethod":"Test string","measurements":{"key1":3.1415,"key2":42.2},"responseCode":"Test string"}'
+    expected = '{"ver":42,"id":"Test string","name":"Test string","startTime":"Test string","duration":"Test string","responseCode":"Test string","success":true,"httpMethod":"Test string","url":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
     assert_equal expected, actual
   end
 end

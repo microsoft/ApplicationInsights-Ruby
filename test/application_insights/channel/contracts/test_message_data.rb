@@ -60,7 +60,7 @@ class TestMessageData < Test::Unit::TestCase
       item.properties[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"message":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"severityLevel":5}'
+    expected = '{"ver":42,"message":"Test string","severityLevel":5,"properties":{"key1":"test value 1","key2":"test value 2"}}'
     assert_equal expected, actual
   end
 end

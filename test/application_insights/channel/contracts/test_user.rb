@@ -77,7 +77,7 @@ class TestUser < Test::Unit::TestCase
     item.id = 'Test string'
     item.store_region = 'Test string'
     actual = item.to_json
-    expected = '{"ai.user.id":"Test string","ai.user.accountId":"Test string","ai.user.userAgent":"Test string","ai.user.storeRegion":"Test string","ai.user.accountAcquisitionDate":"Test string"}'
+    expected = '{"ai.user.accountAcquisitionDate":"Test string","ai.user.accountId":"Test string","ai.user.userAgent":"Test string","ai.user.id":"Test string","ai.user.storeRegion":"Test string"}'
     assert_equal expected, actual
   end
 end

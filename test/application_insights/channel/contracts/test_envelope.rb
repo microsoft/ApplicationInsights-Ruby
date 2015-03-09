@@ -203,7 +203,7 @@ class TestEnvelope < Test::Unit::TestCase
     end
     item.data = { 'key' => 'value' }
     actual = item.to_json
-    expected = '{"os":"Test string","ver":42,"seq":"Test string","name":"Test string","time":"Test string","tags":{"key1":"test value 1","key2":"test value 2"},"data":{"key":"value"},"iKey":"Test string","flags":42,"osVer":"Test string","appId":"Test string","appVer":"Test string","userId":"Test string","deviceId":"Test string","sampleRate":1.5}'
+    expected = '{"ver":42,"name":"Test string","time":"Test string","sampleRate":1.5,"seq":"Test string","iKey":"Test string","flags":42,"deviceId":"Test string","os":"Test string","osVer":"Test string","appId":"Test string","appVer":"Test string","userId":"Test string","tags":{"key1":"test value 1","key2":"test value 2"},"data":{"key":"value"}}'
     assert_equal expected, actual
   end
 end
