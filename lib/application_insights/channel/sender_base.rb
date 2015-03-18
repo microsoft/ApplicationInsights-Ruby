@@ -55,6 +55,7 @@ module ApplicationInsights
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
         response = http.request(request)
+        http.finish if http.started?
       end
 
       private
