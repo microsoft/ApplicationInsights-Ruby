@@ -16,12 +16,12 @@ class TestSenderBase < Test::Unit::TestCase
 
   def test_service_endpoint_uri_works_as_expected
     sender = SenderBase.new 'http://tempuri.org'
-    assert_equal 'http://tempuri.org', item.service_endpoint_uri
-    item.service_endpoint_uri = 'http://live.com'
-    assert_equal 'http://live.com', item.service_endpoint_uri
+    assert_equal 'http://tempuri.org', sender.service_endpoint_uri
+    sender.service_endpoint_uri = 'http://live.com'
+    assert_equal 'http://live.com', sender.service_endpoint_uri
   end
 
-  def test_service_endpoint_uri_works_as_expected
+  def test_service_queue_works_as_expected
     sender = SenderBase.new 'http://tempuri.org'
     assert_nil sender.queue
     temp = Object.new
