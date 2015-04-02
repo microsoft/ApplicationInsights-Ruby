@@ -6,6 +6,8 @@ module ApplicationInsights::Channel::Contracts
 
     attr_accessor :ip
 
-    attribute_mapping ip: 'ai.location.ip'
+    attribute_mapping(
+      ip: 'ai.location.ip'
+    )
   end
 end

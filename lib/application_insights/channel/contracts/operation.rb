@@ -4,8 +4,7 @@ module ApplicationInsights::Channel::Contracts
   class Operation
     include JsonSerializable
 
-    attr_accessor :id, :name, :parent_id, :root_id,
-      :synthetic_source, :is_synthetic
+    attr_accessor :id, :name, :parent_id, :root_id, :synthetic_source, :is_synthetic
 
     attribute_mapping(
       id: 'ai.operation.id',

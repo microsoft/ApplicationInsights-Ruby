@@ -41,6 +41,10 @@ module ApplicationInsights::Channel::Contracts
       @dependency_kind ||= DependencyKind::OTHER
     end
 
+    def success
+      @success ||= true
+    end
+
     def dependency_source
       @dependency_source ||= DependencySourceType::UNDEFINED
     end

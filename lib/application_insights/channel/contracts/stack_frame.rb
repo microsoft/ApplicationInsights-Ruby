@@ -11,7 +11,7 @@ module ApplicationInsights::Channel::Contracts
       method: 'method',
       assembly: 'assembly',
       file_name: 'fileName',
-      line: 'line',
+      line: 'line'
     )
   end
 end

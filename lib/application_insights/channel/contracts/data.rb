@@ -6,6 +6,9 @@ module ApplicationInsights::Channel::Contracts
 
     attr_accessor :base_type, :base_data
 
-    attribute_mapping base_type: 'baseType', base_data: 'baseData'
+    attribute_mapping(
+      base_type: 'baseType',
+      base_data: 'baseData'
+    )
   end
 end

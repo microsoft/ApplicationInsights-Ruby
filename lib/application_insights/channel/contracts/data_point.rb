@@ -8,12 +8,12 @@ module ApplicationInsights::Channel::Contracts
     attr_accessor :name, :kind, :value, :count, :min, :max, :std_dev
 
     attribute_mapping(
-      name:    'name',
-      kind:    'kind',
-      value:   'value',
-      count:   'count',
-      min:     'min',
-      max:     'max',
+      name: 'name',
+      kind: 'kind',
+      value: 'value',
+      count: 'count',
+      min: 'min',
+      max: 'max',
       std_dev: 'stdDev'
     )
 

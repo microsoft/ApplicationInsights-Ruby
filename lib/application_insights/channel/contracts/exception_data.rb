@@ -4,8 +4,8 @@ module ApplicationInsights::Channel::Contracts
   class ExceptionData
     include JsonSerializable
 
-    attr_accessor :ver, :handled_at, :exceptions, :severity_level,
-      :problem_id, :crash_thread_id, :properties, :measurements
+    attr_accessor :ver, :handled_at, :exceptions, :severity_level, :problem_id,
+      :crash_thread_id, :properties, :measurements
 
     attribute_mapping(
       ver: 'ver',

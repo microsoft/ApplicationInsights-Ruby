@@ -1,17 +1,9 @@
-module ApplicationInsights
-  module Channel
-    module Contracts
-      # Data contract class for type DependencySourceType.
-      class DependencySourceType
-        # Enumeration value UNDEFINED.
-        UNDEFINED = 0
+module ApplicationInsights::Channel::Contracts
+  class DependencySourceType
+    UNDEFINED = 0
 
-        # Enumeration value AIC.
-        AIC = 1
+    AIC = 1
 
-        # Enumeration value APMC.
-        APMC = 2
-      end
-    end
+    APMC = 2
   end
 end

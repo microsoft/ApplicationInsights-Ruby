@@ -4,8 +4,8 @@ module ApplicationInsights::Channel::Contracts
   class Device
     include JsonSerializable
 
-    attr_accessor :id, :ip, :language, :locale, :model, :network, :oem_name, :os,
-      :os_version, :role_instance, :role_name, :screen_resolution, :type,
+    attr_accessor :id, :ip, :language, :locale, :model, :network, :oem_name,
+      :os, :os_version, :role_instance, :role_name, :screen_resolution, :type,
       :machine_name
 
     attribute_mapping(
