@@ -6,4 +6,3 @@ Find.find test do |path|
     require path
   end
 end
-

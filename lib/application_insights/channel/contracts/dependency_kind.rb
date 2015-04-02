@@ -1,5 +1,3 @@
-require_relative 'json_serializable'
-
 module ApplicationInsights
   module Channel
     module Contracts

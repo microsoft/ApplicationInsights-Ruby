@@ -94,7 +94,6 @@ class TestExceptionData < Test::Unit::TestCase
     [ { 'key' => 'value' } ].each do |value|
       item.exceptions.push value
     end
-
     item.severity_level = 5
     item.problem_id = 'Test string'
     item.crash_thread_id = 42

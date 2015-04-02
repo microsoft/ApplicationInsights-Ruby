@@ -10,7 +10,8 @@ module ApplicationInsights
     @sender = nil
 
     # Auto collects unhandled exception and send to the Application Insights service.
-    # @param (string) instrumentation_key used to identify which Application Insights application this data is for.
+    # @param (string) instrumentation_key used to identify which Application
+    #   Insights application this data is for.
     # @example
     #   require 'application_insights'
     #   ApplicationInsights::UnhandledException.collect('<YOUR INSTRUMENTATION KEY GOES HERE>')
@@ -18,13 +19,15 @@ module ApplicationInsights
     def self.collect(instrumentation_key)
       at_exit do
         # Avoid sending exception more than once if this method got invoked multiple times
-        send(instrumentation_key) if !@sender
+        send(instrumentation_key) unless @sender
       end
     end
 
     # @api private
-    # Send the last raised exception to the Application Insights service if telemetry_sender is not customized.
-    # @param (string) instrumentation_key used to identify which Application Insights application this data is for.
+    # Send the last raised exception to the Application Insights service if
+    # telemetry_sender is not customized.
+    # @param (string) instrumentation_key used to identify which Application
+    #   Insights application this data is for.
     # @param (SenderBase) telemetry_sender used to send the last raised exception.
     def self.send(instrumentation_key, telemetry_sender = nil)
       if $! && !$!.is_a?(SystemExit) && !$!.is_a?(SignalException)
@@ -42,6 +45,5 @@ module ApplicationInsights
         client.flush
       end
     end
-
   end
 end
