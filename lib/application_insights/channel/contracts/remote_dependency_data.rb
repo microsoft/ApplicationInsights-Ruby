@@ -42,7 +42,7 @@ module ApplicationInsights::Channel::Contracts
     end
 
     def success
-      @success ||= true
+      @success.nil? ? true : @success
     end
 
     def dependency_source

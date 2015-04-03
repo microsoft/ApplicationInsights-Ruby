@@ -18,7 +18,7 @@ module ApplicationInsights::Channel::Contracts
     )
 
     def has_full_stack
-      @has_full_stack ||= true
+      @has_full_stack.nil? ? true : @has_full_stack
     end
 
     def parsed_stack
