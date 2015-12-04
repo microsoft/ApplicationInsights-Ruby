@@ -85,7 +85,7 @@ module ApplicationInsights
         end
 
         # Gets the account_id property.
-        def auth_id
+        def auth_user_id
           @values.fetch('ai.user.authUserId') {
             @values['ai.user.authUserId'] = nil
           }
