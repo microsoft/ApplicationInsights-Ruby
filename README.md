@@ -48,7 +48,7 @@ tc.flush
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
-tc.track_trace 'My trace statement', :properties => { 'custom property' => 'some value' }
+tc.track_trace 'My trace statement', ApplicationInsights::Channel::Contracts::SeverityLevel::INFORMATION, :properties => { 'custom property' => 'some value' }
 tc.flush
 ```
 
