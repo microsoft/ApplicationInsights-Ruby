@@ -8,7 +8,7 @@ class TestMessageData < Test::Unit::TestCase
     item = Contracts::MessageData.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::MessageData.new
@@ -20,7 +20,7 @@ class TestMessageData < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_message_works_as_expected
     expected = 'Test string'
     item = Contracts::MessageData.new
@@ -32,7 +32,7 @@ class TestMessageData < Test::Unit::TestCase
     actual = item.message
     assert_equal expected, actual
   end
-  
+
   def test_severity_level_works_as_expected
     expected = 5
     item = Contracts::MessageData.new
@@ -44,13 +44,13 @@ class TestMessageData < Test::Unit::TestCase
     actual = item.severity_level
     assert_equal expected, actual
   end
-  
+
   def test_properties_works_as_expected
     item = Contracts::MessageData.new
     actual = item.properties
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::MessageData.new
     item.ver = 42

@@ -8,7 +8,7 @@ class TestSession < Test::Unit::TestCase
     item = Contracts::Session.new
     assert_not_nil item
   end
-  
+
   def test_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Session.new
@@ -20,7 +20,7 @@ class TestSession < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
   def test_is_first_works_as_expected
     expected = 'Test string'
     item = Contracts::Session.new
@@ -32,7 +32,7 @@ class TestSession < Test::Unit::TestCase
     actual = item.is_first
     assert_equal expected, actual
   end
-  
+
   def test_is_new_works_as_expected
     expected = 'Test string'
     item = Contracts::Session.new
@@ -44,7 +44,7 @@ class TestSession < Test::Unit::TestCase
     actual = item.is_new
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Session.new
     item.id = 'Test string'

@@ -2,58 +2,58 @@
 
 module ApplicationInsights
   module Channel
-    module Contracts     
-      class JsonSerializable
-        def initialize(defaults, values, options)
-          @defaults = defaults
-          @values = values
-          if options != nil
-            options.each do |key, value|
-              self.send key.to_s + '=', value
-            end
+    module Contracts
+      module JsonSerializable
+        module ClassMethods
+          attr_reader :json_mappings
+
+          def attribute_mapping(mappings)
+            @json_mappings = mappings
           end
+        end
+
+        def self.included(klass)
+          klass.extend JsonSerializable::ClassMethods
+        end
+
+        def initialize(attributes = {})
+          attributes.each { |k, v| send(:"#{k}=", v) }
         end
 
         def to_h
           output = {}
-          @defaults.each do |key, default|
-            if @values.key? key
-              value = @values[key]
-              value = default if value == nil
-            elsif default
-              value = default
-            else
-              next
-            end
+          klass = self.class
 
-            if value.class == Array
-              value_copy = []
-              value.each do |item|
-                item.respond_to?(:to_h) ? value_copy.push(item.to_h) : value_copy.push(item)
-              end
-              output[key] = value_copy if value_copy.length > 0
-            elsif value.class == Hash
-              value_copy = {}
-              value.each do |item_key, item_value|
-                (item_value.respond_to? :to_h) ? value_copy[item_key] = item_value.to_h : value_copy[item_key] = item_value
-              end
-              output[key] = value_copy if value_copy.length > 0
-            elsif value.respond_to? :to_h
-              value_copy = value.to_h
-              output[key] = value_copy if value_copy.length > 0
-            else
-              output[key] = value
-            end
+          klass.json_mappings.each do |attr, name|
+            value = visit self.send(attr)
+            is_empty = value.respond_to?(:empty?) && value.empty?
+
+            output[name] = value unless value.nil? || is_empty
           end
+
           output
         end
 
-        def to_json(*)
-          hash = self.to_h
-          hash.to_json
+        def to_json(args = {})
+          JSON.generate self.to_h, args
+        end
+
+        private
+
+        def visit(object)
+          return unless object
+
+          if object.is_a? Array
+            object.map { |e| visit e }
+          elsif object.is_a? Hash
+            Hash[object.map { |k, v| [k, visit(v)] }]
+          elsif object.respond_to? :to_h
+            object.to_h
+          else
+            object
+          end
         end
       end
     end
   end
 end
-
