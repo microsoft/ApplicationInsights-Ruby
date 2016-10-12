@@ -81,8 +81,17 @@ module ApplicationInsights
           :sdk_version => 'rb:' + ApplicationInsights::VERSION
         }
         internal_context = Contracts::Internal.new internal_context_attributes
-        contexts = [ internal_context, context.application, context.device, context.user, context.session, context.location, context.operation ]
-        contexts.each { |c|  hash.merge!(c.to_h) if c }
+
+        [internal_context,
+          context.application,
+          context.device,
+          context.user,
+          context.session,
+          context.location,
+          context.operation].each { |c|  hash.merge!(c.to_h) if c }
+
+        hash.delete_if { |k, v| v.nil? }
+
         hash
       end
 

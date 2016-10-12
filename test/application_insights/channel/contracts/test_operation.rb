@@ -8,7 +8,7 @@ class TestOperation < Test::Unit::TestCase
     item = Contracts::Operation.new
     assert_not_nil item
   end
-  
+
   def test_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -20,7 +20,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -32,7 +32,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_parent_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -44,7 +44,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.parent_id
     assert_equal expected, actual
   end
-  
+
   def test_root_id_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -56,7 +56,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.root_id
     assert_equal expected, actual
   end
-  
+
   def test_synthetic_source_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -68,7 +68,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.synthetic_source
     assert_equal expected, actual
   end
-  
+
   def test_is_synthetic_works_as_expected
     expected = 'Test string'
     item = Contracts::Operation.new
@@ -80,7 +80,7 @@ class TestOperation < Test::Unit::TestCase
     actual = item.is_synthetic
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Operation.new
     item.id = 'Test string'
