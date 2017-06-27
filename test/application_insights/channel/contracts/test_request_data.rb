@@ -82,12 +82,12 @@ class TestRequestData < Test::Unit::TestCase
   end
   
   def test_success_works_as_expected
-    expected = TRUE
+    expected = true
     item = Contracts::RequestData.new
     item.success = expected
     actual = item.success
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.success = expected
     actual = item.success
     assert_equal expected, actual
@@ -137,7 +137,7 @@ class TestRequestData < Test::Unit::TestCase
     item.start_time = 'Test string'
     item.duration = 'Test string'
     item.response_code = 'Test string'
-    item.success = TRUE
+    item.success = true
     item.http_method = 'Test string'
     item.url = 'Test string'
     { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|

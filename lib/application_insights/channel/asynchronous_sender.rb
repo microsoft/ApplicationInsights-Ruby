@@ -71,9 +71,9 @@ module ApplicationInsights
         begin
         # fix up the send interval (can't be lower than 100ms)
         local_send_interval = (@send_interval < 0.1) ? 0.1 : @send_interval
-        while TRUE
+        while true
           @start_notification_processed = true
-          while TRUE
+          while true
             # get at most @send_buffer_size items from the queue
             counter = @send_buffer_size
             data = []

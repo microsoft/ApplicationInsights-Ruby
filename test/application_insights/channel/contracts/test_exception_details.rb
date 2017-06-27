@@ -58,12 +58,12 @@ class TestExceptionDetails < Test::Unit::TestCase
   end
   
   def test_has_full_stack_works_as_expected
-    expected = TRUE
+    expected = true
     item = Contracts::ExceptionDetails.new
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
@@ -93,7 +93,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     item.outer_id = 42
     item.type_name = 'Test string'
     item.message = 'Test string'
-    item.has_full_stack = TRUE
+    item.has_full_stack = true
     item.stack = 'Test string'
     [ { 'key' => 'value' } ].each do |value|
       item.parsed_stack.push value

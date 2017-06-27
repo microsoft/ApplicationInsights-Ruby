@@ -41,7 +41,7 @@ module ApplicationInsights
       # @return [Contracts::Envelope] a telemetry envelope object or nil if the queue is empty.
       def pop
         begin
-          return @queue.pop(TRUE)
+          return @queue.pop(true)
         rescue ThreadError => _
           return nil
         end

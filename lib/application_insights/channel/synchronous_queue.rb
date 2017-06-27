@@ -22,7 +22,7 @@ module ApplicationInsights
       def flush
         local_sender = @sender
         return unless local_sender
-        while TRUE
+        while true
           # get at most send_buffer_size items and send them
           data = []
           while data.length < local_sender.send_buffer_size
