@@ -15,7 +15,6 @@ class TestSenderBase < Test::Unit::TestCase
   end
 
   def test_service_endpoint_uri_works_as_expected
-    sender = SenderBase.new 'http://tempuri.org'
     assert_equal 'http://tempuri.org', item.service_endpoint_uri
     item.service_endpoint_uri = 'http://live.com'
     assert_equal 'http://live.com', item.service_endpoint_uri
