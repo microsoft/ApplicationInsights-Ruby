@@ -31,7 +31,7 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal true, request_data.success
     assert_equal http_method, request_data.http_method
     assert_equal url, request_data.url
-    assert_equal true, request_data.duration.start_with?("0:00:00:02")
+    assert_equal true, request_data.duration.start_with?("00.00:00:02")
     assert Time.parse(request_data.start_time) - start_time < 0.01
   end
 
@@ -107,7 +107,7 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request = TrackRequest.new app, 'one'
     duration_seconds = rand(86400) + rand
     time_span = track_request.send(:format_request_duration, duration_seconds)
-    time_span_format = /^(?<day>\d{1}):(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
+    time_span_format = /^(?<day>\d{2}).(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
     match = time_span_format.match time_span
     assert_not_nil match
     days = duration_seconds.to_i/86400
@@ -127,7 +127,7 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request = TrackRequest.new app, 'one'
     duration_seconds = rand(86400..240000) + rand
     time_span = track_request.send(:format_request_duration, duration_seconds)
-    time_span_format = /^(?<day>\d{1}):(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
+    time_span_format = /^(?<day>\d{2}).(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
     match = time_span_format.match time_span
     assert_not_nil match
     assert_equal 1, match['day'].to_i
