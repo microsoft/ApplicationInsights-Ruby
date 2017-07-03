@@ -1,7 +1,7 @@
 # Application Insights SDK for Ruby #
 
 [![Gem Version](https://badge.fury.io/rb/application_insights.svg)](http://badge.fury.io/rb/application_insights)
-[![Build Status](https://travis-ci.org/Microsoft/AppInsights-Ruby.svg)](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby)
+[![Build Status](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby.svg)](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby)
 
 >Ruby is a dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.
 > -- <cite>[Ruby - Official Site](https://www.ruby-lang.org/en/)</cite>
@@ -28,7 +28,7 @@ Once installed, you can send telemetry to Application Insights. Here are a few s
 >**Note**: before you can send data to you will need an instrumentation key. Please see the [Getting an Application Insights Instrumentation Key](https://github.com/Microsoft/AppInsights-Home/wiki#getting-an-application-insights-instrumentation-key) section for more information.
 
 
-###Sending a simple event telemetry item###
+### Sending a simple event telemetry item ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
@@ -36,7 +36,7 @@ tc.track_event 'My event'
 tc.flush
 ```
 
-###Sending an event telemetry item with custom properties and measurements###
+### Sending an event telemetry item with custom properties and measurements ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
@@ -44,15 +44,15 @@ tc.track_event 'My event', :properties => { 'custom property' => 'some value' },
 tc.flush
 ```
 
-###Sending a trace telemetry item with custom properties###
+### Sending a trace telemetry item with custom properties ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
-tc.track_trace 'My trace statement', :properties => { 'custom property' => 'some value' }
+tc.track_trace 'My trace statement', ApplicationInsights::Channel::Contracts::SeverityLevel::INFORMATION, :properties => { 'custom property' => 'some value' }
 tc.flush
 ```
 
-###Sending a metric telemetry item (without and with optional values)###
+### Sending a metric telemetry item (without and with optional values) ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
@@ -62,7 +62,7 @@ tc.track_metric 'My metric', 42, :kind => ApplicationInsights::Channel::Contract
 tc.flush
 ```
 
-###Sending an exception telemetry item with custom properties and measurements###
+### Sending an exception telemetry item with custom properties and measurements ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
@@ -74,7 +74,7 @@ end
 tc.flush
 ```
 
-###Configuring context for a telemetry client instance###
+### Configuring context for a telemetry client instance ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
@@ -89,7 +89,7 @@ tc.track_trace 'My trace with context'
 tc.flush
 ```
 
-###Configuring synchronous (default) channel properties###
+### Configuring synchronous (default) channel properties ###
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new
@@ -99,7 +99,7 @@ tc.channel.queue.max_queue_length = 10
 tc.channel.sender.send_buffer_size = 5
 ```
 
-###Configuring an asynchronous channel instead of the synchronous default###
+### Configuring an asynchronous channel instead of the synchronous default ###
 ```ruby
 require 'application_insights'
 sender = ApplicationInsights::Channel::AsynchronousSender.new
@@ -111,7 +111,7 @@ tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HE
 tc.track_event 'My event'
 ```
 
-###Configuring asynchronous channel properties###
+### Configuring asynchronous channel properties ###
 ```ruby
 require 'application_insights'
 sender = ApplicationInsights::Channel::AsynchronousSender.new
@@ -129,7 +129,7 @@ tc.channel.sender.send_time = 5
 tc.channel.sender.send_interval = 0.5
 ```
 
-###Collecting unhandled exceptions###
+### Collecting unhandled exceptions ###
 ```ruby
 require 'application_insights'
 # setup unhandled exception handler
@@ -138,7 +138,7 @@ ApplicationInsights::UnhandledException.collect('<YOUR INSTRUMENTATION KEY GOES 
 raise Exception, 'Boom!'
 ```
 
-###Collecting requests for rack applications###
+### Collecting requests for rack applications ###
 ```ruby
 # set up the TrackRequest middleware in the rackup (config.ru) file
 require 'application_insights'
