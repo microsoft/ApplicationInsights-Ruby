@@ -88,9 +88,7 @@ class MockTelemetryChannelQueue < QueueBase
     @flush_count = 0
   end
 
-  attr_accessor :flush_count
-
-  attr_accessor :queue
+  attr_accessor :flush_count, :queue
 
   def push(data)
     @queue.push data

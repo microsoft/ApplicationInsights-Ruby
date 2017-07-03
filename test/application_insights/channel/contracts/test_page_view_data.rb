@@ -8,7 +8,7 @@ class TestPageViewData < Test::Unit::TestCase
     item = Contracts::PageViewData.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::PageViewData.new
@@ -20,7 +20,7 @@ class TestPageViewData < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_url_works_as_expected
     expected = 'Test string'
     item = Contracts::PageViewData.new
@@ -32,7 +32,7 @@ class TestPageViewData < Test::Unit::TestCase
     actual = item.url
     assert_equal expected, actual
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::PageViewData.new
@@ -44,7 +44,7 @@ class TestPageViewData < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_duration_works_as_expected
     expected = 'Test string'
     item = Contracts::PageViewData.new
@@ -56,19 +56,19 @@ class TestPageViewData < Test::Unit::TestCase
     actual = item.duration
     assert_equal expected, actual
   end
-  
+
   def test_properties_works_as_expected
     item = Contracts::PageViewData.new
     actual = item.properties
     assert_not_nil actual
   end
-  
+
   def test_measurements_works_as_expected
     item = Contracts::PageViewData.new
     actual = item.measurements
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::PageViewData.new
     item.ver = 42

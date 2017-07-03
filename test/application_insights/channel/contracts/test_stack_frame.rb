@@ -8,7 +8,7 @@ class TestStackFrame < Test::Unit::TestCase
     item = Contracts::StackFrame.new
     assert_not_nil item
   end
-  
+
   def test_level_works_as_expected
     expected = 42
     item = Contracts::StackFrame.new
@@ -20,7 +20,7 @@ class TestStackFrame < Test::Unit::TestCase
     actual = item.level
     assert_equal expected, actual
   end
-  
+
   def test_method_works_as_expected
     expected = 'Test string'
     item = Contracts::StackFrame.new
@@ -32,7 +32,7 @@ class TestStackFrame < Test::Unit::TestCase
     actual = item.method
     assert_equal expected, actual
   end
-  
+
   def test_assembly_works_as_expected
     expected = 'Test string'
     item = Contracts::StackFrame.new
@@ -44,7 +44,7 @@ class TestStackFrame < Test::Unit::TestCase
     actual = item.assembly
     assert_equal expected, actual
   end
-  
+
   def test_file_name_works_as_expected
     expected = 'Test string'
     item = Contracts::StackFrame.new
@@ -56,7 +56,7 @@ class TestStackFrame < Test::Unit::TestCase
     actual = item.file_name
     assert_equal expected, actual
   end
-  
+
   def test_line_works_as_expected
     expected = 42
     item = Contracts::StackFrame.new
@@ -68,7 +68,7 @@ class TestStackFrame < Test::Unit::TestCase
     actual = item.line
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::StackFrame.new
     item.level = 42

@@ -1,19 +1,9 @@
-require_relative 'json_serializable'
+module ApplicationInsights::Channel::Contracts
+  class DependencySourceType
+    UNDEFINED = 0
 
-module ApplicationInsights
-  module Channel
-    module Contracts
-      # Data contract class for type DependencySourceType.
-      class DependencySourceType
-        # Enumeration value UNDEFINED.
-        UNDEFINED = 0
-        
-        # Enumeration value AIC.
-        AIC = 1
-        
-        # Enumeration value APMC.
-        APMC = 2
-      end
-    end
+    AIC = 1
+
+    APMC = 2
   end
 end

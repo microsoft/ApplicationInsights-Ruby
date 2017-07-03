@@ -8,7 +8,7 @@ class TestInternal < Test::Unit::TestCase
     item = Contracts::Internal.new
     assert_not_nil item
   end
-  
+
   def test_sdk_version_works_as_expected
     expected = 'Test string'
     item = Contracts::Internal.new
@@ -20,7 +20,7 @@ class TestInternal < Test::Unit::TestCase
     actual = item.sdk_version
     assert_equal expected, actual
   end
-  
+
   def test_agent_version_works_as_expected
     expected = 'Test string'
     item = Contracts::Internal.new
@@ -32,7 +32,7 @@ class TestInternal < Test::Unit::TestCase
     actual = item.agent_version
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Internal.new
     item.sdk_version = 'Test string'
