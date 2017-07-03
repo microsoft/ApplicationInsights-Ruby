@@ -118,7 +118,7 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
 
   def test_success_works_as_expected
-    expected = TRUE
+    expected = true
     item = Contracts::RemoteDependencyData.new
     item.success = expected
     actual = item.success
@@ -130,7 +130,7 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
 
   def test_async_works_as_expected
-    expected = TRUE
+    expected = true
     item = Contracts::RemoteDependencyData.new
     item.async = expected
     actual = item.async
@@ -194,8 +194,8 @@ class TestRemoteDependencyData < Test::Unit::TestCase
     item.max = 1.5
     item.std_dev = 1.5
     item.dependency_kind = 5
-    item.success = TRUE
-    item.async = TRUE
+    item.success = true
+    item.async = true
     item.dependency_source = 5
     item.command_name = 'Test string'
     item.dependency_type_name = 'Test string'

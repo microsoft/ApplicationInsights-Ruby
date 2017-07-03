@@ -61,7 +61,7 @@ class TestSenderBase < Test::Unit::TestCase
       client = server.accept
       request = ''
       read_buffer_size = 64
-      while TRUE
+      while true
         temp = client.recv(read_buffer_size)
         request += temp
         break if temp.length < read_buffer_size
