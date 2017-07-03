@@ -77,10 +77,10 @@ module ApplicationInsights
       def format_request_duration(duration_seconds)
         if duration_seconds >= 86400
           # just return 1 day when it takes more than 1 day which should not happen for requests.
-          return "%d.%02d:%02d:%02d.%07d" % [1, 0, 0, 0, 0]
+          return "%02d.%02d:%02d:%02d.%07d" % [1, 0, 0, 0, 0]
         end
 
-        Time.at(duration_seconds).gmtime.strftime("0.%H:%M:%S.%7N")
+        Time.at(duration_seconds).gmtime.strftime("00.%H:%M:%S.%7N")
       end
     end
   end

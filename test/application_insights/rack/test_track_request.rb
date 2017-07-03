@@ -7,7 +7,7 @@ include ApplicationInsights::Rack
 
 class TestTrackRequest < Test::Unit::TestCase
 
-  TIME_SPAN_FORMAT = /^(?<day>\d{1})\.(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
+  TIME_SPAN_FORMAT = /^(?<day>\d{2})\.(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<fraction>\d{7})$/
 
   def test_call_works_as_expected
     response_code = rand(200..204)
@@ -34,7 +34,7 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal true, request_data.success
     assert_equal http_method, request_data.http_method
     assert_equal url, request_data.url
-    assert_equal true, request_data.duration.start_with?("0.00:00:02")
+    assert_equal true, request_data.duration.start_with?("00.00:00:02")
     assert Time.parse(request_data.start_time) - start_time < 0.01
   end
 
