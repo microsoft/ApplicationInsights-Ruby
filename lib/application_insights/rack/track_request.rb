@@ -75,9 +75,8 @@ module ApplicationInsights
       end
 
       def format_request_duration(duration_seconds)
-        if duration_seconds >= 86_400
-          # just return 1 day when it takes more than 1 day which should not
-          # happen for requests.
+        if duration_seconds >= 86400
+          # just return 1 day when it takes more than 1 day which should not happen for requests.
           return "%02d.%02d:%02d:%02d.%07d" % [1, 0, 0, 0, 0]
         end
 
