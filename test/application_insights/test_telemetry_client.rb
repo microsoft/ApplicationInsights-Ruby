@@ -100,6 +100,16 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
+  def test_track_request_view_works_as_expected_when_request_is_failed
+    client, sender = self.create_client
+    client.track_request 'test', '2015-01-24T23:10:22.7411910-08:00', '0:00:00:02.0000000','200', false
+    client.flush
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"2015-01-24T23:10:22.7411910-08:00","duration":"0:00:00:02.0000000","responseCode":"200","success":false}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
+    sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
+    actual = sender.data_to_send.to_json
+    assert_equal expected, actual
+  end
+
   def create_client
     sender = MockTelemetryClientSender.new
     queue = Channel::SynchronousQueue.new sender
