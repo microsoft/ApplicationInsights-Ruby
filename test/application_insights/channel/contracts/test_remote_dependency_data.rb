@@ -123,7 +123,7 @@ class TestRemoteDependencyData < Test::Unit::TestCase
     item.success = expected
     actual = item.success
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.success = expected
     actual = item.success
     assert_equal expected, actual
@@ -135,7 +135,7 @@ class TestRemoteDependencyData < Test::Unit::TestCase
     item.async = expected
     actual = item.async
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.async = expected
     actual = item.async
     assert_equal expected, actual
