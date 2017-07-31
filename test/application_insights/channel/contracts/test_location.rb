@@ -8,7 +8,7 @@ class TestLocation < Test::Unit::TestCase
     item = Contracts::Location.new
     assert_not_nil item
   end
-  
+
   def test_ip_works_as_expected
     expected = 'Test string'
     item = Contracts::Location.new
@@ -20,7 +20,7 @@ class TestLocation < Test::Unit::TestCase
     actual = item.ip
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::Location.new
     item.ip = 'Test string'

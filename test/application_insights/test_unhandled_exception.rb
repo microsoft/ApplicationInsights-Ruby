@@ -5,7 +5,6 @@ require_relative '../../lib/application_insights/unhandled_exception'
 include ApplicationInsights
 
 class TestUnhandledException < Test::Unit::TestCase
-
   def test_send
     sender = MockSynchronousSender.new
     error = 'Boom!'
@@ -15,9 +14,9 @@ class TestUnhandledException < Test::Unit::TestCase
     rescue
       UnhandledException.send instrumentation_key, sender
     end
+    payload = sender.buffer[0]
 
     assert_equal 1, sender.buffer.count
-    payload = sender.buffer[0]
     assert_equal instrumentation_key, payload[0].i_key
     assert_equal 'Unhandled', payload[0].data.base_data.handled_at
   end

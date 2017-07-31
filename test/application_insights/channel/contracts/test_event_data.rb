@@ -8,7 +8,7 @@ class TestEventData < Test::Unit::TestCase
     item = Contracts::EventData.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::EventData.new
@@ -20,7 +20,7 @@ class TestEventData < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::EventData.new
@@ -32,19 +32,19 @@ class TestEventData < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_properties_works_as_expected
     item = Contracts::EventData.new
     actual = item.properties
     assert_not_nil actual
   end
-  
+
   def test_measurements_works_as_expected
     item = Contracts::EventData.new
     actual = item.measurements
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::EventData.new
     item.ver = 42

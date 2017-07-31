@@ -8,7 +8,7 @@ class TestUser < Test::Unit::TestCase
     item = Contracts::User.new
     assert_not_nil item
   end
-  
+
   def test_account_acquisition_date_works_as_expected
     expected = 'Test string'
     item = Contracts::User.new
@@ -20,7 +20,7 @@ class TestUser < Test::Unit::TestCase
     actual = item.account_acquisition_date
     assert_equal expected, actual
   end
-  
+
   def test_account_id_works_as_expected
     expected = 'Test string'
     item = Contracts::User.new
@@ -32,7 +32,7 @@ class TestUser < Test::Unit::TestCase
     actual = item.account_id
     assert_equal expected, actual
   end
-  
+
   def test_user_agent_works_as_expected
     expected = 'Test string'
     item = Contracts::User.new
@@ -44,7 +44,7 @@ class TestUser < Test::Unit::TestCase
     actual = item.user_agent
     assert_equal expected, actual
   end
-  
+
   def test_id_works_as_expected
     expected = 'Test string'
     item = Contracts::User.new
@@ -56,7 +56,19 @@ class TestUser < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
+  def test_user_auth_id_as_expected
+    expected = 'Test string'
+    item = Contracts::User.new
+    item.auth_user_id = expected
+    actual = item.auth_user_id
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.auth_user_id = expected
+    actual = item.auth_user_id
+    assert_equal expected, actual
+  end
+
   def test_store_region_works_as_expected
     expected = 'Test string'
     item = Contracts::User.new
@@ -68,7 +80,7 @@ class TestUser < Test::Unit::TestCase
     actual = item.store_region
     assert_equal expected, actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::User.new
     item.account_acquisition_date = 'Test string'
@@ -76,8 +88,9 @@ class TestUser < Test::Unit::TestCase
     item.user_agent = 'Test string'
     item.id = 'Test string'
     item.store_region = 'Test string'
+    item.auth_user_id = 'Test string'
     actual = item.to_json
-    expected = '{"ai.user.accountAcquisitionDate":"Test string","ai.user.accountId":"Test string","ai.user.userAgent":"Test string","ai.user.id":"Test string","ai.user.storeRegion":"Test string"}'
+    expected = '{"ai.user.accountAcquisitionDate":"Test string","ai.user.accountId":"Test string","ai.user.userAgent":"Test string","ai.user.id":"Test string","ai.user.authUserId":"Test string","ai.user.storeRegion":"Test string"}'
     assert_equal expected, actual
   end
 end

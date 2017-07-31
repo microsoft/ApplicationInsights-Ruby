@@ -8,7 +8,7 @@ class TestRequestData < Test::Unit::TestCase
     item = Contracts::RequestData.new
     assert_not_nil item
   end
-  
+
   def test_ver_works_as_expected
     expected = 42
     item = Contracts::RequestData.new
@@ -20,7 +20,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.ver
     assert_equal expected, actual
   end
-  
+
   def test_id_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -32,7 +32,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
   def test_name_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -44,7 +44,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.name
     assert_equal expected, actual
   end
-  
+
   def test_start_time_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -56,7 +56,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.start_time
     assert_equal expected, actual
   end
-  
+
   def test_duration_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -68,7 +68,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.duration
     assert_equal expected, actual
   end
-  
+
   def test_response_code_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -80,7 +80,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.response_code
     assert_equal expected, actual
   end
-  
+
   def test_success_works_as_expected
     expected = true
     item = Contracts::RequestData.new
@@ -92,7 +92,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.success
     assert_equal expected, actual
   end
-  
+
   def test_http_method_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -104,7 +104,7 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.http_method
     assert_equal expected, actual
   end
-  
+
   def test_url_works_as_expected
     expected = 'Test string'
     item = Contracts::RequestData.new
@@ -116,19 +116,19 @@ class TestRequestData < Test::Unit::TestCase
     actual = item.url
     assert_equal expected, actual
   end
-  
+
   def test_properties_works_as_expected
     item = Contracts::RequestData.new
     actual = item.properties
     assert_not_nil actual
   end
-  
+
   def test_measurements_works_as_expected
     item = Contracts::RequestData.new
     actual = item.measurements
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::RequestData.new
     item.ver = 42

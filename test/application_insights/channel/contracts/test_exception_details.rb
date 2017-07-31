@@ -8,7 +8,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     item = Contracts::ExceptionDetails.new
     assert_not_nil item
   end
-  
+
   def test_id_works_as_expected
     expected = 42
     item = Contracts::ExceptionDetails.new
@@ -20,7 +20,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.id
     assert_equal expected, actual
   end
-  
+
   def test_outer_id_works_as_expected
     expected = 42
     item = Contracts::ExceptionDetails.new
@@ -32,7 +32,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.outer_id
     assert_equal expected, actual
   end
-  
+
   def test_type_name_works_as_expected
     expected = 'Test string'
     item = Contracts::ExceptionDetails.new
@@ -44,7 +44,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.type_name
     assert_equal expected, actual
   end
-  
+
   def test_message_works_as_expected
     expected = 'Test string'
     item = Contracts::ExceptionDetails.new
@@ -56,7 +56,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.message
     assert_equal expected, actual
   end
-  
+
   def test_has_full_stack_works_as_expected
     expected = true
     item = Contracts::ExceptionDetails.new
@@ -68,7 +68,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.has_full_stack
     assert_equal expected, actual
   end
-  
+
   def test_stack_works_as_expected
     expected = 'Test string'
     item = Contracts::ExceptionDetails.new
@@ -80,13 +80,13 @@ class TestExceptionDetails < Test::Unit::TestCase
     actual = item.stack
     assert_equal expected, actual
   end
-  
+
   def test_parsed_stack_works_as_expected
     item = Contracts::ExceptionDetails.new
     actual = item.parsed_stack
     assert_not_nil actual
   end
-  
+
   def test_to_json_works_as_expected
     item = Contracts::ExceptionDetails.new
     item.id = 42
@@ -98,7 +98,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     [ { 'key' => 'value' } ].each do |value|
       item.parsed_stack.push value
     end
-    
+
     actual = item.to_json
     expected = '{"id":42,"outerId":42,"typeName":"Test string","message":"Test string","hasFullStack":true,"stack":"Test string","parsedStack":[{"key":"value"}]}'
     assert_equal expected, actual
