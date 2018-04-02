@@ -1,4 +1,5 @@
 require_relative 'contracts/application'
+require_relative 'contracts/cloud'
 require_relative 'contracts/device'
 require_relative 'contracts/user'
 require_relative 'contracts/session'
@@ -26,6 +27,7 @@ module ApplicationInsights
       def initialize
         @instrumentation_key = nil
         @application = Contracts::Application.new
+        @cloud = Contracts::Cloud.new
         @device = Contracts::Device.new
         @user = Contracts::User.new
         @session = Contracts::Session.new
@@ -43,6 +45,11 @@ module ApplicationInsights
       # application you are running.
       # @return [Contracts::Application] the context object.
       attr_accessor :application
+
+      # The cloud context. This contains properties of the
+      # cloud role you are generating telemetry for.
+      # @return [Contracts::Cloud] the context object.
+      attr_accessor :cloud
 
       # The device context. This contains properties of the
       # device you are running on.

@@ -71,6 +71,32 @@ class TestTelemetryChannel < Test::Unit::TestCase
     assert_equal 'MockTelemetryItemData', actual.data.base_type
     assert_same expected, actual.data.base_data
   end
+
+  def test_get_tags_works_as_expected
+    queue = MockTelemetryChannelQueue.new SynchronousSender.new
+    context = TelemetryContext.new
+    context.application.ver = 'ver'
+    context.cloud.role_name = 'role name'
+    context.device.id = 'device id'
+    context.user.id = 'user id'
+    context.session.id = 'session id'
+    context.location.ip = 'ip'
+    context.operation.id = 'operation id'
+    channel = TelemetryChannel.new context, queue
+    expected = MockTelemetryItemData.new
+    channel.write expected
+
+    assert_equal 1, queue.queue.count
+    tags = queue.queue[0].tags
+    assert_equal 'rb:'+ ApplicationInsights::VERSION, tags['ai.internal.sdkVersion']
+    assert_equal 'ver', tags['ai.application.ver']
+    assert_equal 'role name', tags['ai.cloud.role']
+    assert_equal 'device id', tags['ai.device.id']
+    assert_equal 'user id', tags['ai.user.id']
+    assert_equal 'session id', tags['ai.session.id']
+    assert_equal 'ip', tags['ai.location.ip']
+    assert_equal 'operation id', tags['ai.operation.id']
+  end
 end
 
 class MockTelemetryItemData

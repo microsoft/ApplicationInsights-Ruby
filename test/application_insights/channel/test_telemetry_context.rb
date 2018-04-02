@@ -24,6 +24,14 @@ class TestTelemetryContext < Test::Unit::TestCase
     assert_same expected, context.application
   end
 
+  def test_cloud_works_as_expected
+    context = TelemetryContext.new
+    assert_not_nil context.cloud
+    expected = Contracts::Cloud.new
+    context.cloud = expected
+    assert_same expected, context.cloud
+  end
+
   def test_device_works_as_expected
     context = TelemetryContext.new
     assert_not_nil context.device

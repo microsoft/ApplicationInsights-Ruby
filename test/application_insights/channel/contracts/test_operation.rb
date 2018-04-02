@@ -81,6 +81,18 @@ class TestOperation < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
+  def test_correlation_vector_works_as_expected
+    expected = 'Test string'
+    item = Contracts::Operation.new
+    item.correlation_vector = expected
+    actual = item.correlation_vector
+    assert_equal expected, actual
+    expected = 'Other string'
+    item.correlation_vector = expected
+    actual = item.correlation_vector
+    assert_equal expected, actual
+  end
+
   def test_to_json_works_as_expected
     item = Contracts::Operation.new
     item.id = 'Test string'
@@ -89,8 +101,9 @@ class TestOperation < Test::Unit::TestCase
     item.root_id = 'Test string'
     item.synthetic_source = 'Test string'
     item.is_synthetic = 'Test string'
+    item.correlation_vector = 'Test string'
     actual = item.to_json
-    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string","ai.operation.syntheticSource":"Test string","ai.operation.isSynthetic":"Test string"}'
+    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string","ai.operation.syntheticSource":"Test string","ai.operation.isSynthetic":"Test string","ai.operation.correlationVector":"Test string"}'
     assert_equal expected, actual
   end
 end
