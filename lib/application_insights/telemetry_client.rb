@@ -1,6 +1,7 @@
 require_relative 'channel/telemetry_context'
 require_relative 'channel/telemetry_channel'
 require_relative 'channel/contracts/page_view_data'
+require_relative 'channel/contracts/envelope'
 require_relative 'channel/contracts/exception_data'
 require_relative 'channel/contracts/exception_details'
 require_relative 'channel/contracts/event_data'
@@ -218,6 +219,21 @@ module ApplicationInsights
       )
 
       self.channel.write(data, self.context)
+    end
+
+    # Sends a single telemetry.
+    # This is useful in cases like telemetry forwarding, where the data is already in the
+    # format of envelope and only want to leverage the telemetry channel to send data out.
+    # @param [Hash] data the envelope data of the telemetry.
+    def track_envelope(data)
+      envelope = Channel::Contracts::Envelope.new
+      Channel::Contracts::Envelope.json_mappings.each do |attr, name|
+        if data[name]
+          envelope.send(:"#{attr}=", data[name])
+        end
+      end
+
+      self.channel.queue.push(envelope)
     end
 
     # Flushes data in the queue. Data in the queue will be sent either immediately

@@ -110,6 +110,22 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
+  def test_track_envelope_works_as_expected
+    data = {
+      "name" => "request telemetry",
+      "iKey" => "ikey",
+      "tags" => {},
+      "data" => {:baseType => "RequestData"},
+      "extra" => {}
+    }
+    client, sender = self.create_client
+    client.track_envelope data
+    client.flush
+    expected = '[{"ver":1,"name":"request telemetry","sampleRate":100.0,"iKey":"ikey","data":{"baseType":"RequestData"}}]'
+    actual = sender.data_to_send.to_json
+    assert_equal expected, actual
+  end
+
   def create_client
     sender = MockTelemetryClientSender.new
     queue = Channel::SynchronousQueue.new sender
