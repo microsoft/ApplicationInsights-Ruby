@@ -3,6 +3,7 @@ require 'net/http'
 require 'openssl'
 require 'stringio'
 require 'zlib'
+require 'logger'
 
 module ApplicationInsights
   module Channel
@@ -20,6 +21,7 @@ module ApplicationInsights
         @service_endpoint_uri = service_endpoint_uri
         @queue = nil
         @send_buffer_size = 100
+        @logger = Logger.new(STDOUT)
       end
 
       # The service endpoint URI where this sender will send data to.
@@ -63,6 +65,10 @@ module ApplicationInsights
 
         response = http.request(request)
         http.finish if http.started?
+
+        if !response.kind_of? Net::HTTPSuccess
+          @logger.error('application_insights') { "Failed to send data: #{response.message}" }
+        end
       end
 
       private
