@@ -3,6 +3,7 @@ require_relative '../../../lib/application_insights/channel/telemetry_context'
 require_relative '../../../lib/application_insights/channel/synchronous_queue'
 require_relative '../../../lib/application_insights/channel/synchronous_sender'
 require 'test/unit'
+require 'time'
 
 include ApplicationInsights::Channel
 
@@ -70,6 +71,24 @@ class TestTelemetryChannel < Test::Unit::TestCase
     assert_not_nil actual.data
     assert_equal 'MockTelemetryItemData', actual.data.base_type
     assert_same expected, actual.data.base_data
+  end
+
+  def test_write_custom_timestamp
+    queue = MockTelemetryChannelQueue.new SynchronousSender.new
+    context = TelemetryContext.new
+    context.instrumentation_key = 'instrumentation key'
+    channel = TelemetryChannel.new context, queue
+    data = MockTelemetryItemData.new
+    timestamp = (Time.now - 5).iso8601(7)
+
+    channel.write data
+    actual = queue.queue[0]
+    assert_not_equal timestamp, actual.time
+
+    channel.write data, nil, timestamp
+    actual = queue.queue[1]
+    assert_equal timestamp, actual.time
+
   end
 end
 
