@@ -4,6 +4,7 @@ require_relative '../../lib/application_insights/channel/synchronous_queue'
 require_relative '../../lib/application_insights/channel/telemetry_channel'
 require 'json'
 require 'test/unit'
+require 'time'
 
 include ApplicationInsights
 
@@ -60,7 +61,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_track_event_view_works_as_expected
+  def test_track_event_works_as_expected
     client, sender = self.create_client
     client.track_event 'test'
     client.flush
@@ -70,7 +71,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_track_metric_view_works_as_expected
+  def test_track_metric_works_as_expected
     client, sender = self.create_client
     client.track_metric 'test', 42
     client.flush
@@ -80,7 +81,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_track_trace_view_works_as_expected
+  def test_track_trace_works_as_expected
     client, sender = self.create_client
     client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING
     client.flush
@@ -90,22 +91,54 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_track_request_view_works_as_expected
+  def test_track_trace_works_as_expected_with_custom_timestamp
+    timestamp = Time.now.iso8601
     client, sender = self.create_client
-    client.track_request 'test', '2015-01-24T23:10:22.7411910-08:00', '0:00:00:02.0000000','200', true
+    client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING, {:time => timestamp}
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"2015-01-24T23:10:22.7411910-08:00","duration":"0:00:00:02.0000000","responseCode":"200","success":true}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
-    sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test","severityLevel":2}}}]'
+      .gsub!(/__version__/, ApplicationInsights::VERSION)
+      .gsub!(/__time__/, timestamp)
     actual = sender.data_to_send.to_json
     assert_equal expected, actual
   end
 
-  def test_track_request_view_works_as_expected_when_request_is_failed
+  def test_track_request_works_as_expected
+    start_time = Time.now.iso8601
     client, sender = self.create_client
-    client.track_request 'test', '2015-01-24T23:10:22.7411910-08:00', '0:00:00:02.0000000','200', false
+    client.track_request 'test', start_time, '0:00:00:02.0000000','200', true
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"2015-01-24T23:10:22.7411910-08:00","duration":"0:00:00:02.0000000","responseCode":"200","success":false}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
-    sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"__time__","duration":"0:00:00:02.0000000","responseCode":"200","success":true}}}]'
+      .gsub!(/__version__/, ApplicationInsights::VERSION)
+      .gsub!(/__time__/, start_time)
+    actual = sender.data_to_send.to_json
+    assert_equal expected, actual
+  end
+
+  def test_track_request_works_as_expected_when_request_is_failed
+    start_time = Time.now.iso8601
+    client, sender = self.create_client
+    client.track_request 'test', start_time, '0:00:00:02.0000000','200', false
+    client.flush
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"__time__","duration":"0:00:00:02.0000000","responseCode":"200","success":false}}}]'
+      .gsub!(/__version__/, ApplicationInsights::VERSION)
+      .gsub!(/__time__/, start_time)
+    actual = sender.data_to_send.to_json
+    assert_equal expected, actual
+  end
+
+  def test_track_envelope_works_as_expected
+    data = {
+      "name" => "request telemetry",
+      "iKey" => "ikey",
+      "tags" => {},
+      "data" => {:baseType => "RequestData"},
+      "extra" => {}
+    }
+    client, sender = self.create_client
+    client.track_envelope data
+    client.flush
+    expected = '[{"ver":1,"name":"request telemetry","sampleRate":100.0,"iKey":"ikey","data":{"baseType":"RequestData"}}]'
     actual = sender.data_to_send.to_json
     assert_equal expected, actual
   end

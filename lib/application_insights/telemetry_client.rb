@@ -1,6 +1,7 @@
 require_relative 'channel/telemetry_context'
 require_relative 'channel/telemetry_channel'
 require_relative 'channel/contracts/page_view_data'
+require_relative 'channel/contracts/envelope'
 require_relative 'channel/contracts/exception_data'
 require_relative 'channel/contracts/exception_details'
 require_relative 'channel/contracts/event_data'
@@ -50,6 +51,7 @@ module ApplicationInsights
     #   wants attached to this data item. (defaults to: {})
     # @option options [Hash] :measurements the set of custom measurements the
     #   client wants to attach to this data item (defaults to: {})
+    # @option options [String] :time the timestamp of the page view
     def track_page_view(name, url, options={})
       data_attributes = {
         :name => name || 'Null',
@@ -59,7 +61,7 @@ module ApplicationInsights
         :measurements => options[:measurements] || {}
       }
       data = Channel::Contracts::PageViewData.new data_attributes
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, options[:time])
     end
 
     # Send information about a single exception that occurred in the application.
@@ -72,6 +74,7 @@ module ApplicationInsights
     #   wants attached to this data item. (defaults to: {})
     # @option options [Hash] :measurements the set of custom measurements the
     #   client wants to attach to this data item (defaults to: {})
+    # @option options [String] :time the timestamp of the exception
     def track_exception(exception, options={})
       return unless exception.is_a? Exception
 
@@ -110,7 +113,7 @@ module ApplicationInsights
         :measurements => options[:measurements] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, options[:time])
     end
 
     # Send information about a single event that has occurred in the context of
@@ -122,6 +125,7 @@ module ApplicationInsights
     #   wants attached to this data item. (defaults to: {})
     # @option options [Hash] :measurements the set of custom measurements the
     #   client wants to attach to this data item (defaults to: {})
+    # @option options [String] :time the timestamp of the event
     def track_event(name, options={})
       data = Channel::Contracts::EventData.new(
         :name => name || 'Null',
@@ -129,7 +133,7 @@ module ApplicationInsights
         :measurements => options[:measurements] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, options[:time])
     end
 
     # Send information about a single metric data point that was captured for
@@ -152,6 +156,7 @@ module ApplicationInsights
     #   wants attached to this data item. (defaults to: {})
     # @option options [Hash] :measurements the set of custom measurements the
     #   client wants to attach to this data item (defaults to: {})
+    # @option options [String] :time the timestamp of the metric
     def track_metric(name, value, options={})
       data_point = Channel::Contracts::DataPoint.new(
         :name => name || 'Null',
@@ -168,7 +173,7 @@ module ApplicationInsights
         :properties => options[:properties] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, options[:time])
     end
 
     # Sends a single trace statement.
@@ -178,6 +183,7 @@ module ApplicationInsights
     #   {Channel::Contracts::EventData} object.
     # @option options [Hash] :properties the set of custom properties the client
     #   wants attached to this data item. (defaults to: {})
+    # @option options [String] :time the timestamp of the trace
     def track_trace(name, severity_level = nil, options={})
       data = Channel::Contracts::MessageData.new(
         :message => name || 'Null',
@@ -185,7 +191,7 @@ module ApplicationInsights
         :properties => options[:properties] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, options[:time])
     end
 
     # Sends a single request.
@@ -217,7 +223,22 @@ module ApplicationInsights
         :measurements => options[:measurements] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, start_time)
+    end
+
+    # Sends a single telemetry.
+    # This is useful in cases like telemetry forwarding, where the data is already in the
+    # format of envelope and only want to leverage the telemetry channel to send data out.
+    # @param [Hash] data the envelope data of the telemetry.
+    def track_envelope(data)
+      envelope = Channel::Contracts::Envelope.new
+      Channel::Contracts::Envelope.json_mappings.each do |attr, name|
+        if data[name]
+          envelope.send(:"#{attr}=", data[name])
+        end
+      end
+
+      self.channel.queue.push(envelope)
     end
 
     # Flushes data in the queue. Data in the queue will be sent either immediately
