@@ -92,6 +92,7 @@ module ApplicationInsights
 
         [internal_context,
           context.application,
+          context.cloud,
           context.device,
           context.user,
           context.session,

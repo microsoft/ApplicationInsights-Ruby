@@ -11,7 +11,7 @@ class TestTrackRequest < Test::Unit::TestCase
 
   def test_call_works_as_expected
     response_code = rand(200..204)
-    app = Proc.new {|env| sleep(2); [response_code, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    app = Proc.new {|env| sleep(2.5); [response_code, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
     url = "http://localhost:8080/foo?a=b"
     http_method = 'PUT'
     env = Rack::MockRequest.env_for(url, :method => http_method)
