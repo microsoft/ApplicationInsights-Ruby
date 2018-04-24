@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'yard', '~> 0.8.7.6'
+  spec.add_development_dependency 'yard', '~> 0.9.11'
   spec.add_development_dependency 'redcarpet', '~> 3.2.2'
   spec.add_development_dependency 'rack', '>= 1.0.0'
   spec.add_development_dependency 'test-unit', '~> 3.0.8'
