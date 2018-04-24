@@ -63,7 +63,7 @@ class TestExceptionDetails < Test::Unit::TestCase
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
-    expected = FALSE
+    expected = false
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
