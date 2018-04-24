@@ -2,9 +2,15 @@
 
 If you're interested in contributing, take a look at the general [contributer's guide](https://github.com/Microsoft/ApplicationInsights-Home/blob/master/CONTRIBUTING.md) first.
 
+## Build Gem
+
+Run ```gem build application_insights.gemspec``` to generate the gem file.
+
+And you can install the gem to test it locally by running ```gem install application_insights-[version].gem```.
+
 ## Run Test
 
-Make sure you have bundler installed, you can install it by ```gem install bundler```. And run ```bundler install``` once to install all dependencies.
+Make sure you have bundler installed, you can install it by ```sudo gem install bundler```. And run ```bundler install``` once to install all dependencies.
 
 Run ```rake test```.
 
