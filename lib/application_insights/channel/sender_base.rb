@@ -38,6 +38,9 @@ module ApplicationInsights
       # @return [Fixnum] the maximum number of items in a telemetry batch.
       attr_accessor :send_buffer_size
 
+      # The logger for the sender.
+      attr_accessor :logger
+
       # Immediately sends the data passed in to {#service_endpoint_uri}. If the
       # service request fails, the passed in items are pushed back to the {#queue}.
       # @param [Array<Contracts::Envelope>] data_to_send an array of

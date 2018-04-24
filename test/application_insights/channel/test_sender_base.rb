@@ -1,5 +1,6 @@
 require_relative '../../../lib/application_insights/channel/queue_base'
 require_relative '../../../lib/application_insights/channel/sender_base'
+require_relative '../test_logger'
 require 'socket'
 require 'test/unit'
 require 'thread'
@@ -38,20 +39,26 @@ class TestSenderBase < Test::Unit::TestCase
 
   def test_send_works_as_expected_with_400_code
     thread, port = execute_server '400 BadRequest'
+    test_logger = TestLogger.new
     sender = SenderBase.new 'http://localhost:' + port.to_s + '/track'
+    sender.logger = test_logger
     sender.queue = []
     sender.send([1, 2])
     thread.join
     assert_equal [], sender.queue
+    assert_true test_logger.messages.include?('BadRequest')
   end
 
   def test_send_works_as_expected_with_500_code
     thread, port = execute_server '500 InternalServerError'
+    test_logger = TestLogger.new
     sender = SenderBase.new 'http://localhost:' + port.to_s + '/track'
+    sender.logger = test_logger
     sender.queue = []
     sender.send([1, 2])
     thread.join
     assert_equal [], sender.queue
+    assert_true test_logger.messages.include?('InternalServerError')
   end
 
   def execute_server(code)
