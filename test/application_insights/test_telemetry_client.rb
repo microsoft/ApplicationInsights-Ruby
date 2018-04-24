@@ -81,24 +81,12 @@ class TestTelemetryClient < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_track_trace_works_as_expected
+  def test_track_trace_view_works_as_expected
     client, sender = self.create_client
     client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING
     client.flush
     expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test","severityLevel":2}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
     sender.data_to_send[0].time = 'TIME_PLACEHOLDER'
-    actual = sender.data_to_send.to_json
-    assert_equal expected, actual
-  end
-
-  def test_track_trace_works_as_expected_with_custom_timestamp
-    timestamp = Time.now.iso8601
-    client, sender = self.create_client
-    client.track_trace 'test', Channel::Contracts::SeverityLevel::WARNING, {:time => timestamp}
-    client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Message","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"MessageData","baseData":{"ver":2,"message":"test","severityLevel":2}}}]'
-      .gsub!(/__version__/, ApplicationInsights::VERSION)
-      .gsub!(/__time__/, timestamp)
     actual = sender.data_to_send.to_json
     assert_equal expected, actual
   end
