@@ -67,7 +67,7 @@ module ApplicationInsights
         http.finish if http.started?
 
         if !response.kind_of? Net::HTTPSuccess
-          @logger.error('application_insights') { "Failed to send data: #{response.message}" }
+          @logger.warn('application_insights') { "Failed to send data: #{response.message}" }
         end
       end
 
