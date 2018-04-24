@@ -78,7 +78,6 @@ tc.flush
 ```ruby
 require 'application_insights'
 tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>'
-tc.context.application.id = 'My application'
 tc.context.application.ver = '1.2.3'
 tc.context.device.id = 'My current device'
 tc.context.device.oem_name = 'Asus'
