@@ -10,108 +10,96 @@ class TestRequestData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 44
     item = Contracts::RequestData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 53
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
   end
 
   def test_id_works_as_expected
-    expected = 'Test string'
+    expected = 'MgQDgnwj'
     item = Contracts::RequestData.new
     item.id = expected
     actual = item.id
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'ZQLhHKEQ'
     item.id = expected
     actual = item.id
+    assert_equal expected, actual
+  end
+
+  def test_source_works_as_expected
+    expected = 'dgIPCOqW'
+    item = Contracts::RequestData.new
+    item.source = expected
+    actual = item.source
+    assert_equal expected, actual
+    expected = 'bNniMOzG'
+    item.source = expected
+    actual = item.source
     assert_equal expected, actual
   end
 
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'IpbmDRHR'
     item = Contracts::RequestData.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'NMfahvIU'
     item.name = expected
     actual = item.name
-    assert_equal expected, actual
-  end
-
-  def test_start_time_works_as_expected
-    expected = 'Test string'
-    item = Contracts::RequestData.new
-    item.start_time = expected
-    actual = item.start_time
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.start_time = expected
-    actual = item.start_time
     assert_equal expected, actual
   end
 
   def test_duration_works_as_expected
-    expected = 'Test string'
+    expected = 'pWJMqvrn'
     item = Contracts::RequestData.new
     item.duration = expected
     actual = item.duration
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'sxFglGld'
     item.duration = expected
     actual = item.duration
     assert_equal expected, actual
   end
 
   def test_response_code_works_as_expected
-    expected = 'Test string'
+    expected = 'HbsJtlrO'
     item = Contracts::RequestData.new
     item.response_code = expected
     actual = item.response_code
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'owSqbWQM'
     item.response_code = expected
     actual = item.response_code
     assert_equal expected, actual
   end
 
   def test_success_works_as_expected
-    expected = true
+    expected = FALSE
     item = Contracts::RequestData.new
     item.success = expected
     actual = item.success
     assert_equal expected, actual
-    expected = false
+    expected = TRUE
     item.success = expected
     actual = item.success
-    assert_equal expected, actual
-  end
-
-  def test_http_method_works_as_expected
-    expected = 'Test string'
-    item = Contracts::RequestData.new
-    item.http_method = expected
-    actual = item.http_method
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.http_method = expected
-    actual = item.http_method
     assert_equal expected, actual
   end
 
   def test_url_works_as_expected
-    expected = 'Test string'
+    expected = 'uZuDIKVi'
     item = Contracts::RequestData.new
     item.url = expected
     actual = item.url
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'IrDHfhEX'
     item.url = expected
     actual = item.url
     assert_equal expected, actual
@@ -131,23 +119,22 @@ class TestRequestData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::RequestData.new
-    item.ver = 42
-    item.id = 'Test string'
-    item.name = 'Test string'
-    item.start_time = 'Test string'
-    item.duration = 'Test string'
-    item.response_code = 'Test string'
-    item.success = true
-    item.http_method = 'Test string'
-    item.url = 'Test string'
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    item.ver = 44
+    item.id = 'MgQDgnwj'
+    item.source = 'dgIPCOqW'
+    item.name = 'IpbmDRHR'
+    item.duration = 'pWJMqvrn'
+    item.response_code = 'HbsJtlrO'
+    item.success = FALSE
+    item.url = 'uZuDIKVi'
+    { 'KAbR' => 'LoRanEpP' }.each do |key, value|
       item.properties[key] = value
     end
-    { 'key1' => 3.1415 , 'key2' => 42.2 }.each do |key, value|
+    { 'GTJR' => 3.9199 }.each do |key, value|
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"id":"Test string","name":"Test string","startTime":"Test string","duration":"Test string","responseCode":"Test string","success":true,"httpMethod":"Test string","url":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
+    expected = '{"ver":44,"id":"MgQDgnwj","source":"dgIPCOqW","name":"IpbmDRHR","duration":"pWJMqvrn","responseCode":"HbsJtlrO","success":false,"url":"uZuDIKVi","properties":{"KAbR":"LoRanEpP"},"measurements":{"GTJR":3.9199}}'
     assert_equal expected, actual
   end
 end

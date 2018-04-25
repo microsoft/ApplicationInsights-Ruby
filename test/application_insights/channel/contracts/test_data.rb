@@ -10,12 +10,12 @@ class TestData < Test::Unit::TestCase
   end
 
   def test_base_type_works_as_expected
-    expected = 'Test string'
+    expected = 'DkiuYcvD'
     item = Contracts::Data.new
     item.base_type = expected
     actual = item.base_type
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'cMlRgUYh'
     item.base_type = expected
     actual = item.base_type
     assert_equal expected, actual
@@ -35,10 +35,11 @@ class TestData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::Data.new
-    item.base_type = 'Test string'
+    item.base_type = 'DkiuYcvD'
+    item.base_type = 'DkiuYcvD'
     item.base_data = { 'key' => 'value' }
     actual = item.to_json
-    expected = '{"baseType":"Test string","baseData":{"key":"value"}}'
+    expected = '{"baseType":"DkiuYcvD","baseData":{"key":"value"}}'
     assert_equal expected, actual
   end
 end

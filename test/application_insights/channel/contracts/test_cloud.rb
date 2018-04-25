@@ -9,25 +9,25 @@ class TestCloud < Test::Unit::TestCase
     assert_not_nil item
   end
 
-  def test_role_name_works_as_expected
-    expected = 'Test string'
+  def test_role_works_as_expected
+    expected = 'xVvRTelh'
     item = Contracts::Cloud.new
-    item.role_name = expected
-    actual = item.role_name
+    item.role = expected
+    actual = item.role
     assert_equal expected, actual
-    expected = 'Other string'
-    item.role_name = expected
-    actual = item.role_name
+    expected = 'ftVmPRMR'
+    item.role = expected
+    actual = item.role
     assert_equal expected, actual
   end
 
   def test_role_instance_works_as_expected
-    expected = 'Test string'
+    expected = 'ouUssqtY'
     item = Contracts::Cloud.new
     item.role_instance = expected
     actual = item.role_instance
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'zeXpdMOC'
     item.role_instance = expected
     actual = item.role_instance
     assert_equal expected, actual
@@ -35,10 +35,10 @@ class TestCloud < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::Cloud.new
-    item.role_name = 'Role name'
-    item.role_instance = 'Role instance'
+    item.role = 'xVvRTelh'
+    item.role_instance = 'ouUssqtY'
     actual = item.to_json
-    expected = '{"ai.cloud.role":"Role name","ai.cloud.roleInstance":"Role instance"}'
+    expected = '{"ai.cloud.role":"xVvRTelh","ai.cloud.roleInstance":"ouUssqtY"}'
     assert_equal expected, actual
   end
 end

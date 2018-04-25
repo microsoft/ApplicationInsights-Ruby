@@ -10,12 +10,12 @@ class TestMetricData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 56
     item = Contracts::MetricData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 38
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
@@ -35,16 +35,16 @@ class TestMetricData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::MetricData.new
-    item.ver = 42
+    item.ver = 56
     [ { 'key' => 'value' } ].each do |value|
       item.metrics.push value
     end
 
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    { 'nUVt' => 'UsxiClbK' }.each do |key, value|
       item.properties[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"metrics":[{"key":"value"}],"properties":{"key1":"test value 1","key2":"test value 2"}}'
+    expected = '{"ver":56,"metrics":[{"key":"value"}],"properties":{"nUVt":"UsxiClbK"}}'
     assert_equal expected, actual
   end
 end

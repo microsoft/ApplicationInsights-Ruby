@@ -41,7 +41,7 @@ module ApplicationInsights
         private
 
         def visit(object)
-          return if object.nil?
+          return unless object
 
           if object.is_a? Array
             object.map { |e| visit e }

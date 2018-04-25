@@ -10,48 +10,35 @@ class TestSession < Test::Unit::TestCase
   end
 
   def test_id_works_as_expected
-    expected = 'Test string'
+    expected = 'loQoJqjW'
     item = Contracts::Session.new
     item.id = expected
     actual = item.id
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'wqzRpTBu'
     item.id = expected
     actual = item.id
     assert_equal expected, actual
   end
 
   def test_is_first_works_as_expected
-    expected = 'Test string'
+    expected = 'XoyYwPiz'
     item = Contracts::Session.new
     item.is_first = expected
     actual = item.is_first
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'hZyQkrHb'
     item.is_first = expected
     actual = item.is_first
-    assert_equal expected, actual
-  end
-
-  def test_is_new_works_as_expected
-    expected = 'Test string'
-    item = Contracts::Session.new
-    item.is_new = expected
-    actual = item.is_new
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.is_new = expected
-    actual = item.is_new
     assert_equal expected, actual
   end
 
   def test_to_json_works_as_expected
     item = Contracts::Session.new
-    item.id = 'Test string'
-    item.is_first = 'Test string'
-    item.is_new = 'Test string'
+    item.id = 'loQoJqjW'
+    item.is_first = 'XoyYwPiz'
     actual = item.to_json
-    expected = '{"ai.session.id":"Test string","ai.session.isFirst":"Test string","ai.session.isNew":"Test string"}'
+    expected = '{"ai.session.id":"loQoJqjW","ai.session.isFirst":"XoyYwPiz"}'
     assert_equal expected, actual
   end
 end

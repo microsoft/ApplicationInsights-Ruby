@@ -4,18 +4,17 @@ module ApplicationInsights::Channel::Contracts
   class RequestData
     include JsonSerializable
 
-    attr_accessor :ver, :id, :name, :start_time, :duration, :response_code,
-      :success, :http_method, :url, :properties, :measurements
+    attr_accessor :ver, :id, :source, :name, :duration, :response_code, :success,
+      :url, :properties, :measurements
 
     attribute_mapping(
       ver: 'ver',
       id: 'id',
+      source: 'source',
       name: 'name',
-      start_time: 'startTime',
       duration: 'duration',
       response_code: 'responseCode',
       success: 'success',
-      http_method: 'httpMethod',
       url: 'url',
       properties: 'properties',
       measurements: 'measurements'

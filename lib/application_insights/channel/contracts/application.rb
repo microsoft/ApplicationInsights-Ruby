@@ -4,11 +4,10 @@ module ApplicationInsights::Channel::Contracts
   class Application
     include JsonSerializable
 
-    attr_accessor :ver, :build
+    attr_accessor :ver
 
     attribute_mapping(
-      ver: 'ai.application.ver',
-      build: 'ai.application.build'
+      ver: 'ai.application.ver'
     )
   end
 end
