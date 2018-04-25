@@ -9,85 +9,97 @@ class TestDataPoint < Test::Unit::TestCase
     assert_not_nil item
   end
 
+  def test_ns_works_as_expected
+    expected = 'jDBZQtSX'
+    item = Contracts::DataPoint.new
+    item.ns = expected
+    actual = item.ns
+    assert_equal expected, actual
+    expected = 'FrKumsuy'
+    item.ns = expected
+    actual = item.ns
+    assert_equal expected, actual
+  end
+
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'ILuHEzWe'
     item = Contracts::DataPoint.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'DamjApTx'
     item.name = expected
     actual = item.name
     assert_equal expected, actual
   end
 
   def test_kind_works_as_expected
-    expected = 5
+    expected = 89
     item = Contracts::DataPoint.new
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
-    expected = 3
+    expected = 69
     item.kind = expected
     actual = item.kind
     assert_equal expected, actual
   end
 
   def test_value_works_as_expected
-    expected = 1.5
+    expected = 0.6264
     item = Contracts::DataPoint.new
     item.value = expected
     actual = item.value
     assert_equal expected, actual
-    expected = 4.8
+    expected = 1.322
     item.value = expected
     actual = item.value
     assert_equal expected, actual
   end
 
   def test_count_works_as_expected
-    expected = 42
+    expected = 92
     item = Contracts::DataPoint.new
     item.count = expected
     actual = item.count
     assert_equal expected, actual
-    expected = 13
+    expected = 10
     item.count = expected
     actual = item.count
     assert_equal expected, actual
   end
 
   def test_min_works_as_expected
-    expected = 1.5
+    expected = 0.597
     item = Contracts::DataPoint.new
     item.min = expected
     actual = item.min
     assert_equal expected, actual
-    expected = 4.8
+    expected = 3.8705
     item.min = expected
     actual = item.min
     assert_equal expected, actual
   end
 
   def test_max_works_as_expected
-    expected = 1.5
+    expected = 3.0309
     item = Contracts::DataPoint.new
     item.max = expected
     actual = item.max
     assert_equal expected, actual
-    expected = 4.8
+    expected = 4.215
     item.max = expected
     actual = item.max
     assert_equal expected, actual
   end
 
   def test_std_dev_works_as_expected
-    expected = 1.5
+    expected = 8.2776
     item = Contracts::DataPoint.new
     item.std_dev = expected
     actual = item.std_dev
     assert_equal expected, actual
-    expected = 4.8
+    expected = 4.9077
     item.std_dev = expected
     actual = item.std_dev
     assert_equal expected, actual
@@ -95,15 +107,16 @@ class TestDataPoint < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::DataPoint.new
-    item.name = 'Test string'
-    item.kind = 5
-    item.value = 1.5
-    item.count = 42
-    item.min = 1.5
-    item.max = 1.5
-    item.std_dev = 1.5
+    item.ns = 'jDBZQtSX'
+    item.name = 'ILuHEzWe'
+    item.kind = 89
+    item.value = 0.6264
+    item.count = 92
+    item.min = 0.597
+    item.max = 3.0309
+    item.std_dev = 8.2776
     actual = item.to_json
-    expected = '{"name":"Test string","kind":5,"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5}'
+    expected = '{"ns":"jDBZQtSX","name":"ILuHEzWe","kind":89,"value":0.6264,"count":92,"min":0.597,"max":3.0309,"stdDev":8.2776}'
     assert_equal expected, actual
   end
 end

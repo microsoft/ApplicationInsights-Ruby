@@ -10,84 +10,60 @@ class TestOperation < Test::Unit::TestCase
   end
 
   def test_id_works_as_expected
-    expected = 'Test string'
+    expected = 'xgpiibGZ'
     item = Contracts::Operation.new
     item.id = expected
     actual = item.id
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'AHBwRDsJ'
     item.id = expected
     actual = item.id
     assert_equal expected, actual
   end
 
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'Azjyxlyr'
     item = Contracts::Operation.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'XbRrfAgL'
     item.name = expected
     actual = item.name
     assert_equal expected, actual
   end
 
   def test_parent_id_works_as_expected
-    expected = 'Test string'
+    expected = 'suDJVmiw'
     item = Contracts::Operation.new
     item.parent_id = expected
     actual = item.parent_id
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'FPKAsoNX'
     item.parent_id = expected
     actual = item.parent_id
-    assert_equal expected, actual
-  end
-
-  def test_root_id_works_as_expected
-    expected = 'Test string'
-    item = Contracts::Operation.new
-    item.root_id = expected
-    actual = item.root_id
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.root_id = expected
-    actual = item.root_id
     assert_equal expected, actual
   end
 
   def test_synthetic_source_works_as_expected
-    expected = 'Test string'
+    expected = 'HoeKGdhh'
     item = Contracts::Operation.new
     item.synthetic_source = expected
     actual = item.synthetic_source
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'nmKPjenu'
     item.synthetic_source = expected
     actual = item.synthetic_source
-    assert_equal expected, actual
-  end
-
-  def test_is_synthetic_works_as_expected
-    expected = 'Test string'
-    item = Contracts::Operation.new
-    item.is_synthetic = expected
-    actual = item.is_synthetic
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.is_synthetic = expected
-    actual = item.is_synthetic
     assert_equal expected, actual
   end
 
   def test_correlation_vector_works_as_expected
-    expected = 'Test string'
+    expected = 'OtLgtpLh'
     item = Contracts::Operation.new
     item.correlation_vector = expected
     actual = item.correlation_vector
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'XcyzqKpA'
     item.correlation_vector = expected
     actual = item.correlation_vector
     assert_equal expected, actual
@@ -95,15 +71,13 @@ class TestOperation < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::Operation.new
-    item.id = 'Test string'
-    item.name = 'Test string'
-    item.parent_id = 'Test string'
-    item.root_id = 'Test string'
-    item.synthetic_source = 'Test string'
-    item.is_synthetic = 'Test string'
-    item.correlation_vector = 'Test string'
+    item.id = 'xgpiibGZ'
+    item.name = 'Azjyxlyr'
+    item.parent_id = 'suDJVmiw'
+    item.synthetic_source = 'HoeKGdhh'
+    item.correlation_vector = 'OtLgtpLh'
     actual = item.to_json
-    expected = '{"ai.operation.id":"Test string","ai.operation.name":"Test string","ai.operation.parentId":"Test string","ai.operation.rootId":"Test string","ai.operation.syntheticSource":"Test string","ai.operation.isSynthetic":"Test string","ai.operation.correlationVector":"Test string"}'
+    expected = '{"ai.operation.id":"xgpiibGZ","ai.operation.name":"Azjyxlyr","ai.operation.parentId":"suDJVmiw","ai.operation.syntheticSource":"HoeKGdhh","ai.operation.correlationVector":"OtLgtpLh"}'
     assert_equal expected, actual
   end
 end
