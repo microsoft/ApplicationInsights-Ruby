@@ -1,13 +1,12 @@
 require_relative 'json_serializable'
 
 module ApplicationInsights::Channel::Contracts
-  class Application
+  class Domain
     include JsonSerializable
 
-    attr_accessor :ver
+    attr_accessor 
 
     attribute_mapping(
-      ver: 'ai.application.ver'
     )
   end
 end
