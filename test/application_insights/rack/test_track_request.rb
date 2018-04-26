@@ -36,6 +36,8 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal url, request_data.url
     assert_equal true, request_data.duration.start_with?("00.00:00:02")
     assert Time.parse(request_data.start_time) - start_time < 0.01
+
+    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
   end
 
   def test_call_with_failed_request
@@ -54,6 +56,8 @@ class TestTrackRequest < Test::Unit::TestCase
     payload = sender.buffer[0]
     request_data = payload[0].data.base_data
     assert_equal false, request_data.success
+
+    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
   end
 
   def test_call_with_unhandled_exception
@@ -80,6 +84,8 @@ class TestTrackRequest < Test::Unit::TestCase
     exception_data = payload[1].data.base_data
     assert_equal instrumentation_key, payload[1].i_key
     assert_equal 'Unhandled', exception_data.handled_at
+
+    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
   end
 
   def test_internal_client

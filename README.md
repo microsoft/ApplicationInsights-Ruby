@@ -145,3 +145,17 @@ use ApplicationInsights::Rack::TrackRequest, '<YOUR INSTRUMENTATION KEY GOES HER
 # For rails, suggest to set up this middleware in application.rb so that unhandled exceptions from controllers are also collected
 config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
 ```
+
+#### Retrieving a request's AppInsight ID  ####
+```ruby
+# from time to time you may need to access a request's AppInsight id from within your app
+application_insights_request_id = env['ApplicationInsights.request.id']
+
+# this can be used for a number of different purposes, including telemetry correlation
+uri = URI('http://api.example.com/search/?q=test')
+
+req = Net::HTTP::Get.new(uri)
+req['Request-Id'] = "|#{application_insights_request_id}." if application_insights_request_id
+
+Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(req) }
+```

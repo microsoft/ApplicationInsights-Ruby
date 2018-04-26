@@ -24,6 +24,9 @@ module ApplicationInsights
       # Track requests and send data to Application Insights asynchronously.
       # @param [Hash] env the rack environment.
       def call(env)
+        id = rand(16**32).to_s(16)
+        env['ApplicationInsights.request.id'] = id
+
         start = Time.now
         begin
           status, headers, response = @app.call(env)
@@ -44,7 +47,6 @@ module ApplicationInsights
         end
 
         request = ::Rack::Request.new env
-        id = rand(16**32).to_s(16)
         start_time = start.iso8601(7)
         duration = format_request_duration(stop - start)
         success = status.to_i < 400
