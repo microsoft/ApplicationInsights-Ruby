@@ -14,6 +14,44 @@ Make sure you have bundler installed, you can install it by ```sudo gem install 
 
 Run ```rake test```.
 
+## Releasing new version
+
+This is for repository maintainers only:
+
+1. Create and merge develop->master PR https://github.com/Microsoft/ApplicationInsights-Ruby/compare/master...develop?expand=1
+2. Checkout latest `master`
+    ``` 
+    git checkout master
+    git pull
+    ```
+
+3. Remove old gem: `rm *.gem`
+4. [Build gem](https://github.com/Microsoft/ApplicationInsights-Ruby/blob/develop/CONTRIBUTING.md#build-gem) 
+5. Push gem: `gem push application_insights-0.5.5.gem`
+6. Check gem on [rubygems](https://rubygems.org/gems/application_insights)
+7. Tag code:
+    ```
+    git tag -a v0.5.5
+    git push origin v0.5.5
+    ```
+8. Update description of [release](https://github.com/Microsoft/ApplicationInsights-Ruby/releases/edit/v0.5.5) from [CHANGELOG.md](https://github.com/Microsoft/ApplicationInsights-Ruby/blob/master/CHANGELOG.md)
+9. Create a branch off `develop` branch
+    ```
+    git checkout develop
+    git pull
+    git checkout -b releaseUpdates
+    git push --set-upstream origin releaseUpdates
+    ```
+10. Update version in `/lib/application_insights/version.rb`
+11. Create new entry for the next release in `/CHANGELOG.md`
+12. Push changes
+    ```
+    git add -A
+    git commit -m "post release updates"
+    git push
+    ```
+13. Submit releaseUpdates->develop PR: https://github.com/Microsoft/ApplicationInsights-Ruby/compare/develop...releaseUpdates?expand=1
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to
