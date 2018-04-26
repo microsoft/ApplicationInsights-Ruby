@@ -217,7 +217,7 @@ module ApplicationInsights
         :measurements => options[:measurements] || {}
       )
 
-      self.channel.write(data, self.context)
+      self.channel.write(data, self.context, start_time)
     end
 
     # Flushes data in the queue. Data in the queue will be sent either immediately

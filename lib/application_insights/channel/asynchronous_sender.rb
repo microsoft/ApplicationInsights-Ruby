@@ -122,9 +122,10 @@ module ApplicationInsights
               break
             end
           end
-        rescue
+        rescue Exception => e
           # Make sure work_thread sets to nil when it terminates abnormally
           @work_thread = nil
+          @logger.error('application_insights') { "Asynchronous sender work thread terminated abnormally: #{e.to_s}" }
         end
       end
     end

@@ -61,9 +61,20 @@ module ApplicationInsights
       #   an {Contracts::Envelope} before being enqueued to the {#queue}.
       # @param [TelemetryContext] context the override context to use when
       #   constructing the {Contracts::Envelope}.
-      def write(data, context=nil)
+      # @param [Time|String] time the timestamp of the telemetry used to construct the
+      #   {Contracts::Envelope}.
+      def write(data, context=nil, time=nil)
         local_context = context || @context
         raise ArgumentError, 'Context was required but not provided' unless local_context
+
+        if time && time.is_a?(String)
+          local_time = time
+        elsif time && time.is_a?(Time)
+          local_time = time.iso8601(7)
+        else
+          local_time = Time.now.iso8601(7)
+        end
+
         data_type = data.class.name.gsub(/^.*::/, '')
         set_properties data, local_context
         data_attributes = {
@@ -72,7 +83,7 @@ module ApplicationInsights
         }
         envelope_attributes = {
           :name => 'Microsoft.ApplicationInsights.' + data_type[0..-5],
-          :time => Time.now.iso8601(7),
+          :time => local_time,
           :i_key => local_context.instrumentation_key,
           :tags => get_tags(local_context),
           :data => Contracts::Data.new(data_attributes)
