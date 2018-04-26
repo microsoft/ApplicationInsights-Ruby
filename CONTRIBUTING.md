@@ -44,10 +44,11 @@ This is for repository maintainers only:
     ```
 10. Update version in `/lib/application_insights/version.rb`
 11. Create new entry for the next release in `/CHANGELOG.md`
-12. Push chenges
+12. Push changes
     ```
     git add -A
     git commit -m "post release updates"
+    git push
     ```
 13. Submit releaseUpdates->develop PR: https://github.com/Microsoft/ApplicationInsights-Ruby/compare/develop...releaseUpdates?expand=1
 
