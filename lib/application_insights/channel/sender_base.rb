@@ -3,6 +3,7 @@ require 'net/http'
 require 'openssl'
 require 'stringio'
 require 'zlib'
+require 'logger'
 
 module ApplicationInsights
   module Channel
@@ -20,6 +21,7 @@ module ApplicationInsights
         @service_endpoint_uri = service_endpoint_uri
         @queue = nil
         @send_buffer_size = 100
+        @logger = Logger.new(STDOUT)
       end
 
       # The service endpoint URI where this sender will send data to.
@@ -35,6 +37,9 @@ module ApplicationInsights
       # of items in a single service request that this sender is going to send.
       # @return [Fixnum] the maximum number of items in a telemetry batch.
       attr_accessor :send_buffer_size
+
+      # The logger for the sender.
+      attr_accessor :logger
 
       # Immediately sends the data passed in to {#service_endpoint_uri}. If the
       # service request fails, the passed in items are pushed back to the {#queue}.
@@ -63,6 +68,10 @@ module ApplicationInsights
 
         response = http.request(request)
         http.finish if http.started?
+
+        if !response.kind_of? Net::HTTPSuccess
+          @logger.warn('application_insights') { "Failed to send data: #{response.message}" }
+        end
       end
 
       private
