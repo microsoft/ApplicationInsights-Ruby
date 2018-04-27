@@ -24,8 +24,10 @@ module ApplicationInsights
       # Track requests and send data to Application Insights asynchronously.
       # @param [Hash] env the rack environment.
       def call(env)
+        # Build a request ID, incorporating one from our request if one exists.
         id = rand(16**32).to_s(16)
-        env['ApplicationInsights.request.id'] = id
+        request_id = request_id_header(env, id)
+        env['ApplicationInsights.request.id'] = request_id
 
         start = Time.now
         begin
@@ -56,7 +58,7 @@ module ApplicationInsights
           :url => request.url
         }
 
-        @client.track_request id, start_time, duration, status, success, options
+        @client.track_request request_id, start_time, duration, status, success, options
 
         if exception
           @client.track_exception exception, handled_at: 'Unhandled'
@@ -83,6 +85,23 @@ module ApplicationInsights
         end
 
         Time.at(duration_seconds).gmtime.strftime("00.%H:%M:%S.%7N")
+      end
+
+      def request_id_header(env, id)
+        request_id_header = env['HTTP_REQUEST_ID']
+
+        if request_id_header
+          request_id_starts_correctly = (request_id_header =~ /^\|/)
+
+          if request_id_starts_correctly
+            request_id_has_end = (request_id_header =~ /(.|_)$/)
+            request_id_header << '.' unless request_id_has_end
+
+            return "#{request_id_header}#{id}."
+          end
+        end
+
+        "|#{id}."
       end
     end
   end

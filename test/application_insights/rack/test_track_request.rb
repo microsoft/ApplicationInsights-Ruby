@@ -37,7 +37,7 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal true, request_data.duration.start_with?("00.00:00:02")
     assert Time.parse(request_data.start_time) - start_time < 0.01
 
-    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_call_with_failed_request
@@ -57,7 +57,7 @@ class TestTrackRequest < Test::Unit::TestCase
     request_data = payload[0].data.base_data
     assert_equal false, request_data.success
 
-    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_call_with_unhandled_exception
@@ -85,7 +85,7 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal instrumentation_key, payload[1].i_key
     assert_equal 'Unhandled', exception_data.handled_at
 
-    assert env['ApplicationInsights.request.id']  =~ (/^\h{1,32}$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_internal_client
@@ -144,5 +144,41 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal 0, match['minute'].to_i
     assert_equal 0, match['second'].to_i
     assert_equal 0, match['fraction'].to_i
+  end
+
+  def test_request_id_is_generated_correctly
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 0
+    track_request.send(:sender=, sender)
+
+    # ignores ids that don't begin with |
+    env['HTTP_REQUEST_ID'] = 'ab456_1.ea6741a'
+    track_request.call(env)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
+
+    # appends to ids with a dot
+    env['HTTP_REQUEST_ID'] = '|1234.'
+    track_request.call(env)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|1234.\h{1,32}.$/)
+
+    # appends to ids with an underscore
+    env['HTTP_REQUEST_ID'] = '|1234_'
+    track_request.call(env)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|1234_\h{1,32}.$/)
+
+    # appends a dot if neither a dot or underscore are present
+    env['HTTP_REQUEST_ID'] = '|ab456_1.ea6741a'
+    track_request.call(env)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|ab456_1.ea6741a.\h{1,32}.$/)
+
+    # generates a stand-alone id if one is not provided
+    env.delete('HTTP_REQUEST_ID')
+    track_request.call(env)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 end

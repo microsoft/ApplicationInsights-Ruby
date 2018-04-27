@@ -146,16 +146,16 @@ use ApplicationInsights::Rack::TrackRequest, '<YOUR INSTRUMENTATION KEY GOES HER
 config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
 ```
 
-#### Retrieving a request's AppInsight ID  ####
+#### Rerieving the Request-Id value from ApplicationInsights ####
 ```ruby
-# from time to time you may need to access a request's AppInsight id from within your app
+# from time to time you may need to access a request's id from within your app
 application_insights_request_id = env['ApplicationInsights.request.id']
 
 # this can be used for a number of different purposes, including telemetry correlation
 uri = URI('http://api.example.com/search/?q=test')
 
 req = Net::HTTP::Get.new(uri)
-req['Request-Id'] = "|#{application_insights_request_id}." if application_insights_request_id
+req['Request-Id'] = "#{application_insights_request_id}1" if application_insights_request_id
 
 Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(req) }
 ```
