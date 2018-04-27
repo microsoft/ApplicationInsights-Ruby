@@ -58,6 +58,10 @@ module ApplicationInsights
           :url => request.url
         }
 
+        # Setup operation context
+        @client.context.operation.id = operation_id(request_id)
+        @client.context.operation.parent_id = request_id
+
         @client.track_request request_id, start_time, duration, status, success, options
 
         if exception
@@ -102,6 +106,16 @@ module ApplicationInsights
         end
 
         "|#{id}."
+      end
+
+      def operation_id(id)
+        # Returns the root ID from the '|' to the first '.' if any.
+        root_end = id.index('.')
+        root_end = id.length if root_end.nil?
+
+        root_start = id[0] == '|' ? 1 : 0
+
+        id[root_start..root_end - root_start]
       end
     end
   end

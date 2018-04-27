@@ -175,4 +175,27 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request.call(env)
     assert env['ApplicationInsights.request.id'] =~ (/^\|\h{16}.$/)
   end
+
+  def test_operation_context_is_populated_correctly
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 0
+    track_request.send(:sender=, sender)
+
+    # generates the expected ID and parent operation values when a Request-Id is passed in
+    env['HTTP_REQUEST_ID'] = '|abc1234.defg5678_1.'
+    track_request.call(env)
+    assert_equal 'abc1234', track_request.send(:client).context.operation.id
+    assert track_request.send(:client).context.operation.parent_id =~ /^\|abc1234.defg5678_1.\h{8}.$/
+
+    # generates the expected ID and parent operation values when no Request-Id is set
+    env.delete('HTTP_REQUEST_ID')
+    track_request.call(env)
+    assert track_request.send(:client).context.operation.id =~ /^\h{16}$/
+    assert track_request.send(:client).context.operation.parent_id =~ /^\|\h{16}.$/
+  end
 end
