@@ -36,8 +36,6 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal url, request_data.url
     assert_equal true, request_data.duration.start_with?("00.00:00:02")
     assert Time.parse(request_data.start_time) - start_time < 0.01
-
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_call_with_failed_request
@@ -56,8 +54,6 @@ class TestTrackRequest < Test::Unit::TestCase
     payload = sender.buffer[0]
     request_data = payload[0].data.base_data
     assert_equal false, request_data.success
-
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_call_with_unhandled_exception
@@ -84,8 +80,6 @@ class TestTrackRequest < Test::Unit::TestCase
     exception_data = payload[1].data.base_data
     assert_equal instrumentation_key, payload[1].i_key
     assert_equal 'Unhandled', exception_data.handled_at
-
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
   end
 
   def test_internal_client
@@ -156,29 +150,29 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request = TrackRequest.new app, instrumentation_key, 500, 0
     track_request.send(:sender=, sender)
 
-    # ignores ids that don't begin with |
+    # ignores ids that don't begin with | (16 chars)
     env['HTTP_REQUEST_ID'] = 'ab456_1.ea6741a'
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{16}.$/)
 
-    # appends to ids with a dot
+    # appends to ids with a dot (8 chars)
     env['HTTP_REQUEST_ID'] = '|1234.'
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|1234.\h{1,32}.$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|1234.\h{8}.$/)
 
-    # appends to ids with an underscore
+    # appends to ids with an underscore (8 chars)
     env['HTTP_REQUEST_ID'] = '|1234_'
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|1234_\h{1,32}.$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|1234_\h{8}.$/)
 
-    # appends a dot if neither a dot or underscore are present
+    # appends a dot if neither a dot or underscore are present (8 chars)
     env['HTTP_REQUEST_ID'] = '|ab456_1.ea6741a'
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|ab456_1.ea6741a.\h{1,32}.$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|ab456_1.ea6741a.\h{8}.$/)
 
-    # generates a stand-alone id if one is not provided
+    # generates a stand-alone id if one is not provided (16 chars)
     env.delete('HTTP_REQUEST_ID')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{1,32}.$/)
+    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{16}.$/)
   end
 end

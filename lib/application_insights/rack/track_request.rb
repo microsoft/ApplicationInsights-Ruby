@@ -1,4 +1,5 @@
 require 'rack'
+require 'securerandom'
 require_relative '../channel/contracts/request_data'
 require_relative '../telemetry_client'
 
@@ -25,8 +26,7 @@ module ApplicationInsights
       # @param [Hash] env the rack environment.
       def call(env)
         # Build a request ID, incorporating one from our request if one exists.
-        id = rand(16**32).to_s(16)
-        request_id = request_id_header(env, id)
+        request_id = request_id_header(env)
         env['ApplicationInsights.request.id'] = request_id
 
         start = Time.now
@@ -87,18 +87,18 @@ module ApplicationInsights
         Time.at(duration_seconds).gmtime.strftime("00.%H:%M:%S.%7N")
       end
 
-      def request_id_header(env, id)
+      def request_id_header(env)
         request_id_header = env['HTTP_REQUEST_ID']
+        valid_request_id_header = request_id_header && request_id_header[0] == '|'
 
-        if request_id_header
-          request_id_starts_correctly = (request_id_header =~ /^\|/)
+        length = valid_request_id_header ? 8 : 16
+        id = SecureRandom.hex(length / 2)
 
-          if request_id_starts_correctly
-            request_id_has_end = (request_id_header =~ /(.|_)$/)
-            request_id_header << '.' unless request_id_has_end
+        if valid_request_id_header
+          request_id_has_end = %w[. _].include?(request_id_header[-1])
+          request_id_header << '.' unless request_id_has_end
 
-            return "#{request_id_header}#{id}."
-          end
+          return "#{request_id_header}#{id}."
         end
 
         "|#{id}."
