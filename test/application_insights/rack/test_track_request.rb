@@ -92,17 +92,11 @@ class TestTrackRequest < Test::Unit::TestCase
     # test lazy initialization
     assert_nil client
 
-    track_request.call(env)
+    track_request._call(env)
     client = track_request.send(:client)
     channel = client.channel
     assert_equal buffer_size, channel.queue.max_queue_length
     assert_equal send_interval, channel.sender.send_interval
-
-    track_request.call(env)
-    client2 = track_request.send(:client)
-    channel2 = client2.channel
-    assert_same client, client2
-    assert_same channel, channel2
   end
 
   def test_format_request_duration_less_than_a_day
@@ -188,14 +182,37 @@ class TestTrackRequest < Test::Unit::TestCase
 
     # generates the expected ID and parent operation values when a Request-Id is passed in
     env['HTTP_REQUEST_ID'] = '|abc1234.defg5678_1.'
-    track_request.call(env)
+    track_request._call(env)
     assert_equal 'abc1234', track_request.send(:client).context.operation.id
-    assert track_request.send(:client).context.operation.parent_id =~ /^\|abc1234.defg5678_1.\h{8}.$/
+    assert_equal '|abc1234.defg5678_1.', track_request.send(:client).context.operation.parent_id
 
     # generates the expected ID and parent operation values when no Request-Id is set
     env.delete('HTTP_REQUEST_ID')
-    track_request.call(env)
+    track_request._call(env)
     assert track_request.send(:client).context.operation.id =~ /^\h{16}$/
-    assert track_request.send(:client).context.operation.parent_id =~ /^\|\h{16}.$/
+    assert_equal nil, track_request.send(:client).context.operation.parent_id
+  end
+
+  def test_operation_id_is_unique_across_requests
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 0
+    track_request.send(:sender=, sender)
+
+    env_1 = env.clone
+    env_1['HTTP_REQUEST_ID'] = '|abcd1234.1'
+    env_2 = env.clone
+
+    thread_1 = Thread.new { track_request.call(env_1) }
+    thread_2 = Thread.new { track_request.call(env_2) }
+
+    thread_1.join
+    thread_2.join
+
+    assert_equal nil, track_request.send(:client)
   end
 end

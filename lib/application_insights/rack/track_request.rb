@@ -25,6 +25,13 @@ module ApplicationInsights
       # Track requests and send data to Application Insights asynchronously.
       # @param [Hash] env the rack environment.
       def call(env)
+        # Create a duplicate of the middleware for each request to ensure thread safety
+        dup._call(env)
+      end
+
+      # Track requests and send data to Application Insights asynchronously.
+      # @param [Hash] env the rack environment.
+      def _call(env)
         # Build a request ID, incorporating one from our request if one exists.
         request_id = request_id_header(env)
         env['ApplicationInsights.request.id'] = request_id
@@ -38,15 +45,13 @@ module ApplicationInsights
         end
         stop = Time.now
 
-        unless @client
-          sender = @sender || Channel::AsynchronousSender.new
-          sender.send_interval = @send_interval
-          queue = Channel::AsynchronousQueue.new sender
-          queue.max_queue_length = @buffer_size
-          channel = Channel::TelemetryChannel.new nil, queue
+        sender = @sender || Channel::AsynchronousSender.new
+        sender.send_interval = @send_interval
+        queue = Channel::AsynchronousQueue.new sender
+        queue.max_queue_length = @buffer_size
+        channel = Channel::TelemetryChannel.new nil, queue
 
-          @client = TelemetryClient.new @instrumentation_key, channel
-        end
+        @client = TelemetryClient.new @instrumentation_key, channel
 
         request = ::Rack::Request.new env
         start_time = start.iso8601(7)
@@ -60,7 +65,7 @@ module ApplicationInsights
 
         # Setup operation context
         @client.context.operation.id = operation_id(request_id)
-        @client.context.operation.parent_id = request_id
+        @client.context.operation.parent_id = env['HTTP_REQUEST_ID']
 
         @client.track_request request_id, start_time, duration, status, success, options
 
@@ -110,12 +115,12 @@ module ApplicationInsights
 
       def operation_id(id)
         # Returns the root ID from the '|' to the first '.' if any.
-        root_end = id.index('.')
-        root_end = id.length if root_end.nil?
-
         root_start = id[0] == '|' ? 1 : 0
 
-        id[root_start..root_end - root_start]
+        root_end = id.index('.')
+        root_end = root_end ? root_end - 1 : id.length - root_start
+
+        id[root_start..root_end]
       end
     end
   end
