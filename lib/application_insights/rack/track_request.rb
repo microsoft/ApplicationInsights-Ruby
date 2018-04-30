@@ -33,12 +33,19 @@ module ApplicationInsights
       # @param [Hash] env the rack environment.
       def _call(env)
         # Build a request ID, incorporating one from our request if one exists.
-        request_id = request_id_header(env)
+        request_id = request_id_header(env['HTTP_REQUEST_ID'])
         env['ApplicationInsights.request.id'] = request_id
+
+        log_message = valid_request_id(env['HTTP_REQUEST_ID']) ? 'Operation' : 'Incoming request'
+        log_message = "#{log_message} started with Request-Id: #{request_id}"
+        puts log_message
 
         start = Time.now
         begin
           status, headers, response = @app.call(env)
+
+          # Set a Request-Id response header if one has not been set within our app
+          headers['Request-Id'] ||= request_id
         rescue Exception => ex
           status = 500
           exception = ex
@@ -96,21 +103,24 @@ module ApplicationInsights
         Time.at(duration_seconds).gmtime.strftime("00.%H:%M:%S.%7N")
       end
 
-      def request_id_header(env)
-        request_id_header = env['HTTP_REQUEST_ID']
-        valid_request_id_header = request_id_header && request_id_header[0] == '|'
+      def request_id_header(request_id)
+        valid_request_id_header = valid_request_id(request_id)
 
-        length = valid_request_id_header ? 8 : 16
-        id = SecureRandom.hex(length / 2)
+        length = valid_request_id_header ? 5 : 10
+        id = SecureRandom.base64(length)
 
         if valid_request_id_header
-          request_id_has_end = %w[. _].include?(request_id_header[-1])
-          request_id_header << '.' unless request_id_has_end
+          request_id_has_end = %w[. _].include?(request_id[-1])
+          request_id << '.' unless request_id_has_end
 
-          return "#{request_id_header}#{id}."
+          return "#{request_id}#{id}_"
         end
 
         "|#{id}."
+      end
+
+      def valid_request_id(request_id)
+        request_id && request_id[0] == '|'
       end
 
       def operation_id(id)

@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'mocha/test_unit'
 require 'rack/mock'
 require_relative '../mock_sender'
 require_relative '../../../lib/application_insights/rack/track_request'
@@ -20,8 +21,15 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request = TrackRequest.new app, instrumentation_key, 500, 1
     track_request.send(:sender=, sender)
     start_time = Time.now
+
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     result = track_request.call(env)
-    assert_equal app.call(env), result
+
+    app_result = app.call(env)
+    assert_equal app_result[0], result[0]
+    assert_equal true, (app_result[1].to_a - result[1].to_a).empty?
+    assert_equal '|y0NM2eOY/fnQPw==.', result[1]['Request-Id']
+    assert_equal app_result[2], result[2]
     sleep(sender.send_interval)
 
     assert_equal 1, sender.buffer.count
@@ -146,28 +154,33 @@ class TestTrackRequest < Test::Unit::TestCase
 
     # ignores ids that don't begin with | (16 chars)
     env['HTTP_REQUEST_ID'] = 'ab456_1.ea6741a'
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{16}.$/)
+    assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
 
     # appends to ids with a dot (8 chars)
     env['HTTP_REQUEST_ID'] = '|1234.'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|1234.\h{8}.$/)
+    assert_equal '|1234.eXsMFHs=_', env['ApplicationInsights.request.id']
 
     # appends to ids with an underscore (8 chars)
     env['HTTP_REQUEST_ID'] = '|1234_'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|1234_\h{8}.$/)
+    assert_equal '|1234_eXsMFHs=_', env['ApplicationInsights.request.id']
 
     # appends a dot if neither a dot or underscore are present (8 chars)
     env['HTTP_REQUEST_ID'] = '|ab456_1.ea6741a'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|ab456_1.ea6741a.\h{8}.$/)
+    assert_equal '|ab456_1.ea6741a.eXsMFHs=_', env['ApplicationInsights.request.id']
 
     # generates a stand-alone id if one is not provided (16 chars)
     env.delete('HTTP_REQUEST_ID')
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     track_request.call(env)
-    assert env['ApplicationInsights.request.id'] =~ (/^\|\h{16}.$/)
+    assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
   end
 
   def test_operation_context_is_populated_correctly
@@ -188,8 +201,9 @@ class TestTrackRequest < Test::Unit::TestCase
 
     # generates the expected ID and parent operation values when no Request-Id is set
     env.delete('HTTP_REQUEST_ID')
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     track_request._call(env)
-    assert track_request.send(:client).context.operation.id =~ /^\h{16}$/
+    assert_equal 'y0NM2eOY/fnQPw==', track_request.send(:client).context.operation.id
     assert_equal nil, track_request.send(:client).context.operation.parent_id
   end
 
@@ -214,5 +228,28 @@ class TestTrackRequest < Test::Unit::TestCase
     thread_2.join
 
     assert_equal nil, track_request.send(:client)
+  end
+
+  def test_response_header_set
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 0
+    track_request.send(:sender=, sender)
+
+    env_1 = env.clone
+    env_1['HTTP_REQUEST_ID'] = '|abcd1234.1'
+    env_2 = env.clone
+
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
+    _, headers, _ = track_request.call(env_1)
+    assert_equal '|abcd1234.1.eXsMFHs=_', headers['Request-Id']
+
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
+    _, headers, _ = track_request.call(env_2)
+    assert_equal '|y0NM2eOY/fnQPw==.', headers['Request-Id']
   end
 end
