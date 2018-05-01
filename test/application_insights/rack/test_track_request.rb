@@ -26,10 +26,7 @@ class TestTrackRequest < Test::Unit::TestCase
     result = track_request.call(env)
 
     app_result = app.call(env)
-    assert_equal app_result[0], result[0]
-    assert_equal true, (app_result[1].to_a - result[1].to_a).empty?
-    assert_equal '|y0NM2eOY/fnQPw==.', result[1]['Request-Id']
-    assert_equal app_result[2], result[2]
+    assert_equal app_result, result
     sleep(sender.send_interval)
 
     assert_equal 1, sender.buffer.count
@@ -100,7 +97,7 @@ class TestTrackRequest < Test::Unit::TestCase
     # test client initialization
     assert_equal ApplicationInsights::TelemetryClient, client.class
 
-    track_request._call(env)
+    track_request.call(env)
     client = track_request.send(:client)
     channel = client.channel
     assert_equal buffer_size, channel.queue.max_queue_length
@@ -181,28 +178,5 @@ class TestTrackRequest < Test::Unit::TestCase
     SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     track_request.call(env)
     assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
-  end
-
-  def test_response_header_set
-    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
-    url = "http://localhost:8080/foo?a=b"
-    http_method = 'PUT'
-    env = Rack::MockRequest.env_for(url, :method => http_method)
-    instrumentation_key = 'key'
-    sender = MockAsynchronousSender.new
-    track_request = TrackRequest.new app, instrumentation_key, 500, 0
-    track_request.send(:sender=, sender)
-
-    env_1 = env.clone
-    env_1['HTTP_REQUEST_ID'] = '|abcd1234.1'
-    env_2 = env.clone
-
-    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
-    _, headers, _ = track_request.call(env_1)
-    assert_equal '|abcd1234.1.eXsMFHs=_', headers['Request-Id']
-
-    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
-    _, headers, _ = track_request.call(env_2)
-    assert_equal '|y0NM2eOY/fnQPw==.', headers['Request-Id']
   end
 end

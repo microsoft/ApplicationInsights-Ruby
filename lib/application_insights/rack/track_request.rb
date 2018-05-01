@@ -33,13 +33,6 @@ module ApplicationInsights
       # Track requests and send data to Application Insights asynchronously.
       # @param [Hash] env the rack environment.
       def call(env)
-        # Create a duplicate of the middleware for each request to ensure thread safety
-        dup._call(env)
-      end
-
-      # Track requests and send data to Application Insights asynchronously.
-      # @param [Hash] env the rack environment.
-      def _call(env)
         # Build a request ID, incorporating one from our request if one exists.
         request_id = request_id_header(env['HTTP_REQUEST_ID'])
         env['ApplicationInsights.request.id'] = request_id
@@ -47,9 +40,6 @@ module ApplicationInsights
         start = Time.now
         begin
           status, headers, response = @app.call(env)
-
-          # Set a Request-Id response header if one has not been set within our app
-          headers['Request-Id'] ||= request_id
         rescue Exception => ex
           status = 500
           exception = ex
