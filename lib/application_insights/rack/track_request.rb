@@ -20,6 +20,14 @@ module ApplicationInsights
         @instrumentation_key = instrumentation_key
         @buffer_size = buffer_size
         @send_interval = send_interval
+
+        @sender = Channel::AsynchronousSender.new
+        @sender.send_interval = @send_interval
+        queue = Channel::AsynchronousQueue.new @sender
+        queue.max_queue_length = @buffer_size
+        @channel = Channel::TelemetryChannel.new nil, queue
+
+        @client = TelemetryClient.new @instrumentation_key, @channel
       end
 
       # Track requests and send data to Application Insights asynchronously.
@@ -36,10 +44,6 @@ module ApplicationInsights
         request_id = request_id_header(env['HTTP_REQUEST_ID'])
         env['ApplicationInsights.request.id'] = request_id
 
-        log_message = valid_request_id(env['HTTP_REQUEST_ID']) ? 'Operation' : 'Incoming request'
-        log_message = "#{log_message} started with Request-Id: #{request_id}"
-        puts log_message
-
         start = Time.now
         begin
           status, headers, response = @app.call(env)
@@ -52,29 +56,17 @@ module ApplicationInsights
         end
         stop = Time.now
 
-        sender = @sender || Channel::AsynchronousSender.new
-        sender.send_interval = @send_interval
-        queue = Channel::AsynchronousQueue.new sender
-        queue.max_queue_length = @buffer_size
-        channel = Channel::TelemetryChannel.new nil, queue
-
-        @client = TelemetryClient.new @instrumentation_key, channel
-
-        request = ::Rack::Request.new env
         start_time = start.iso8601(7)
         duration = format_request_duration(stop - start)
         success = status.to_i < 400
-        options = {
-          :name => "#{request.request_method} #{request.path}",
-          :http_method => request.request_method,
-          :url => request.url
-        }
 
-        # Setup operation context
-        @client.context.operation.id = operation_id(request_id)
-        @client.context.operation.parent_id = env['HTTP_REQUEST_ID']
+        request = ::Rack::Request.new env
+        options = options_hash(request)
 
-        @client.track_request request_id, start_time, duration, status, success, options
+        data = request_data(request_id, start_time, duration, status, success, options)
+        context = telemetry_context(request_id, env['HTTP_REQUEST_ID'])
+
+        @client.channel.write data, context, start_time
 
         if exception
           @client.track_exception exception, handled_at: 'Unhandled'
@@ -87,7 +79,10 @@ module ApplicationInsights
       private
 
       def sender=(sender)
-        @sender = sender if sender.is_a? Channel::AsynchronousSender
+        if sender.is_a? Channel::AsynchronousSender
+          @sender = sender
+          @client.channel.queue.sender = @sender
+        end
       end
 
       def client
@@ -131,6 +126,38 @@ module ApplicationInsights
         root_end = root_end ? root_end - 1 : id.length - root_start
 
         id[root_start..root_end]
+      end
+
+      def options_hash(request)
+        {
+            name: "#{request.request_method} #{request.path}",
+            http_method: request.request_method,
+            url: request.url
+        }
+      end
+
+      def request_data(request_id, start_time, duration, status, success, options)
+        Channel::Contracts::RequestData.new(
+            :id => request_id || 'Null',
+            :start_time => start_time || Time.now.iso8601(7),
+            :duration => duration || '0:00:00:00.0000000',
+            :response_code => status || 200,
+            :success => success == nil ? true : success,
+            :name => options[:name],
+            :http_method => options[:http_method],
+            :url => options[:url],
+            :properties => options[:properties] || {},
+            :measurements => options[:measurements] || {}
+        )
+      end
+
+      def telemetry_context(request_id, request_id_header)
+        context = Channel::TelemetryContext.new
+        context.instrumentation_key = @instrumentation_key
+        context.operation.id = operation_id(request_id)
+        context.operation.parent_id = request_id_header
+
+        context
       end
     end
   end

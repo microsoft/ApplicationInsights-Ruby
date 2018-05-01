@@ -97,8 +97,8 @@ class TestTrackRequest < Test::Unit::TestCase
     send_interval = 5
     track_request = TrackRequest.new app, 'key', buffer_size, send_interval
     client = track_request.send(:client)
-    # test lazy initialization
-    assert_nil client
+    # test client initialization
+    assert_equal ApplicationInsights::TelemetryClient, client.class
 
     track_request._call(env)
     client = track_request.send(:client)
@@ -181,53 +181,6 @@ class TestTrackRequest < Test::Unit::TestCase
     SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     track_request.call(env)
     assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
-  end
-
-  def test_operation_context_is_populated_correctly
-    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
-    url = "http://localhost:8080/foo?a=b"
-    http_method = 'PUT'
-    env = Rack::MockRequest.env_for(url, :method => http_method)
-    instrumentation_key = 'key'
-    sender = MockAsynchronousSender.new
-    track_request = TrackRequest.new app, instrumentation_key, 500, 0
-    track_request.send(:sender=, sender)
-
-    # generates the expected ID and parent operation values when a Request-Id is passed in
-    env['HTTP_REQUEST_ID'] = '|abc1234.defg5678_1.'
-    track_request._call(env)
-    assert_equal 'abc1234', track_request.send(:client).context.operation.id
-    assert_equal '|abc1234.defg5678_1.', track_request.send(:client).context.operation.parent_id
-
-    # generates the expected ID and parent operation values when no Request-Id is set
-    env.delete('HTTP_REQUEST_ID')
-    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
-    track_request._call(env)
-    assert_equal 'y0NM2eOY/fnQPw==', track_request.send(:client).context.operation.id
-    assert_equal nil, track_request.send(:client).context.operation.parent_id
-  end
-
-  def test_operation_id_is_unique_across_requests
-    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
-    url = "http://localhost:8080/foo?a=b"
-    http_method = 'PUT'
-    env = Rack::MockRequest.env_for(url, :method => http_method)
-    instrumentation_key = 'key'
-    sender = MockAsynchronousSender.new
-    track_request = TrackRequest.new app, instrumentation_key, 500, 0
-    track_request.send(:sender=, sender)
-
-    env_1 = env.clone
-    env_1['HTTP_REQUEST_ID'] = '|abcd1234.1'
-    env_2 = env.clone
-
-    thread_1 = Thread.new { track_request.call(env_1) }
-    thread_2 = Thread.new { track_request.call(env_2) }
-
-    thread_1.join
-    thread_2.join
-
-    assert_equal nil, track_request.send(:client)
   end
 
   def test_response_header_set
