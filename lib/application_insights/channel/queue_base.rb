@@ -13,8 +13,7 @@ module ApplicationInsights
       def initialize(sender)
         @queue = Queue.new
         @max_queue_length = 500
-        @sender = sender
-        @sender.queue = self if sender
+        self.sender = sender
       end
 
       # The maximum number of items that will be held by the queue before the
@@ -26,6 +25,15 @@ module ApplicationInsights
       # send data to the service.
       # @return [SenderBase] the sender object.
       attr_reader :sender
+
+      # Change the sender that is associated with this queue.
+      # @param [SenderBase] sender the sender object.
+      # @return [SenderBase] the sender object.
+      def sender=(sender)
+        @sender = sender
+        @sender.queue = self if sender
+        @sender
+      end
 
       # Adds the passed in item object to the queue and calls {#flush} if the
       # size of the queue is larger than {#max_queue_length}. This method does

@@ -13,7 +13,7 @@ module ApplicationInsights::Channel::Contracts
       root_id: 'ai.operation.rootId',
       synthetic_source: 'ai.operation.syntheticSource',
       is_synthetic: 'ai.operation.isSynthetic',
-      correlation_vector: "ai.operation.correlationVector"
+      correlation_vector: 'ai.operation.correlationVector'
     )
   end
 end

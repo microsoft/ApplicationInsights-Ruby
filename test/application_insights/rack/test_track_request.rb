@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'mocha/test_unit'
 require 'rack/mock'
 require_relative '../mock_sender'
 require_relative '../../../lib/application_insights/rack/track_request'
@@ -20,8 +21,12 @@ class TestTrackRequest < Test::Unit::TestCase
     track_request = TrackRequest.new app, instrumentation_key, 500, 1
     track_request.send(:sender=, sender)
     start_time = Time.now
+
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
     result = track_request.call(env)
-    assert_equal app.call(env), result
+
+    app_result = app.call(env)
+    assert_equal app_result, result
     sleep(sender.send_interval)
 
     assert_equal 1, sender.buffer.count
@@ -89,20 +94,14 @@ class TestTrackRequest < Test::Unit::TestCase
     send_interval = 5
     track_request = TrackRequest.new app, 'key', buffer_size, send_interval
     client = track_request.send(:client)
-    # test lazy initialization
-    assert_nil client
+    # test client initialization
+    assert_equal ApplicationInsights::TelemetryClient, client.class
 
     track_request.call(env)
     client = track_request.send(:client)
     channel = client.channel
     assert_equal buffer_size, channel.queue.max_queue_length
     assert_equal send_interval, channel.sender.send_interval
-
-    track_request.call(env)
-    client2 = track_request.send(:client)
-    channel2 = client2.channel
-    assert_same client, client2
-    assert_same channel, channel2
   end
 
   def test_format_request_duration_less_than_a_day
@@ -138,5 +137,46 @@ class TestTrackRequest < Test::Unit::TestCase
     assert_equal 0, match['minute'].to_i
     assert_equal 0, match['second'].to_i
     assert_equal 0, match['fraction'].to_i
+  end
+
+  def test_request_id_is_generated_correctly
+    app = Proc.new {|env| [200, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 0
+    track_request.send(:sender=, sender)
+
+    # ignores ids that don't begin with | (16 chars)
+    env['HTTP_REQUEST_ID'] = 'ab456_1.ea6741a'
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
+    track_request.call(env)
+    assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
+
+    # appends to ids with a dot (8 chars)
+    env['HTTP_REQUEST_ID'] = '|1234.'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
+    track_request.call(env)
+    assert_equal '|1234.eXsMFHs=_', env['ApplicationInsights.request.id']
+
+    # appends to ids with an underscore (8 chars)
+    env['HTTP_REQUEST_ID'] = '|1234_'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
+    track_request.call(env)
+    assert_equal '|1234_eXsMFHs=_', env['ApplicationInsights.request.id']
+
+    # appends a dot if neither a dot or underscore are present (8 chars)
+    env['HTTP_REQUEST_ID'] = '|ab456_1.ea6741a'
+    SecureRandom.expects(:base64).with(5).returns('eXsMFHs=')
+    track_request.call(env)
+    assert_equal '|ab456_1.ea6741a.eXsMFHs=_', env['ApplicationInsights.request.id']
+
+    # generates a stand-alone id if one is not provided (16 chars)
+    env.delete('HTTP_REQUEST_ID')
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
+    track_request.call(env)
+    assert_equal '|y0NM2eOY/fnQPw==.', env['ApplicationInsights.request.id']
   end
 end
