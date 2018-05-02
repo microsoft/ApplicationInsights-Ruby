@@ -7,7 +7,7 @@ module ApplicationInsights
         module ClassMethods
           attr_reader :json_mappings
 
-          def attribute_mapping(mappings)
+          def attribute_mapping(mappings = {})
             @json_mappings = mappings
           end
         end

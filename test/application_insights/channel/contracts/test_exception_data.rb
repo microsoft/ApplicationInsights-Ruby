@@ -10,26 +10,14 @@ class TestExceptionData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 31
     item = Contracts::ExceptionData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 79
     item.ver = expected
     actual = item.ver
-    assert_equal expected, actual
-  end
-
-  def test_handled_at_works_as_expected
-    expected = 'Test string'
-    item = Contracts::ExceptionData.new
-    item.handled_at = expected
-    actual = item.handled_at
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.handled_at = expected
-    actual = item.handled_at
     assert_equal expected, actual
   end
 
@@ -40,38 +28,26 @@ class TestExceptionData < Test::Unit::TestCase
   end
 
   def test_severity_level_works_as_expected
-    expected = 5
+    expected = 8
     item = Contracts::ExceptionData.new
     item.severity_level = expected
     actual = item.severity_level
     assert_equal expected, actual
-    expected = 3
+    expected = 67
     item.severity_level = expected
     actual = item.severity_level
     assert_equal expected, actual
   end
 
   def test_problem_id_works_as_expected
-    expected = 'Test string'
+    expected = 'jPyVAuhF'
     item = Contracts::ExceptionData.new
     item.problem_id = expected
     actual = item.problem_id
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'gnqJVAgN'
     item.problem_id = expected
     actual = item.problem_id
-    assert_equal expected, actual
-  end
-
-  def test_crash_thread_id_works_as_expected
-    expected = 42
-    item = Contracts::ExceptionData.new
-    item.crash_thread_id = expected
-    actual = item.crash_thread_id
-    assert_equal expected, actual
-    expected = 13
-    item.crash_thread_id = expected
-    actual = item.crash_thread_id
     assert_equal expected, actual
   end
 
@@ -89,23 +65,21 @@ class TestExceptionData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::ExceptionData.new
-    item.ver = 42
-    item.handled_at = 'Test string'
+    item.ver = 31
     [ { 'key' => 'value' } ].each do |value|
       item.exceptions.push value
     end
 
-    item.severity_level = 5
-    item.problem_id = 'Test string'
-    item.crash_thread_id = 42
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    item.severity_level = 8
+    item.problem_id = 'jPyVAuhF'
+    { 'Tcep' => 'DaxVFHPr' }.each do |key, value|
       item.properties[key] = value
     end
-    { 'key1' => 3.1415 , 'key2' => 42.2 }.each do |key, value|
+    { 'kCvi' => 3.3344 }.each do |key, value|
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"handledAt":"Test string","exceptions":[{"key":"value"}],"severityLevel":5,"problemId":"Test string","crashThreadId":42,"properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
+    expected = '{"ver":31,"exceptions":[{"key":"value"}],"severityLevel":8,"problemId":"jPyVAuhF","properties":{"Tcep":"DaxVFHPr"},"measurements":{"kCvi":3.3344}}'
     assert_equal expected, actual
   end
 end

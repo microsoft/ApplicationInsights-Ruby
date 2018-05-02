@@ -10,50 +10,74 @@ class TestPageViewData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 63
     item = Contracts::PageViewData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 21
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
   end
 
   def test_url_works_as_expected
-    expected = 'Test string'
+    expected = 'nxcKNxAq'
     item = Contracts::PageViewData.new
     item.url = expected
     actual = item.url
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'bjKAYrGi'
     item.url = expected
     actual = item.url
     assert_equal expected, actual
   end
 
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'FPkYRwor'
     item = Contracts::PageViewData.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'mwxmSpxU'
     item.name = expected
     actual = item.name
     assert_equal expected, actual
   end
 
   def test_duration_works_as_expected
-    expected = 'Test string'
+    expected = 'WaazkJXv'
     item = Contracts::PageViewData.new
     item.duration = expected
     actual = item.duration
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'NjcZUfcw'
     item.duration = expected
     actual = item.duration
+    assert_equal expected, actual
+  end
+
+  def test_id_works_as_expected
+    expected = 'wXTUMDUP'
+    item = Contracts::PageViewData.new
+    item.id = expected
+    actual = item.id
+    assert_equal expected, actual
+    expected = 'cgSQSTiU'
+    item.id = expected
+    actual = item.id
+    assert_equal expected, actual
+  end
+
+  def test_referrer_uri_works_as_expected
+    expected = 'xatkciOm'
+    item = Contracts::PageViewData.new
+    item.referrer_uri = expected
+    actual = item.referrer_uri
+    assert_equal expected, actual
+    expected = 'RDgezsNB'
+    item.referrer_uri = expected
+    actual = item.referrer_uri
     assert_equal expected, actual
   end
 
@@ -71,18 +95,20 @@ class TestPageViewData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::PageViewData.new
-    item.ver = 42
-    item.url = 'Test string'
-    item.name = 'Test string'
-    item.duration = 'Test string'
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    item.ver = 63
+    item.url = 'nxcKNxAq'
+    item.name = 'FPkYRwor'
+    item.duration = 'WaazkJXv'
+    item.id = 'wXTUMDUP'
+    item.referrer_uri = 'xatkciOm'
+    { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
       item.properties[key] = value
     end
-    { 'key1' => 3.1415 , 'key2' => 42.2 }.each do |key, value|
+    { 'WxIM' => 4.509 }.each do |key, value|
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"url":"Test string","name":"Test string","duration":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
+    expected = '{"ver":63,"url":"nxcKNxAq","name":"FPkYRwor","duration":"WaazkJXv","id":"wXTUMDUP","referrerUri":"xatkciOm","properties":{"fEUK":"CmlXfTfm"},"measurements":{"WxIM":4.509}}'
     assert_equal expected, actual
   end
 end

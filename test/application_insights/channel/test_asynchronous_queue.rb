@@ -28,9 +28,12 @@ class TestAsynchronousQueue < Test::Unit::TestCase
     sender = MockAsynchronousSender.new
     queue = AsynchronousQueue.new sender
     queue.push 42
-    assert_equal 1, sender.start_call_count
-    assert_equal 42, queue.pop
+
+    # Make sure the sender has fetched the data from queue
+    sleep(sender.send_interval)
+
     assert_nil queue.pop
+    assert_equal [42], sender.buffer[0]
   end
 
   def test_flush_works_as_expected
@@ -41,7 +44,5 @@ class TestAsynchronousQueue < Test::Unit::TestCase
     assert_equal false, result
     queue.flush
     assert_equal 1, sender.start_call_count
-    result = queue.flush_notification.wait
-    assert_equal true, result
   end
 end

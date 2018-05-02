@@ -4,13 +4,16 @@ module ApplicationInsights::Channel::Contracts
   class PageViewData
     include JsonSerializable
 
-    attr_accessor :ver, :url, :name, :duration, :properties, :measurements
+    attr_accessor :ver, :url, :name, :duration, :id, :referrer_uri, :properties,
+      :measurements
 
     attribute_mapping(
       ver: 'ver',
       url: 'url',
       name: 'name',
       duration: 'duration',
+      id: 'id',
+      referrer_uri: 'referrerUri',
       properties: 'properties',
       measurements: 'measurements'
     )

@@ -10,24 +10,24 @@ class TestEventData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 63
     item = Contracts::EventData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 21
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
   end
 
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'FPkYRwor'
     item = Contracts::EventData.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'mwxmSpxU'
     item.name = expected
     actual = item.name
     assert_equal expected, actual
@@ -47,16 +47,16 @@ class TestEventData < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::EventData.new
-    item.ver = 42
-    item.name = 'Test string'
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    item.ver = 63
+    item.name = 'FPkYRwor'
+    { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
       item.properties[key] = value
     end
-    { 'key1' => 3.1415 , 'key2' => 42.2 }.each do |key, value|
+    { 'WxIM' => 4.509 }.each do |key, value|
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":42,"name":"Test string","properties":{"key1":"test value 1","key2":"test value 2"},"measurements":{"key1":3.1415,"key2":42.2}}'
+    expected = '{"ver":63,"name":"FPkYRwor","properties":{"fEUK":"CmlXfTfm"},"measurements":{"WxIM":4.509}}'
     assert_equal expected, actual
   end
 end

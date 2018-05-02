@@ -10,170 +10,110 @@ class TestRemoteDependencyData < Test::Unit::TestCase
   end
 
   def test_ver_works_as_expected
-    expected = 42
+    expected = 60
     item = Contracts::RemoteDependencyData.new
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
-    expected = 13
+    expected = 92
     item.ver = expected
     actual = item.ver
     assert_equal expected, actual
   end
 
   def test_name_works_as_expected
-    expected = 'Test string'
+    expected = 'ImFOjAtD'
     item = Contracts::RemoteDependencyData.new
     item.name = expected
     actual = item.name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'xXicyvLb'
     item.name = expected
     actual = item.name
     assert_equal expected, actual
   end
 
-  def test_kind_works_as_expected
-    expected = 5
+  def test_id_works_as_expected
+    expected = 'OEyKTSXC'
     item = Contracts::RemoteDependencyData.new
-    item.kind = expected
-    actual = item.kind
+    item.id = expected
+    actual = item.id
     assert_equal expected, actual
-    expected = 3
-    item.kind = expected
-    actual = item.kind
+    expected = 'BGyiNivx'
+    item.id = expected
+    actual = item.id
     assert_equal expected, actual
   end
 
-  def test_value_works_as_expected
-    expected = 1.5
+  def test_result_code_works_as_expected
+    expected = 'RRBLmlBX'
     item = Contracts::RemoteDependencyData.new
-    item.value = expected
-    actual = item.value
+    item.result_code = expected
+    actual = item.result_code
     assert_equal expected, actual
-    expected = 4.8
-    item.value = expected
-    actual = item.value
+    expected = 'eTppvBwT'
+    item.result_code = expected
+    actual = item.result_code
     assert_equal expected, actual
   end
 
-  def test_count_works_as_expected
-    expected = 42
+  def test_duration_works_as_expected
+    expected = 'qsFxgsJU'
     item = Contracts::RemoteDependencyData.new
-    item.count = expected
-    actual = item.count
+    item.duration = expected
+    actual = item.duration
     assert_equal expected, actual
-    expected = 13
-    item.count = expected
-    actual = item.count
-    assert_equal expected, actual
-  end
-
-  def test_min_works_as_expected
-    expected = 1.5
-    item = Contracts::RemoteDependencyData.new
-    item.min = expected
-    actual = item.min
-    assert_equal expected, actual
-    expected = 4.8
-    item.min = expected
-    actual = item.min
-    assert_equal expected, actual
-  end
-
-  def test_max_works_as_expected
-    expected = 1.5
-    item = Contracts::RemoteDependencyData.new
-    item.max = expected
-    actual = item.max
-    assert_equal expected, actual
-    expected = 4.8
-    item.max = expected
-    actual = item.max
-    assert_equal expected, actual
-  end
-
-  def test_std_dev_works_as_expected
-    expected = 1.5
-    item = Contracts::RemoteDependencyData.new
-    item.std_dev = expected
-    actual = item.std_dev
-    assert_equal expected, actual
-    expected = 4.8
-    item.std_dev = expected
-    actual = item.std_dev
-    assert_equal expected, actual
-  end
-
-  def test_dependency_kind_works_as_expected
-    expected = 5
-    item = Contracts::RemoteDependencyData.new
-    item.dependency_kind = expected
-    actual = item.dependency_kind
-    assert_equal expected, actual
-    expected = 3
-    item.dependency_kind = expected
-    actual = item.dependency_kind
+    expected = 'vmAnrvkN'
+    item.duration = expected
+    actual = item.duration
     assert_equal expected, actual
   end
 
   def test_success_works_as_expected
-    expected = true
+    expected = FALSE
     item = Contracts::RemoteDependencyData.new
     item.success = expected
     actual = item.success
     assert_equal expected, actual
-    expected = false
+    expected = TRUE
     item.success = expected
     actual = item.success
     assert_equal expected, actual
   end
 
-  def test_async_works_as_expected
-    expected = true
+  def test_data_works_as_expected
+    expected = 'NbtmHjWq'
     item = Contracts::RemoteDependencyData.new
-    item.async = expected
-    actual = item.async
+    item.data = expected
+    actual = item.data
     assert_equal expected, actual
-    expected = false
-    item.async = expected
-    actual = item.async
+    expected = 'CqhRgUsx'
+    item.data = expected
+    actual = item.data
     assert_equal expected, actual
   end
 
-  def test_dependency_source_works_as_expected
-    expected = 5
+  def test_target_works_as_expected
+    expected = 'MlNaqxPw'
     item = Contracts::RemoteDependencyData.new
-    item.dependency_source = expected
-    actual = item.dependency_source
+    item.target = expected
+    actual = item.target
     assert_equal expected, actual
-    expected = 3
-    item.dependency_source = expected
-    actual = item.dependency_source
+    expected = 'yUXiGybP'
+    item.target = expected
+    actual = item.target
     assert_equal expected, actual
   end
 
-  def test_command_name_works_as_expected
-    expected = 'Test string'
+  def test_type_works_as_expected
+    expected = 'yvCcYRVC'
     item = Contracts::RemoteDependencyData.new
-    item.command_name = expected
-    actual = item.command_name
+    item.type = expected
+    actual = item.type
     assert_equal expected, actual
-    expected = 'Other string'
-    item.command_name = expected
-    actual = item.command_name
-    assert_equal expected, actual
-  end
-
-  def test_dependency_type_name_works_as_expected
-    expected = 'Test string'
-    item = Contracts::RemoteDependencyData.new
-    item.dependency_type_name = expected
-    actual = item.dependency_type_name
-    assert_equal expected, actual
-    expected = 'Other string'
-    item.dependency_type_name = expected
-    actual = item.dependency_type_name
+    expected = 'lSKNVkCA'
+    item.type = expected
+    actual = item.type
     assert_equal expected, actual
   end
 
@@ -183,27 +123,31 @@ class TestRemoteDependencyData < Test::Unit::TestCase
     assert_not_nil actual
   end
 
+  def test_measurements_works_as_expected
+    item = Contracts::RemoteDependencyData.new
+    actual = item.measurements
+    assert_not_nil actual
+  end
+
   def test_to_json_works_as_expected
     item = Contracts::RemoteDependencyData.new
-    item.ver = 42
-    item.name = 'Test string'
-    item.kind = 5
-    item.value = 1.5
-    item.count = 42
-    item.min = 1.5
-    item.max = 1.5
-    item.std_dev = 1.5
-    item.dependency_kind = 5
-    item.success = true
-    item.async = true
-    item.dependency_source = 5
-    item.command_name = 'Test string'
-    item.dependency_type_name = 'Test string'
-    { 'key1' => 'test value 1' , 'key2' => 'test value 2' }.each do |key, value|
+    item.ver = 60
+    item.name = 'ImFOjAtD'
+    item.id = 'OEyKTSXC'
+    item.result_code = 'RRBLmlBX'
+    item.duration = 'qsFxgsJU'
+    item.success = FALSE
+    item.data = 'NbtmHjWq'
+    item.target = 'MlNaqxPw'
+    item.type = 'yvCcYRVC'
+    { 'dpeP' => 'BBXyWyVy' }.each do |key, value|
       item.properties[key] = value
     end
+    { 'srjL' => 0.262 }.each do |key, value|
+      item.measurements[key] = value
+    end
     actual = item.to_json
-    expected = '{"ver":42,"name":"Test string","kind":5,"value":1.5,"count":42,"min":1.5,"max":1.5,"stdDev":1.5,"dependencyKind":5,"success":true,"async":true,"dependencySource":5,"commandName":"Test string","dependencyTypeName":"Test string","properties":{"key1":"test value 1","key2":"test value 2"}}'
+    expected = '{"ver":60,"name":"ImFOjAtD","id":"OEyKTSXC","resultCode":"RRBLmlBX","duration":"qsFxgsJU","success":false,"data":"NbtmHjWq","target":"MlNaqxPw","type":"yvCcYRVC","properties":{"dpeP":"BBXyWyVy"},"measurements":{"srjL":0.262}}'
     assert_equal expected, actual
   end
 end

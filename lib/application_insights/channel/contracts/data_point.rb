@@ -5,9 +5,10 @@ module ApplicationInsights::Channel::Contracts
   class DataPoint
     include JsonSerializable
 
-    attr_accessor :name, :kind, :value, :count, :min, :max, :std_dev
+    attr_accessor :ns, :name, :kind, :value, :count, :min, :max, :std_dev
 
     attribute_mapping(
+      ns: 'ns',
       name: 'name',
       kind: 'kind',
       value: 'value',

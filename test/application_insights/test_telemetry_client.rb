@@ -49,7 +49,7 @@ class TestTelemetryClient < Test::Unit::TestCase
       client.track_exception e
     end
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Exception","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"ExceptionData","baseData":{"ver":2,"handledAt":"UserCode","exceptions":[{"id":1,"outerId":0,"typeName":"ArgumentError","message":"Some error","hasFullStack":true,"stack":"STACK_PLACEHOLDER"}]}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Exception","time":"TIME_PLACEHOLDER","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"ExceptionData","baseData":{"ver":2,"exceptions":[{"id":1,"outerId":0,"typeName":"ArgumentError","message":"Some error","hasFullStack":true,"stack":"STACK_PLACEHOLDER"}],"properties":{"handledAt":"UserCode"}}}}]'.gsub!(/__version__/, ApplicationInsights::VERSION)
     assert_equal 'UserCode', sender.data_to_send[0].data.base_data.handled_at
     assert_operator sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack.count, :>, 0
     assert_equal 'test_track_exception_works_as_expected', sender.data_to_send[0].data.base_data.exceptions[0].parsed_stack[0].method
@@ -96,7 +96,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     client, sender = self.create_client
     client.track_request 'test', start_time, '0:00:00:02.0000000','200', true
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"__time__","duration":"0:00:00:02.0000000","responseCode":"200","success":true}}}]'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","duration":"0:00:00:02.0000000","responseCode":"200","success":true}}}]'
       .gsub!(/__version__/, ApplicationInsights::VERSION)
       .gsub!(/__time__/, start_time)
     actual = sender.data_to_send.to_json
@@ -108,7 +108,7 @@ class TestTelemetryClient < Test::Unit::TestCase
     client, sender = self.create_client
     client.track_request 'test', start_time, '0:00:00:02.0000000','200', false
     client.flush
-    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","startTime":"__time__","duration":"0:00:00:02.0000000","responseCode":"200","success":false}}}]'
+    expected = '[{"ver":1,"name":"Microsoft.ApplicationInsights.Request","time":"__time__","sampleRate":100.0,"tags":{"ai.internal.sdkVersion":"rb:__version__"},"data":{"baseType":"RequestData","baseData":{"ver":2,"id":"test","duration":"0:00:00:02.0000000","responseCode":"200","success":false}}}]'
       .gsub!(/__version__/, ApplicationInsights::VERSION)
       .gsub!(/__time__/, start_time)
     actual = sender.data_to_send.to_json

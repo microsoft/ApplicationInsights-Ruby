@@ -4,13 +4,10 @@ module ApplicationInsights::Channel::Contracts
   class Location
     include JsonSerializable
 
-    attr_accessor :ip, :country, :province, :city
+    attr_accessor :ip
 
     attribute_mapping(
-      ip: 'ai.location.ip',
-      country: 'ai.location.country',
-      province: 'ai.location.province',
-      city: 'ai.location.city'
+      ip: 'ai.location.ip'
     )
   end
 end

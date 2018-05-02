@@ -10,72 +10,72 @@ class TestExceptionDetails < Test::Unit::TestCase
   end
 
   def test_id_works_as_expected
-    expected = 42
+    expected = 98
     item = Contracts::ExceptionDetails.new
     item.id = expected
     actual = item.id
     assert_equal expected, actual
-    expected = 13
+    expected = 57
     item.id = expected
     actual = item.id
     assert_equal expected, actual
   end
 
   def test_outer_id_works_as_expected
-    expected = 42
+    expected = 27
     item = Contracts::ExceptionDetails.new
     item.outer_id = expected
     actual = item.outer_id
     assert_equal expected, actual
-    expected = 13
+    expected = 51
     item.outer_id = expected
     actual = item.outer_id
     assert_equal expected, actual
   end
 
   def test_type_name_works_as_expected
-    expected = 'Test string'
+    expected = 'tqoEGGgl'
     item = Contracts::ExceptionDetails.new
     item.type_name = expected
     actual = item.type_name
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'WYBOaGPb'
     item.type_name = expected
     actual = item.type_name
     assert_equal expected, actual
   end
 
   def test_message_works_as_expected
-    expected = 'Test string'
+    expected = 'qThIpXfu'
     item = Contracts::ExceptionDetails.new
     item.message = expected
     actual = item.message
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'xqpwFlLr'
     item.message = expected
     actual = item.message
     assert_equal expected, actual
   end
 
   def test_has_full_stack_works_as_expected
-    expected = true
+    expected = TRUE
     item = Contracts::ExceptionDetails.new
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
-    expected = false
+    expected = FALSE
     item.has_full_stack = expected
     actual = item.has_full_stack
     assert_equal expected, actual
   end
 
   def test_stack_works_as_expected
-    expected = 'Test string'
+    expected = 'fLmysXWS'
     item = Contracts::ExceptionDetails.new
     item.stack = expected
     actual = item.stack
     assert_equal expected, actual
-    expected = 'Other string'
+    expected = 'HxcveEPO'
     item.stack = expected
     actual = item.stack
     assert_equal expected, actual
@@ -89,18 +89,18 @@ class TestExceptionDetails < Test::Unit::TestCase
 
   def test_to_json_works_as_expected
     item = Contracts::ExceptionDetails.new
-    item.id = 42
-    item.outer_id = 42
-    item.type_name = 'Test string'
-    item.message = 'Test string'
-    item.has_full_stack = true
-    item.stack = 'Test string'
+    item.id = 98
+    item.outer_id = 27
+    item.type_name = 'tqoEGGgl'
+    item.message = 'qThIpXfu'
+    item.has_full_stack = TRUE
+    item.stack = 'fLmysXWS'
     [ { 'key' => 'value' } ].each do |value|
       item.parsed_stack.push value
     end
 
     actual = item.to_json
-    expected = '{"id":42,"outerId":42,"typeName":"Test string","message":"Test string","hasFullStack":true,"stack":"Test string","parsedStack":[{"key":"value"}]}'
+    expected = '{"id":98,"outerId":27,"typeName":"tqoEGGgl","message":"qThIpXfu","hasFullStack":true,"stack":"fLmysXWS","parsedStack":[{"key":"value"}]}'
     assert_equal expected, actual
   end
 end
