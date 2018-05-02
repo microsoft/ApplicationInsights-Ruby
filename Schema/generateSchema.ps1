@@ -1,8 +1,8 @@
 $generatorPath = "C:\src\mseng\AppInsights-Common"
 $publicSchemaLocation = "https://raw.githubusercontent.com/Microsoft/ApplicationInsights-Home/master/EndpointSpecs/Schemas/Bond"
-$schemasPath = "C:\src\github\ApplicationInsights\ruby\Schema\PublicSchema"
-
 $currentDir = $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$schemasPath = "$currentDir\PublicSchema"
+
 #fix path
 $generatorPath = "$generatorPath\..\bin\Debug\BondSchemaGenerator\BondSchemaGenerator"
 
@@ -10,8 +10,7 @@ $generatorPath = "$generatorPath\..\bin\Debug\BondSchemaGenerator\BondSchemaGene
 #####################################################################
 ## PUBLIC SCHEMA
 #####################################################################
-
-mkdir -Force $currentDir\PublicSchema
+mkdir -Force $schemasPath
 
 function RegExReplace([string]$fileName, [string]$regex, [string]$replacement="")
 {

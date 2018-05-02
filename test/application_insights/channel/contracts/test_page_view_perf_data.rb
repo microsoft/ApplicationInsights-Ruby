@@ -21,18 +21,6 @@ class TestPageViewPerfData < Test::Unit::TestCase
     assert_equal expected, actual
   end
 
-  def test_ver_works_as_expected
-    expected = 63
-    item = Contracts::PageViewPerfData.new
-    item.ver = expected
-    actual = item.ver
-    assert_equal expected, actual
-    expected = 21
-    item.ver = expected
-    actual = item.ver
-    assert_equal expected, actual
-  end
-
   def test_url_works_as_expected
     expected = 'nxcKNxAq'
     item = Contracts::PageViewPerfData.new
@@ -54,18 +42,6 @@ class TestPageViewPerfData < Test::Unit::TestCase
     expected = 'UTJiZJzM'
     item.perf_total = expected
     actual = item.perf_total
-    assert_equal expected, actual
-  end
-
-  def test_name_works_as_expected
-    expected = 'FPkYRwor'
-    item = Contracts::PageViewPerfData.new
-    item.name = expected
-    actual = item.name
-    assert_equal expected, actual
-    expected = 'mwxmSpxU'
-    item.name = expected
-    actual = item.name
     assert_equal expected, actual
   end
 
@@ -171,18 +147,6 @@ class TestPageViewPerfData < Test::Unit::TestCase
     assert_not_nil actual
   end
 
-  def test_properties_works_as_expected
-    item = Contracts::PageViewPerfData.new
-    actual = item.properties
-    assert_not_nil actual
-  end
-
-  def test_measurements_works_as_expected
-    item = Contracts::PageViewPerfData.new
-    actual = item.measurements
-    assert_not_nil actual
-  end
-
   def test_measurements_works_as_expected
     item = Contracts::PageViewPerfData.new
     actual = item.measurements
@@ -212,10 +176,8 @@ class TestPageViewPerfData < Test::Unit::TestCase
       item.measurements[key] = value
     end
     item.ver = 63
-    item.ver = 63
     item.url = 'nxcKNxAq'
     item.perf_total = 'jItXKRPj'
-    item.name = 'FPkYRwor'
     item.name = 'FPkYRwor'
     item.duration = 'WaazkJXv'
     item.network_connect = 'zkjWxHlP'
@@ -226,12 +188,6 @@ class TestPageViewPerfData < Test::Unit::TestCase
     item.referrer_uri = 'xatkciOm'
     { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
       item.properties[key] = value
-    end
-    { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
-      item.properties[key] = value
-    end
-    { 'WxIM' => 4.509 }.each do |key, value|
-      item.measurements[key] = value
     end
     { 'WxIM' => 4.509 }.each do |key, value|
       item.measurements[key] = value
