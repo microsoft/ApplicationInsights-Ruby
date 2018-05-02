@@ -1,6 +1,7 @@
 require_relative 'channel/telemetry_context'
 require_relative 'channel/telemetry_channel'
 require_relative 'channel/contracts/page_view_data'
+require_relative 'channel/contracts/remote_dependency_data'
 require_relative 'channel/contracts/exception_data'
 require_relative 'channel/contracts/exception_details'
 require_relative 'channel/contracts/event_data'
@@ -11,6 +12,7 @@ require_relative 'channel/contracts/message_data'
 require_relative 'channel/contracts/stack_frame'
 require_relative 'channel/contracts/request_data'
 require_relative 'channel/contracts/severity_level'
+require_relative 'channel/contracts/reopenings'
 
 module ApplicationInsights
   # The telemetry client used for sending all types of telemetry. It serves as
@@ -104,10 +106,11 @@ module ApplicationInsights
       )
 
       data = Channel::Contracts::ExceptionData.new(
-        :handled_at => options.fetch(:handled_at, 'UserCode'),
         :exceptions => [details],
         :properties => options[:properties] || {},
-        :measurements => options[:measurements] || {}
+        :measurements => options[:measurements] || {},
+        # Must initialize handled_at after properties because it's actually stored in properties
+        :handled_at => options.fetch(:handled_at, 'UserCode')
       )
 
       self.channel.write(data, self.context)
@@ -206,15 +209,15 @@ module ApplicationInsights
     def track_request(id, start_time, duration, response_code, success, options={})
       data = Channel::Contracts::RequestData.new(
         :id => id || 'Null',
-        :start_time => start_time || Time.now.iso8601(7),
         :duration => duration || '0:00:00:00.0000000',
         :response_code => response_code || 200,
         :success => success = nil ? true : success,
         :name => options[:name],
-        :http_method => options[:http_method],
         :url => options[:url],
         :properties => options[:properties] || {},
-        :measurements => options[:measurements] || {}
+        :measurements => options[:measurements] || {},
+        # Must initialize http_method after properties because it's actually stored in properties
+        :http_method => options[:http_method]
       )
 
       self.channel.write(data, self.context, start_time)

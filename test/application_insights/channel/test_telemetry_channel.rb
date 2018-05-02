@@ -117,7 +117,7 @@ class TestTelemetryChannel < Test::Unit::TestCase
     queue = MockTelemetryChannelQueue.new SynchronousSender.new
     context = TelemetryContext.new
     context.application.ver = 'ver'
-    context.cloud.role_name = 'role name'
+    context.cloud.role = 'role name'
     context.device.id = 'device id'
     context.user.id = 'user id'
     context.session.id = 'session id'

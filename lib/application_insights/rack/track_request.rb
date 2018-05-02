@@ -129,15 +129,15 @@ module ApplicationInsights
       def request_data(request_id, start_time, duration, status, success, options)
         Channel::Contracts::RequestData.new(
             :id => request_id || 'Null',
-            :start_time => start_time || Time.now.iso8601(7),
             :duration => duration || '0:00:00:00.0000000',
             :response_code => status || 200,
             :success => success == nil ? true : success,
             :name => options[:name],
-            :http_method => options[:http_method],
             :url => options[:url],
             :properties => options[:properties] || {},
-            :measurements => options[:measurements] || {}
+            :measurements => options[:measurements] || {},
+            # Must initialize http_method after properties because it's actually stored in properties
+            :http_method => options[:http_method]
         )
       end
 
