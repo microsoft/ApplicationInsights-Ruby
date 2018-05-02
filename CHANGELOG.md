@@ -6,7 +6,6 @@ This file needs to be updated with every significant pull request. It is used to
 * Expose request id to parent Rack application when using `ApplicationInsights::Rack::TrackRequest` middleware through `env['ApplicationInsights.request.id']`.
 * Implement operation context functionality for `ApplicationInsights::Rack::TrackRequest`.
 * Add functionality to accept a Request-Id header for telemetry correlation.
-* Add functionality to populate Request-Id header in response.
 * Add operation context to request tracking middleware.
 
 ## Version 0.5.5
