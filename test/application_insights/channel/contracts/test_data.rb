@@ -36,7 +36,6 @@ class TestData < Test::Unit::TestCase
   def test_to_json_works_as_expected
     item = Contracts::Data.new
     item.base_type = 'DkiuYcvD'
-    item.base_type = 'DkiuYcvD'
     item.base_data = { 'key' => 'value' }
     actual = item.to_json
     expected = '{"baseType":"DkiuYcvD","baseData":{"key":"value"}}'

@@ -156,26 +156,6 @@ class TestPageViewPerfData < Test::Unit::TestCase
   def test_to_json_works_as_expected
     item = Contracts::PageViewPerfData.new
     item.ver = 63
-    item.name = 'FPkYRwor'
-    { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
-      item.properties[key] = value
-    end
-    { 'WxIM' => 4.509 }.each do |key, value|
-      item.measurements[key] = value
-    end
-    item.ver = 63
-    item.url = 'nxcKNxAq'
-    item.name = 'FPkYRwor'
-    item.duration = 'WaazkJXv'
-    item.id = 'wXTUMDUP'
-    item.referrer_uri = 'xatkciOm'
-    { 'fEUK' => 'CmlXfTfm' }.each do |key, value|
-      item.properties[key] = value
-    end
-    { 'WxIM' => 4.509 }.each do |key, value|
-      item.measurements[key] = value
-    end
-    item.ver = 63
     item.url = 'nxcKNxAq'
     item.perf_total = 'jItXKRPj'
     item.name = 'FPkYRwor'
@@ -193,7 +173,7 @@ class TestPageViewPerfData < Test::Unit::TestCase
       item.measurements[key] = value
     end
     actual = item.to_json
-    expected = '{"ver":63,"name":"FPkYRwor","properties":{"fEUK":"CmlXfTfm"},"measurements":{"WxIM":4.509},"url":"nxcKNxAq","duration":"WaazkJXv","id":"wXTUMDUP","referrerUri":"xatkciOm","perfTotal":"jItXKRPj","networkConnect":"zkjWxHlP","sentRequest":"CeetTzfH","receivedResponse":"ZhZDxeDE","domProcessing":"GWUjOWso"}'
+    expected = '{"ver":63,"url":"nxcKNxAq","perfTotal":"jItXKRPj","name":"FPkYRwor","duration":"WaazkJXv","networkConnect":"zkjWxHlP","sentRequest":"CeetTzfH","receivedResponse":"ZhZDxeDE","id":"wXTUMDUP","domProcessing":"GWUjOWso","referrerUri":"xatkciOm","properties":{"fEUK":"CmlXfTfm"},"measurements":{"WxIM":4.509}}'
     assert_equal expected, actual
   end
 end
