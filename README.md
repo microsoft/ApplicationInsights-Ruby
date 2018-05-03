@@ -149,7 +149,7 @@ config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUME
 #### Rerieving the Request-Id value from ApplicationInsights ####
 ```ruby
 # from time to time you may need to access a request's id from within your app
-application_insights_request_id = env['ApplicationInsights.request.id']
+application_insights_request_id = request.env['ApplicationInsights.request.id']
 
 # this can be used for a number of different purposes, including telemetry correlation
 uri = URI('http://api.example.com/search/?q=test')
