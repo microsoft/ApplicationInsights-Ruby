@@ -11,7 +11,7 @@ This project extends the Application Insights API surface to support Ruby. [Appl
 
 ## Requirements ##
 
-Ruby 1.9.3 is currently supported by this gem.
+Ruby 1.9.3 and above are currently supported by this gem.
 
 ## Installation ##
 
