@@ -53,15 +53,13 @@ module ApplicationInsights
       def start
         @start_notification_processed = false
         # Maintain one working thread at one time
-        unless @work_thread
-          @lock_work_thread.synchronize do
-            unless @work_thread
-              local_send_interval = [@send_interval, 0.1].max
-              @send_remaining_time = [@send_time, local_send_interval].max
-              @work_thread = Thread.new { run }
-              @work_thread.abort_on_exception = false
-            end
-          end
+        return if @work_thread
+
+        @lock_work_thread.synchronize do
+          local_send_interval = [@send_interval, 0.1].max
+          @send_remaining_time = [@send_time, local_send_interval].max
+          @work_thread = Thread.new { run }
+          @work_thread.abort_on_exception = false
         end
       end
 
