@@ -2,7 +2,7 @@ require 'rack'
 
 module ApplicationInsights
   module Rack
-    class TrackPageView
+    class InjectJavaScriptTracking
       attr_reader :app, :instrumentation_key
 
       def initialize(app, instrumentation_key)

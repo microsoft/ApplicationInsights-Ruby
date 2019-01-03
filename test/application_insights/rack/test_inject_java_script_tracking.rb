@@ -1,10 +1,10 @@
 require 'test/unit'
 require 'rack/mock'
-require_relative '../../../lib/application_insights/rack/track_page_view'
+require_relative '../../../lib/application_insights/rack/inject_java_script_tracking'
 
 include ApplicationInsights::Rack
 
-class TestTrackPageView < Test::Unit::TestCase
+class TestInjectScriptTrackingView < Test::Unit::TestCase
   def test_embeds_tracking_script_into_html_content
     app = generate_dummy_app(body: <<-'BODY'
       <html>
@@ -17,7 +17,7 @@ class TestTrackPageView < Test::Unit::TestCase
     url = 'http://localhost:8080/hoge'
     env = Rack::MockRequest.env_for(url, method: 'GET')
     instrumentation_key = 'key'
-    track_page_view = TrackPageView.new(app, instrumentation_key)
+    track_page_view = InjectJavaScriptTracking.new(app, instrumentation_key)
 
     status, _, result = track_page_view.call(env)
 
@@ -42,7 +42,7 @@ class TestTrackPageView < Test::Unit::TestCase
     url = 'http://localhost:8080/hoge'
     env = Rack::MockRequest.env_for(url, method: 'GET')
     instrumentation_key = 'key'
-    track_page_view = TrackPageView.new(app, instrumentation_key)
+    track_page_view = InjectJavaScriptTracking.new(app, instrumentation_key)
 
     status, _, result = track_page_view.call(env)
 
@@ -64,7 +64,7 @@ class TestTrackPageView < Test::Unit::TestCase
     url = 'http://localhost:8080/hoge'
     env = Rack::MockRequest.env_for(url, method: 'PUT')
     instrumentation_key = 'key'
-    track_page_view = TrackPageView.new(app, instrumentation_key)
+    track_page_view = InjectJavaScriptTracking.new(app, instrumentation_key)
 
     status, _, result = track_page_view.call(env)
 
