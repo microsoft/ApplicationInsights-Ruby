@@ -5,6 +5,6 @@ require_relative 'application_insights/version'
 module ApplicationInsights
   module Rack
     autoload :TrackRequest, "application_insights/rack/track_request"
-    autoload :TrackPageView, "application_insights/rack/track_page_view"
+    autoload :InjectJavaScriptTracking, "application_insights/rack/track_page_view"
   end
 end

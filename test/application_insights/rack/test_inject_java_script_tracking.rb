@@ -4,7 +4,7 @@ require_relative '../../../lib/application_insights/rack/inject_java_script_trac
 
 include ApplicationInsights::Rack
 
-class TestInjectScriptTrackingView < Test::Unit::TestCase
+class TestInjectJavaScriptTracking < Test::Unit::TestCase
   def test_embeds_tracking_script_into_html_content
     app = generate_dummy_app(body: <<-'BODY'
       <html>
