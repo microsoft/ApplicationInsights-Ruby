@@ -73,7 +73,10 @@ class TestInjectScriptTrackingView < Test::Unit::TestCase
   end
 
   private
-    def generate_dummy_app(status: 200, headers: {}, body:)
+    def generate_dummy_app(args)
+      status = args[:status] || 200
+      headers = args[:headers] || {}
+      body = args[:body]
       unless headers.key?('Content-Type')
         headers['Content-Type'] = 'text/html'
       end
