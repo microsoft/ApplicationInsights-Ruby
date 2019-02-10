@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'rack/mock'
-require_relative '../../../lib/application_insights/rack/inject_java_script_tracking'
+require_relative '../../../lib/application_insights'
 
 include ApplicationInsights::Rack
 
