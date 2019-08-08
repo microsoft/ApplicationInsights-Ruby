@@ -1,4 +1,4 @@
-# Application Insights SDK for Ruby #
+# [UNSUPPORTED] Application Insights SDK for Ruby #
 
 [![Gem Version](https://badge.fury.io/rb/application_insights.svg)](http://badge.fury.io/rb/application_insights)
 [![Build Status](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby.svg)](https://travis-ci.org/Microsoft/ApplicationInsights-Ruby)
