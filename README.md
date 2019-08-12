@@ -1,3 +1,5 @@
+This SDK is NOT currently maintained or supported by Microsoft. Azure Monitor only provides support when using the [supported SDKs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/platforms#unsupported-community-sdks). We’re constantly assessing opportunities to expand our support for other languages, so follow our [GitHub Announcements](https://github.com/microsoft/ApplicationInsights-Announcements/issues) page to receive the latest SDK news.
+
 # Application Insights SDK for Ruby #
 
 [![Gem Version](https://badge.fury.io/rb/application_insights.svg)](http://badge.fury.io/rb/application_insights)
@@ -7,10 +9,6 @@
 > -- <cite>[Ruby - Official Site](https://www.ruby-lang.org/en/)</cite>
 
 This project extends the Application Insights API surface to support Ruby. [Application Insights](http://azure.microsoft.com/en-us/services/application-insights/) is a service that allows developers to keep their application available, performing and succeeding. This Ruby gem will allow you to send telemetry of various kinds (event, trace, exception, etc.) to the Application Insights service where they can be visualized in the Azure Portal.
-
-## Status ##
-
-This SDK is NOT maintained or supported by Microsoft even though we've contributed to it in the past. Note that Azure Monitor only provides support when using the [supported SDKs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/platforms#unsupported-community-sdks). We’re constantly assessing opportunities to expand our support for other languages, so follow our [GitHub Announcements](https://github.com/microsoft/ApplicationInsights-Announcements/issues) page to receive the latest SDK news.
 
 ## Requirements ##
 
