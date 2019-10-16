@@ -23,5 +23,17 @@ module ApplicationInsights::Channel::Contracts
                 @properties["httpMethod"] = http_method
             end
         end
+
+        def client_ip
+            @properties["clientIp"] if @properties
+        end
+
+        def client_ip=(client_ip)
+            if client_ip
+                @properties ||= {}
+                @properties["clientIp"] = client_ip
+            end
+        end
+
     end
 end
