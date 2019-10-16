@@ -43,6 +43,32 @@ class TestTrackRequest < Test::Unit::TestCase
     assert Time.parse(payload[0].time) - start_time < 0.01
   end
 
+  def test_call_with_ip
+    response_code = rand(200..204)
+    app = Proc.new {|env| sleep(2.5); [response_code, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}
+    url = "http://localhost:8080/foo?a=b"
+    ip = "1.1.1.1"
+    http_method = 'PUT'
+    env = Rack::MockRequest.env_for(url, :method => http_method, "REMOTE_ADDR" => ip)
+    instrumentation_key = 'key'
+    sender = MockAsynchronousSender.new
+    track_request = TrackRequest.new app, instrumentation_key, 500, 1, true
+    track_request.send(:sender=, sender)
+    start_time = Time.now
+
+    SecureRandom.expects(:base64).with(10).returns('y0NM2eOY/fnQPw==')
+    result = track_request.call(env)
+
+    app_result = app.call(env)
+    assert_equal app_result, result
+    sleep(sender.send_interval)
+
+    payload = sender.buffer[0]
+    request_data = payload[0].data.base_data
+
+    assert_equal request_data.properties['clientIp'], ip
+  end
+
   def test_call_with_failed_request
     response_code = rand(400..600)
     app = Proc.new {|env| [response_code, {"Content-Type" => "text/html"}, ["Hello Rack!"]]}

@@ -15,11 +15,12 @@ module ApplicationInsights
       #   send to Application Insights when buffer is full.
       # @param [Fixnum] send_interval the frequency (in seconds) to check buffer
       #   and send buffered requests to Application Insights if any.
-      def initialize(app, instrumentation_key, buffer_size = 500, send_interval = 60)
+      def initialize(app, instrumentation_key, buffer_size = 500, send_interval = 60, store_ip = false)
         @app = app
         @instrumentation_key = instrumentation_key
         @buffer_size = buffer_size
         @send_interval = send_interval
+        @store_ip = store_ip
 
         @sender = Channel::AsynchronousSender.new
         @sender.send_interval = @send_interval
@@ -119,11 +120,13 @@ module ApplicationInsights
       end
 
       def options_hash(request)
-        {
+        options = {
             name: "#{request.request_method} #{request.path}",
             http_method: request.request_method,
             url: request.url
         }
+        options[:client_ip] = request.ip if @store_ip
+        options
       end
 
       def request_data(request_id, start_time, duration, status, success, options)
@@ -137,7 +140,8 @@ module ApplicationInsights
             :properties => options[:properties] || {},
             :measurements => options[:measurements] || {},
             # Must initialize http_method after properties because it's actually stored in properties
-            :http_method => options[:http_method]
+            :http_method => options[:http_method],
+            :client_ip => options[:client_ip]
         )
       end
 
