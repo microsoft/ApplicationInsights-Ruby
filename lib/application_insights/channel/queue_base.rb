@@ -44,7 +44,7 @@ module ApplicationInsights
         return unless item
 
         @queue.push(item)
-
+        
         flush if @queue.length >= @max_queue_length
       end
 

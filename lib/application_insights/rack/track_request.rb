@@ -15,11 +15,13 @@ module ApplicationInsights
       #   send to Application Insights when buffer is full.
       # @param [Fixnum] send_interval the frequency (in seconds) to check buffer
       #   and send buffered requests to Application Insights if any.
-      def initialize(app, instrumentation_key, buffer_size = 500, send_interval = 60)
+      # @param [Hash] roles send a role and role instance string to Application Insights.
+      def initialize(app, instrumentation_key, buffer_size = 500, send_interval = 60, roles = {})
         @app = app
         @instrumentation_key = instrumentation_key
         @buffer_size = buffer_size
         @send_interval = send_interval
+        @roles = roles
 
         @sender = Channel::AsynchronousSender.new
         @sender.send_interval = @send_interval
@@ -54,7 +56,7 @@ module ApplicationInsights
         options = options_hash(request)
 
         data = request_data(request_id, start_time, duration, status, success, options)
-        context = telemetry_context(request_id, env['HTTP_REQUEST_ID'])
+        context = telemetry_context(request_id, env['HTTP_REQUEST_ID'], @roles)
 
         @client.channel.write data, context, start_time
 
@@ -141,11 +143,13 @@ module ApplicationInsights
         )
       end
 
-      def telemetry_context(request_id, request_id_header)
+      def telemetry_context(request_id, request_id_header, roles)
         context = Channel::TelemetryContext.new
         context.instrumentation_key = @instrumentation_key
         context.operation.id = operation_id(request_id)
         context.operation.parent_id = request_id_header
+        context.cloud.role = roles.values[0].instance_of?(String) == true ? roles.values[0] : nil
+        context.cloud.role_instance = roles.values[1].instance_of?(String) == true ? roles.values[1] : nil
 
         context
       end

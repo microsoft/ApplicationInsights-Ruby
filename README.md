@@ -144,9 +144,11 @@ raise Exception, 'Boom!'
 ```ruby
 # set up the TrackRequest middleware in the rackup (config.ru) file
 require 'application_insights'
-use ApplicationInsights::Rack::TrackRequest, '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
+use ApplicationInsights::Rack::TrackRequest, '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>, <send_interval>, <roles>
 # For rails, suggest to set up this middleware in application.rb so that unhandled exceptions from controllers are also collected
-config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>
+config.middleware.use 'ApplicationInsights::Rack::TrackRequest', '<YOUR INSTRUMENTATION KEY GOES HERE>', <buffer size>, <send_interval>, <roles>
+
+Example: config.middleware.use 'ApplicationInsights::Rack::TrackRequest', 'd770211a-fdeb-4e91-b7e0-a1fffa282ec4', 500, 60, { role: 'test-role', role_instance: 'teste-role-instance' }
 ```
 
 #### Rerieving the Request-Id value from ApplicationInsights ####
