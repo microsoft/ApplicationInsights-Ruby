@@ -55,7 +55,7 @@ module ApplicationInsights
         headers = {
           'Accept' => 'application/json',
           'Content-Type' => 'application/json; charset=utf-8',
-          'Content-Encoding' => 'gzip',
+          'Content-Encoding' => 'gzip'
         }
         request = Net::HTTP::Post.new(uri.path, headers)
 
