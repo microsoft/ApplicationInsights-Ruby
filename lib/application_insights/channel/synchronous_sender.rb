@@ -1,4 +1,4 @@
-require_relative "sender_base"
+require_relative 'sender_base'
 
 module ApplicationInsights
   module Channel
