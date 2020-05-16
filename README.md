@@ -162,3 +162,19 @@ req['Request-Id'] = "#{application_insights_request_id}1" if application_insight
 
 Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(req) }
 ```
+
+### Configuring Telemetry client with Proxy endpoint ###
+```ruby
+require 'application_insights'
+# if proxy server doesnt have authentication, provide arbitrary username and password
+# <proxyhost> : Address or FQDN of the proxy server
+# <port> : port number for the proxy server
+proxy = { :addr => '<proxyhost>', :port => '<port>', :user: '<user>', :pass: '<password>' }
+sender = ApplicationInsights::Channel::AsynchronousSender.new 'https://dc.services.visualstudio.com/v2/track', proxy
+queue = ApplicationInsights::Channel::AsynchronousQueue.new sender
+channel = ApplicationInsights::Channel::TelemetryChannel.new nil, queue
+tc = ApplicationInsights::TelemetryClient.new '<YOUR INSTRUMENTATION KEY GOES HERE>', channel
+# Note: the event will be sent on a separate thread; if the app finishes before
+#       the thread finishes, the data is lost
+tc.track_event 'My event'
+```
