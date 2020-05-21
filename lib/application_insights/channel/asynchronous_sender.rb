@@ -23,6 +23,10 @@ module ApplicationInsights
       # @param [Hash] proxy server configuration to send (optional)
       #   telemetry data to.
       def initialize(service_endpoint_uri = SERVICE_ENDPOINT_URI, proxy = {})
+        # callers which requires proxy dont require to maintain service endpoint uri which potentially can change
+        if service_endpoint_uri.nil? || service_endpoint_uri.empty?
+          service_endpoint_uri = SERVICE_ENDPOINT_URI
+        end
         @send_interval = 1.0
         @send_remaining_time = 0
         @send_time = 3.0
