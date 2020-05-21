@@ -16,12 +16,14 @@ module ApplicationInsights
     class SenderBase
       # Initializes a new instance of the class.
       # @param [String] service_endpoint_uri the address of the service to send
+      # @param [Hash] proxy server configuration to send (optional)
       #   telemetry data to.
-      def initialize(service_endpoint_uri)
+      def initialize(service_endpoint_uri, proxy = {})
         @service_endpoint_uri = service_endpoint_uri
         @queue = nil
         @send_buffer_size = 100
         @logger = Logger.new(STDOUT)
+        @proxy = proxy
       end
 
       # The service endpoint URI where this sender will send data to.
@@ -40,6 +42,9 @@ module ApplicationInsights
 
       # The logger for the sender.
       attr_accessor :logger
+
+      # The proxy for the sender.
+      attr_accessor :proxy
 
       # Immediately sends the data passed in to {#service_endpoint_uri}. If the
       # service request fails, the passed in items are pushed back to the {#queue}.
@@ -60,7 +65,11 @@ module ApplicationInsights
         compressed_data = compress(json)
         request.body = compressed_data
 
-        http = Net::HTTP.new uri.hostname, uri.port
+        if @proxy.nil? || @proxy.empty?
+          http = Net::HTTP.new uri.hostname, uri.port
+        else
+          http = Net::HTTP.new(uri.hostname, uri.port, @proxy[:addr], @proxy[:port], @proxy[:user], @proxy[:pass])
+        end
         if uri.scheme.downcase == 'https'
           http.use_ssl = true
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
